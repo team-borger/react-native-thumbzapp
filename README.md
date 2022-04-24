@@ -1,15 +1,4 @@
-# React Native Paper Login Template
-
-The easiest way to start with your application.
-
-## Features
-
-- Save energy & hours of hard-work
-- Complete source code in React Native
-- Based on [**react-native-paper**](https://reactnativepaper.com/)
-- 5 screens & 16 components
-- Prettier for pretty, formatted code
-- Minimum dependencies
+# Thumbzupp
 
 ## How to use?
 
@@ -36,15 +25,3 @@ Project was created using [Expo](https://expo.io/). If you want standard native 
 ```js
 expo eject
 ```
-
-## Preview
-
-![homescreen](https://raw.githubusercontent.com/callstack/react-native-paper-login-template/master/preview/homescreen.png)
-![login](https://raw.githubusercontent.com/callstack/react-native-paper-login-template/master/preview/login.png)
-![register](https://raw.githubusercontent.com/callstack/react-native-paper-login-template/master/preview/register.png)
-![forgot](https://raw.githubusercontent.com/callstack/react-native-paper-login-template/master/preview/forgot.png)
-![dashboard](https://raw.githubusercontent.com/callstack/react-native-paper-login-template/master/preview/dashboard.png)
-
-## Made with ❤️ at Callstack
-
-This template is an open source project and will always remain free to use. If you think it's cool, please star it 🌟. Callstack is a group of React and React Native geeks, contact us at hello@callstack.com if you need any help with these or just want to say hi!
