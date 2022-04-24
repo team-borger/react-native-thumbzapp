@@ -1,0 +1,70 @@
+import React, { memo } from 'react';
+import { FlatList, View, Text, StyleSheet, ScrollView } from 'react-native';
+import { List, Avatar, Searchbar } from 'react-native-paper';
+import { Navigation } from '../types';
+
+type Props = {
+  navigation: Navigation;
+};
+
+const items = [
+  {"id":"1","first_name":"Princess","last_name": "Garde","content":"How are you?"},
+  {"id":"2","first_name": "Raymund","last_name": "Hinlog","content":"How are you?"},
+  {"id":"3","first_name":"Alan","last_name": "Golpeo","content":"How are you?"},
+  {"id":"4","first_name":"Skiko","last_name": "Hinlog","content":"How are you?"}
+];
+
+const Dashboard = ({ navigation }: Props) => {
+  return (
+    <View style={styles.ground}>
+
+      <Text style={styles.title}>Messages</Text>
+
+      <Searchbar
+        style={styles.search}
+        placeholder="Search"
+      />
+
+      <ScrollView style={styles.scrollView}>
+        <FlatList
+          data={items}
+          renderItem={({ item }) => (
+            <List.Item
+              key="{item.id}"
+              onPress={() => navigation.navigate('ChatScreen')}
+              title={item.first_name + ' ' + item.last_name}
+              description={item.content}
+              left={props => <Avatar.Text style={styles.avatar} size={37} label={item.first_name.charAt(0)+item.last_name.charAt(0)} />}
+            />
+          )}
+          keyExtractor={(item) => item.id}
+        />
+      </ScrollView>
+
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  ground: {
+    padding: 20,
+    backgroundColor: '#eeeeee',
+    height: '100vh'
+  },
+  title: {
+    fontWeight: 'bold',
+    fontSize: '20px'
+  },
+  search: {
+    marginTop: '20px'
+  },
+  avatar: {
+    marginTop: '6px',
+    marginBottom: '6px'
+  },
+  scrollView: {
+    marginTop: '10px'
+  }
+});
+
+export default memo(Dashboard);
