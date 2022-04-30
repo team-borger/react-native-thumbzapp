@@ -20,7 +20,7 @@ const Router = createStackNavigator(
     ChatScreen,
   },
   {
-    initialRouteName: 'ChatScreen',
+    initialRouteName: 'Dashboard',
     headerMode: 'none',
   }
 );

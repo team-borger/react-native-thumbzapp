@@ -19,7 +19,7 @@ const MyComponent = () => {
 
 const styles = StyleSheet.create({
   search: {
-    marginTop: '20px'
+    marginTop: 20
   }
 });
 

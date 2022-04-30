@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { FlatList, View, Text, StyleSheet, ScrollView } from 'react-native';
-import { List, Avatar, Searchbar } from 'react-native-paper';
+import { List, Avatar, Searchbar, Appbar } from 'react-native-paper';
 import { Navigation } from '../types';
 
 type Props = {
@@ -16,30 +16,32 @@ const items = [
 
 const Dashboard = ({ navigation }: Props) => {
   return (
-    <View style={styles.ground}>
+    <View>
 
-      <Text style={styles.title}>Messages</Text>
+      <Appbar.Header dark={false} style={styles.header}>
+        <Appbar.Content style={styles.marginText} title={<Text style={styles.setColorText}>Messages</Text>}/>
+      </Appbar.Header>
 
-      <Searchbar
-        style={styles.search}
-        placeholder="Search"
-      />
-
-      <ScrollView style={styles.scrollView}>
-        <FlatList
-          data={items}
-          renderItem={({ item }) => (
-            <List.Item
-              key="{item.id}"
-              onPress={() => navigation.navigate('ChatScreen')}
-              title={item.first_name + ' ' + item.last_name}
-              description={item.content}
-              left={props => <Avatar.Text style={styles.avatar} size={37} label={item.first_name.charAt(0)+item.last_name.charAt(0)} />}
-            />
-          )}
-          keyExtractor={(item) => item.id}
+      <View style={styles.ground}>
+        <Searchbar
+          placeholder="Search"
         />
-      </ScrollView>
+        <ScrollView style={styles.scrollView}>
+          <FlatList
+            data={items}
+            renderItem={({ item }) => (
+              <List.Item
+                key="{item.id}"
+                onPress={() => navigation.navigate('ChatScreen')}
+                title={item.first_name + ' ' + item.last_name}
+                description={item.content}
+                left={props => <Avatar.Text style={styles.avatar} size={37} label={item.first_name.charAt(0)+item.last_name.charAt(0)} />}
+              />
+            )}
+            keyExtractor={(item) => item.id}
+          />
+        </ScrollView>
+      </View>
 
     </View>
   );
@@ -47,23 +49,30 @@ const Dashboard = ({ navigation }: Props) => {
 
 const styles = StyleSheet.create({
   ground: {
+    paddingTop: 0,
     padding: 20,
-    backgroundColor: '#eeeeee',
-    height: '100vh'
+    // backgroundColor: '#eeeeee',
+    height: '100%'
+  },
+  marginText: {
+    marginLeft: 10
   },
   title: {
     fontWeight: 'bold',
-    fontSize: '20px'
+    fontSize: 20
   },
-  search: {
-    marginTop: '20px'
+  setColorText : {
+    color: '#880ED4'
+  },
+  header: {
+    backgroundColor: 'transparent'
   },
   avatar: {
-    marginTop: '6px',
-    marginBottom: '6px'
+    marginTop: 6,
+    marginBottom: 6
   },
   scrollView: {
-    marginTop: '10px'
+    marginTop: 10
   }
 });
 
