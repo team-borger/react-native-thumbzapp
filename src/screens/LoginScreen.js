@@ -28,7 +28,7 @@ const LoginScreen = ({ navigation }: Props) => {
       return;
     }
 
-    navigation.navigate('Dashboard');
+    navigation.navigate('HomeScreen');
   };
 
   return (

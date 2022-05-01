@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { FlatList, View, Text, StyleSheet, ScrollView } from 'react-native';
-import { List, Avatar, Searchbar, Appbar } from 'react-native-paper';
+import { Button, List, Avatar, Searchbar, Appbar } from 'react-native-paper';
 import { Navigation } from '../types';
 import NavbarBot from '../components/NavbarBot';
 
@@ -20,28 +20,15 @@ const Dashboard = ({ navigation }: Props) => {
     <View style={styles.container}>
 
       <Appbar.Header dark={false} style={styles.header}>
-        <Appbar.Content style={styles.marginText} title={<Text style={styles.setColorText}>Messages</Text>}/>
+        <Appbar.Content style={styles.marginText} title={<Text style={styles.setColorText}> </Text>}/>
       </Appbar.Header>
 
       <View style={styles.contentContainer}>
-        <Searchbar
-          placeholder="Search"
-        />
-        <ScrollView style={styles.scrollView}>
-          <FlatList
-            data={items}
-            renderItem={({ item }) => (
-              <List.Item
-                key="{item.id}"
-                onPress={() => navigation.navigate('ChatScreen')}
-                title={item.first_name + ' ' + item.last_name}
-                description={item.content}
-                left={props => <Avatar.Text style={styles.avatar} size={37} label={item.first_name.charAt(0)+item.last_name.charAt(0)} />}
-              />
-            )}
-            keyExtractor={(item) => item.id}
-          />
-        </ScrollView>
+        <Avatar.Icon size={100} icon="account" color="white" style={styles.avatar} />
+        <Text>Princess Garde</Text>
+        <Button icon="logout" style={styles.logoutBtn} mode="contained" onPress={() => navigation.navigate('LoginScreen')}>
+          Logout
+        </Button>
       </View>
 
       <NavbarBot navigation={navigation}></NavbarBot>
@@ -54,11 +41,20 @@ const styles = StyleSheet.create({
   container: {
       flex: 1,
   },
+  logoutBtn: {
+    backgroundColor: '#880ED4',
+    marginTop: 20
+  },
+  avatar: {
+    backgroundColor: '#880ED4',
+    marginTop: 30
+  },
   contentContainer: {
       flex: 1,
       paddingTop: 0,
       padding: 20,
-      height: '100%'
+      height: '100%',
+      alignItems: 'center'
   },
   marginText: {
     marginLeft: 10
