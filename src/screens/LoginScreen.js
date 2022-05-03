@@ -28,8 +28,6 @@ const LoginScreen = ({ navigation }: Props) => {
   const loginError = err => {
     const { error, message } = err.response.data;
     setLoading(false)
-    console.log(err.response)
-    console.log(err.response.data)
     if (error) {
       Alert.alert('Login Error', error,
         [{ text: 'OK' },], { cancelable: false }
@@ -51,9 +49,9 @@ const LoginScreen = ({ navigation }: Props) => {
       setPassword({ ...password, error: passwordError });
       return;
     } else {
-      const body = { 
-        email : email.value, 
-        password : password.value 
+      const body = {
+        email : email.value,
+        password : password.value
       };
       setLoading(true)
       loginAPI(body,loginSuccess,loginError);
@@ -88,9 +86,11 @@ const LoginScreen = ({ navigation }: Props) => {
         secureTextEntry
       />
 
-      <Button mode="contained" onPress={_onLoginPressed}>
-      {loading ? 'Loading...' : 'Login'}
-      </Button>
+      <View style={{ paddingLeft: 20, paddingRight: 20, width: '100%' }}>
+        <Button mode="contained" onPress={_onLoginPressed}>
+        {loading ? 'Loading...' : 'Login'}
+        </Button>
+      </View>
 
       <View style={styles.forgotPassword}>
         <TouchableOpacity
@@ -106,9 +106,11 @@ const LoginScreen = ({ navigation }: Props) => {
         <View style={styles.hairline} />
       </View>
 
-      <Button mode="contained" onPress={() => navigation.navigate('RegisterScreen')}>
-        Create an account
-      </Button>
+      <View style={{ paddingLeft: 20, paddingRight: 20, width: '100%' }}>
+        <Button mode="contained" onPress={() => navigation.navigate('RegisterScreen')}>
+          Create an account
+        </Button>
+      </View>
     </Background>
   );
 };

@@ -23,6 +23,8 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     marginVertical: 3,
+    paddingLeft: 20,
+    paddingRight: 20
   },
   input: {
     backgroundColor: theme.colors.surface,

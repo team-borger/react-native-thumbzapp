@@ -6,7 +6,7 @@ export default (req, error) => {
         if (isConnected) {
             req;
         } else {
-            Toast.show('No internet connection')
+            Toast.showWithGravity('No internet connection', Toast.TOP)
             const err = {
                 response: {
                     data: {
