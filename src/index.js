@@ -26,7 +26,7 @@ const Router = createStackNavigator(
     PaymentMethodList,
   },
   {
-    initialRouteName: 'PaymentMethodList',
+    initialRouteName: 'LoginScreen',
     headerMode: 'none',
   }
 );
