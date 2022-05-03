@@ -3,6 +3,7 @@ import { FlatList, View, Text, StyleSheet, ScrollView, Image } from 'react-nativ
 import { Button, List, Avatar, Searchbar, Appbar, Card } from 'react-native-paper';
 import { Navigation } from '../types';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { IMAGE } from '../constants/Image';
 
 type Props = {
   navigation: Navigation;
@@ -49,7 +50,7 @@ const ChatScreen = ({ navigation }: Props) => {
                   <Card.Content>
                     <View style={styles.alignCenterRow}>
                       <View style={styles.alignCenterRow}>
-                        <Image source={require('../assets/mastercard.png')} style={styles.image} />
+                        <Image source={IMAGE.ICON_MASTERCARD} style={styles.image} />
                         <View>
                           <Text style={{fontWeight: 'bold'}}>{item.account_number}</Text>
                           <Text style={{color: 'gray', fontSize: 12}}>Expires {item.exp_month + '/' + item.exp_year}</Text>

@@ -89,7 +89,7 @@ const LoginScreen = ({ navigation }: Props) => {
       />
 
       <Button mode="contained" onPress={_onLoginPressed}>
-      {loading ? 'Loading...' : 'Sign In'}
+      {loading ? 'Loading...' : 'Login'}
       </Button>
 
       <View style={styles.forgotPassword}>

@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import { TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { IMAGE } from '../constants/Image';
 
 type Props = {
   goBack: () => void;
@@ -8,7 +9,7 @@ type Props = {
 
 const BackButton = ({ goBack }: Props) => (
   <TouchableOpacity onPress={goBack} style={styles.container}>
-    <Image style={styles.image} source={require('../assets/arrow_back.png')} />
+    <Image style={styles.image} source={IMAGE.ICON_BACK} />
   </TouchableOpacity>
 );
 
