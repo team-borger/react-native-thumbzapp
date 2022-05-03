@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View, Alert } from 'react-native';
 import Background from '../components/Background';
 import Logo from '../components/Logo';
 import Header from '../components/Header';
@@ -8,6 +8,7 @@ import TextInput from '../components/TextInput';
 import BackButton from '../components/BackButton';
 import { theme } from '../core/theme';
 import { emailValidator, passwordValidator } from '../core/utils';
+import { loginAPI } from '../services/auth';
 import { Navigation } from '../types';
 
 type Props = {
@@ -17,8 +18,31 @@ type Props = {
 const LoginScreen = ({ navigation }: Props) => {
   const [email, setEmail] = useState({ value: '', error: '' });
   const [password, setPassword] = useState({ value: '', error: '' });
+  const [loading, setLoading] = useState(false);
 
-  const _onLoginPressed = () => {
+  const loginSuccess = res => {
+    const { token } = res.data;
+    navigation.replace('Dashboard')
+  }
+
+  const loginError = err => {
+    const { error, message } = err.response.data;
+    setLoading(false)
+    console.log(err.response)
+    console.log(err.response.data)
+    if (error) {
+      Alert.alert('Login Error', error,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+    if (message) {
+      Alert.alert('Login Error', message,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+  }
+
+  const _onLoginPressed = async () => {
     const emailError = emailValidator(email.value);
     const passwordError = passwordValidator(password.value);
 
@@ -26,9 +50,14 @@ const LoginScreen = ({ navigation }: Props) => {
       setEmail({ ...email, error: emailError });
       setPassword({ ...password, error: passwordError });
       return;
+    } else {
+      const body = { 
+        email : email.value, 
+        password : password.value 
+      };
+      setLoading(true)
+      loginAPI(body,loginSuccess,loginError);
     }
-
-    navigation.navigate('HomeScreen');
   };
 
   return (
@@ -60,7 +89,7 @@ const LoginScreen = ({ navigation }: Props) => {
       />
 
       <Button mode="contained" onPress={_onLoginPressed}>
-        Login
+      {loading ? 'Loading...' : 'Sign In'}
       </Button>
 
       <View style={styles.forgotPassword}>
@@ -71,7 +100,7 @@ const LoginScreen = ({ navigation }: Props) => {
         </TouchableOpacity>
       </View>
 
-      <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 20,}}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20, }}>
         <View style={styles.hairline} />
         <Text style={styles.loginButtonBelowText1}>OR</Text>
         <View style={styles.hairline} />
