@@ -1,19 +1,13 @@
 import React, { memo } from 'react';
-import { FlatList, View, Text, StyleSheet, ScrollView } from 'react-native';
+import { FlatList, View, Text, StyleSheet, ScrollView, TouchableHighlight } from 'react-native';
 import { Button, List, Avatar, Searchbar, Appbar } from 'react-native-paper';
 import { Navigation } from '../types';
 import NavbarBot from '../components/NavbarBot';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 type Props = {
   navigation: Navigation;
 };
-
-const items = [
-  {"id":"1","first_name":"Princess","last_name": "Garde","content":"How are you?"},
-  {"id":"2","first_name": "Raymund","last_name": "Hinlog","content":"How are you?"},
-  {"id":"3","first_name":"Alan","last_name": "Golpeo","content":"How are you?"},
-  {"id":"4","first_name":"Skiko","last_name": "Hinlog","content":"How are you?"}
-];
 
 const Dashboard = ({ navigation }: Props) => {
   return (
@@ -24,8 +18,38 @@ const Dashboard = ({ navigation }: Props) => {
       </Appbar.Header>
 
       <View style={styles.contentContainer}>
-        <Avatar.Icon size={100} icon="account" color="white" style={styles.avatar} />
-        <Text>Princess Garde</Text>
+        <View style={styles.whiteBg}>
+          <Avatar.Icon size={40} icon="account" color="white" style={styles.avatar} />
+          <View style={{marginLeft: 10}}>
+            <Text style={{fontSize: 18, fontWeight: 'bold'}}>Princess Garde</Text>
+            <View style={styles.skeks}>
+              <FontAwesome name='circle' size={10} color='green' />
+              <View style={{marginLeft: 2}}>
+                <Text style={{fontSize: 12, fontWeight: 'bold'}}>Online</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View style={styles.profileInfo}>
+          <TouchableHighlight onPress={() => navigation.navigate('PaymentMethodList')}>
+            <View
+              style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: 20, alignItems: 'center'}}>
+              <View style={{display: 'flex', flexDirection:'row', alignItems: 'center'}}>
+                <FontAwesome name='credit-card' size={15} color='black' />
+                <View style={{marginLeft: 5}}>
+                  <Text>Payment Methods</Text>
+                </View>
+              </View>
+              <FontAwesome name='angle-right' size={20} color='black' />
+            </View>
+          </TouchableHighlight>
+          <View
+            style={{
+              borderBottomColor: 'white',
+              borderBottomWidth: 2,
+            }}
+          />
+        </View>
         <Button icon="logout" style={styles.logoutBtn} mode="contained" onPress={() => navigation.navigate('LoginScreen')}>
           Logout
         </Button>
@@ -38,12 +62,28 @@ const Dashboard = ({ navigation }: Props) => {
 };
 
 const styles = StyleSheet.create({
+  skeks: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  profileInfo: {
+    flex: 1,
+    backgroundColor: '#eeeeee',
+  },
+  whiteBg: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    paddingTop: 0,
+    padding: 20
+  },
   container: {
       flex: 1,
   },
   logoutBtn: {
     backgroundColor: '#880ED4',
-    marginTop: 20
   },
   avatar: {
     backgroundColor: '#880ED4',
@@ -52,9 +92,8 @@ const styles = StyleSheet.create({
   contentContainer: {
       flex: 1,
       paddingTop: 0,
-      padding: 20,
+      // padding: 20,
       height: '100%',
-      alignItems: 'center'
   },
   marginText: {
     marginLeft: 10
@@ -67,7 +106,8 @@ const styles = StyleSheet.create({
     color: '#880ED4'
   },
   header: {
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    height: 20
   },
   avatar: {
     marginTop: 6,

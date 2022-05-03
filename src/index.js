@@ -9,6 +9,8 @@ import {
   Dashboard,
   ChatScreen,
   ProfileScreen,
+  AddCardScreen,
+  PaymentMethodList,
 } from './screens';
 
 const Router = createStackNavigator(
@@ -19,10 +21,12 @@ const Router = createStackNavigator(
     ForgotPasswordScreen,
     Dashboard,
     ChatScreen,
-    ProfileScreen
+    ProfileScreen,
+    AddCardScreen,
+    PaymentMethodList,
   },
   {
-    initialRouteName: 'LoginScreen',
+    initialRouteName: 'PaymentMethodList',
     headerMode: 'none',
   }
 );

@@ -5,3 +5,5 @@ export { default as ForgotPasswordScreen } from './ForgotPasswordScreen';
 export { default as Dashboard } from './Dashboard';
 export { default as ChatScreen } from './ChatScreen';
 export { default as ProfileScreen } from './ProfileScreen';
+export { default as AddCardScreen } from './AddCardScreen';
+export { default as PaymentMethodList } from './PaymentMethodList';
