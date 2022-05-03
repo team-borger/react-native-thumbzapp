@@ -9,12 +9,32 @@ export const emailValidator = (email: string) => {
 
 export const passwordValidator = (password: string) => {
   if (!password || password.length <= 0) return 'Password cannot be empty.';
+  if (password.length < 8) return 'Password must be at least 8 digits.';
 
   return '';
 };
 
-export const nameValidator = (name: string) => {
-  if (!name || name.length <= 0) return 'Name cannot be empty.';
+export const confirmPasswordValidator = (confirm_password: string, password: string) => {
+  if (!confirm_password || confirm_password.length <= 0) return 'Confirm password cannot be empty.';
+  if (confirm_password !== password) return "Password didn't match.";
+
+  return '';
+};
+
+export const firstNameValidator = (first_name: string) => {
+  if (!first_name || first_name.length <= 0) return 'First name cannot be empty.';
+
+  return '';
+};
+
+export const lastNameValidator = (last_name: string) => {
+  if (!last_name || last_name.length <= 0) return 'Last name cannot be empty.';
+
+  return '';
+};
+
+export const phoneValidator = (phone: string) => {
+  if (!phone || phone.length <= 0) return 'Mobile number cannot be empty.';
 
   return '';
 };
