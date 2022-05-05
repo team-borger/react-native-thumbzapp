@@ -1,7 +1,7 @@
-import React, { memo } from 'react';
-import { FlatList, View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import React, { memo, useState } from 'react';
+import { FlatList, View, Text, StyleSheet, ScrollView, Image, Alert } from 'react-native';
 import { Button, List, Avatar, Searchbar, Appbar, Card } from 'react-native-paper';
-import TextInputMask from 'react-native-text-input-mask';
+import { MaskedTextInput} from "react-native-mask-text";
 import { Navigation } from '../types';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { IMAGE } from '../constants/Image';
@@ -11,6 +11,7 @@ import {
   cardCvnValidator,
   expiryDateValidator
 } from '../core/utils';
+import { addCardsAPI } from '../services/payment';
 
 type Props = {
   navigation: Navigation;
@@ -54,7 +55,28 @@ const ChatScreen = ({ navigation }: Props) => {
     const cardCvnError = cardCvnValidator(card_cvn.value);
     const expiryDateError = expiryDateValidator(expiry_date.value);
 
-    console.log('Save Card')
+    if (accountNumberError || cardCvnError || expiryDateError) {
+      setAccountNumber({ ...account_number, error: accountNumberError });
+      setCardCvn({ ...card_cvn, error: cardCvnError });
+      setExpiryDate({ ...expiry_date, error: expiryDateError });
+      return;
+    } else {
+      const expMonth = expiry_date.value.split('/')[0]
+      const expYear = expiry_date.value.split('/')[1]
+      const body = {
+        user_id: 1,
+        bank: 'Sample Bank',
+        type: 'Sample Type',
+        brand: 'Sample Brand',
+        account_number: account_number.value,
+        card_cvn: card_cvn.value,
+        exp_month: expMonth,
+        exp_year: expYear,
+      };
+      console.log(body)
+      setLoading(true)
+      addCardsAPI(body,addCardSuccess,addCardError);
+    }
   }
 
   return (
@@ -82,30 +104,39 @@ const ChatScreen = ({ navigation }: Props) => {
             onChangeText={text => setAccountNumber({ value: text, error: '' })}
             error={!!account_number.error}
             errorText={account_number.error}
+            keyboardType="numeric"
           />
 
           <TextInput
             placeholder="Expiry Date (MM/YY)"
-            returnKeyType="next"
-            value={expiry_date.value}
-            onChangeText={text => setExpiryDate({ value: text, error: '' })}
-            error={!!expiry_date.error}
-            errorText={expiry_date.error}
+            render={props =>
+              <MaskedTextInput
+                {...props}
+                returnKeyType="next"
+                mask="99/99"
+                value={expiry_date.value}
+                onChangeText={text => setExpiryDate({ value: text, error: '' })}
+                error={!!expiry_date.error}
+                errorText={expiry_date.error}
+                keyboardType="numeric"
+              />
+            }
           />
 
           <TextInput
             placeholder="CVV"
             returnKeyType="next"
             render={props =>
-              <TextInputMask
+              <MaskedTextInput
                 {...props}
-                mask="+[00] [000] [000] [000]"
+                mask="999"
               />
             }
             value={card_cvn.value}
             onChangeText={text => setCardCvn({ value: text, error: '' })}
             error={!!card_cvn.error}
             errorText={card_cvn.error}
+            keyboardType="numeric"
           />
 
         </View>
