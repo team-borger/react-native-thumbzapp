@@ -167,7 +167,7 @@ const RegisterScreen = ({ navigation }: Props) => {
               />
               <View style={{ paddingLeft: 20, paddingRight: 20 }}>
                 <Button mode="contained" onPress={_onSignUpPressed} style={styles.button}>
-                  Register
+                  {loading ? 'Loading...' : 'Register'}
                 </Button>
               </View>
               <View style={{ padding: 20}}>

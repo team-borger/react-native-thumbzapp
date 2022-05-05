@@ -38,3 +38,21 @@ export const phoneValidator = (phone: string) => {
 
   return '';
 };
+
+export const accountNumberError = (account_number: string) => {
+  if (!account_number || account_number.length <= 0) return 'Card number cannot be empty.';
+
+  return '';
+};
+
+export const cardCvnError = (card_cvn: string) => {
+  if (!card_cvn || card_cvn.length <= 0) return 'CVV cannot be empty.';
+
+  return '';
+};
+
+export const expiryDateError = (expiry_date: string) => {
+  if (!expiry_date || expiry_date.length <= 0) return 'Expiry date cannot be empty.';
+
+  return '';
+};
