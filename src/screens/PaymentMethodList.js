@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import { FlatList, View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, List, Avatar, Searchbar, Appbar, Card } from 'react-native-paper';
 import { Navigation } from '../types';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -34,7 +35,7 @@ const ChatScreen = ({ navigation }: Props) => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <Appbar.Header dark={false} style={styles.header}>
         <Appbar.BackAction onPress={_goBack} />
         <Appbar.Content title={<Text style={styles.setColorText}>Manage Methods</Text>}/>
@@ -42,35 +43,34 @@ const ChatScreen = ({ navigation }: Props) => {
 
       <View style={styles.contentContainer}>
         <View style={{flex: 1, padding: 20}}>
-          <ScrollView style={styles.scrollView}>
-            <FlatList
-              data={items}
-              renderItem={({ item }) => (
-                <Card style={styles.customCard}>
-                  <Card.Content>
+          <FlatList
+            style={styles.scrollView}
+            data={items}
+            renderItem={({ item }) => (
+              <Card style={styles.customCard}>
+                <Card.Content>
+                  <View style={styles.alignCenterRow}>
                     <View style={styles.alignCenterRow}>
-                      <View style={styles.alignCenterRow}>
-                        <Image source={IMAGE.ICON_MASTERCARD} style={styles.image} />
-                        <View>
-                          <Text style={{fontWeight: 'bold'}}>{item.account_number}</Text>
-                          <Text style={{color: 'gray', fontSize: 12}}>Expires {item.exp_month + '/' + item.exp_year}</Text>
-                        </View>
+                      <Image source={IMAGE.ICON_MASTERCARD} style={styles.image} />
+                      <View>
+                        <Text style={{fontWeight: 'bold'}}>{item.account_number}</Text>
+                        <Text style={{color: 'gray', fontSize: 12}}>Expires {item.exp_month + '/' + item.exp_year}</Text>
                       </View>
-                      <FontAwesome name='trash' size={20} color='gray' />
                     </View>
-                  </Card.Content>
-                </Card>
-              )}
-              keyExtractor={(item) => item.id}
-            />
-          </ScrollView>
+                    <FontAwesome name='trash' size={20} color='gray' />
+                  </View>
+                </Card.Content>
+              </Card>
+            )}
+            keyExtractor={(item) => item.id}
+          />
         </View>
         <Button icon="plus" style={styles.logoutBtn} mode="contained" onPress={() => navigation.navigate('AddCardScreen')}>
           Add Card
         </Button>
       </View>
 
-    </View>
+    </SafeAreaView>
   );
 };
 

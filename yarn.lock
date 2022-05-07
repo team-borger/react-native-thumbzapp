@@ -5759,7 +5759,7 @@
   dependencies:
     "prop-types" "^15.7.x"
 
-"react-native-safe-area-context@>= 3.0.0":
+"react-native-safe-area-context@^4.2.5", "react-native-safe-area-context@>= 3.0.0":
   "integrity" "sha512-nUil2de1gk/8ZB9IzIxFyGCiKeAYcHzJb/Tks2NzSkev1qH4MNR05DWYDSmW6vLT+y4mospLVyG/H5dyUd+KQQ=="
   "resolved" "https://registry.npmjs.org/react-native-safe-area-context/-/react-native-safe-area-context-4.2.5.tgz"
   "version" "4.2.5"
