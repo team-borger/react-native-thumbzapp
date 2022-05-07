@@ -1,22 +1,43 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { FlatList, View, Text, StyleSheet, ScrollView } from 'react-native';
-import { List, Avatar, Searchbar, Appbar } from 'react-native-paper';
+import { List, Avatar, Searchbar, Appbar, Card } from 'react-native-paper';
 import { Navigation } from '../types';
 import NavbarBot from '../components/NavbarBot';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
+import { conversationsAPI } from '../services/messages';
 
 type Props = {
   navigation: Navigation;
 };
 
-const items = [
-  {"id":"1","first_name":"Princess","last_name": "Garde","content":"How are you?"},
-  {"id":"2","first_name": "Raymund","last_name": "Hinlog","content":"How are you?"},
-  {"id":"3","first_name":"Alan","last_name": "Golpeo","content":"How are you?"},
-  {"id":"4","first_name":"Skiko","last_name": "Hinlog","content":"How are you?"}
-];
-
 const Dashboard = ({ navigation }: Props) => {
+  const [items, setItems] = useState({})
+
+  const fetchSuccess = res => {
+    setItems(res.data)
+  }
+
+  const fetchError = err => {
+    const { error, message } = err.response.data;
+    if (error) {
+      Alert.alert('Something went wrong. Please try again.', error,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+    if (message) {
+      Alert.alert('Something went wrong. Please try again.', message,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+  }
+
+  useFocusEffect(
+    React.useCallback(() => {
+      conversationsAPI(fetchSuccess,fetchError);
+    }, [navigation])
+  );
+
   return (
     <SafeAreaView style={styles.container}>
 
@@ -32,12 +53,15 @@ const Dashboard = ({ navigation }: Props) => {
           style={styles.scrollView}
           data={items}
           renderItem={({ item }) => (
+            // <Card>
+            //   <Text>{item.contact.first_name + ' ' + item.contact.last_name}</Text>
+            // </Card>
             <List.Item
               key="{item.id}"
               onPress={() => navigation.navigate('ChatScreen')}
-              title={item.first_name + ' ' + item.last_name}
-              description={item.content}
-              left={props => <Avatar.Text style={styles.avatar} size={37} label={item.first_name.charAt(0)+item.last_name.charAt(0)} />}
+              title={item.contact.first_name + ' ' + item.contact.last_name}
+              description={item.spoiler_chat}
+              left={props => <Avatar.Text style={styles.avatar} size={37} label={item.contact.first_name.charAt(0)+item.contact.last_name.charAt(0)} />}
             />
           )}
           keyExtractor={(item) => item.id}

@@ -10,14 +10,21 @@ import { theme } from '../core/theme';
 import { emailValidator, passwordValidator } from '../core/utils';
 import { loginAPI } from '../services/auth';
 import { Navigation } from '../types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState({ value: '', error: '' });
   const [password, setPassword] = useState({ value: '', error: '' });
   const [loading, setLoading] = useState(false);
 
+  _storeUserData = async (payload) => {
+    await AsyncStorage.setItem('Token', payload.user.token)
+    await AsyncStorage.setItem('user', JSON.stringify(payload.user))
+  }
+
   const loginSuccess = res => {
     const { token } = res.data;
+    _storeUserData(res.data)
     navigation.replace('Dashboard')
   }
 
