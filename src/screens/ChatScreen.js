@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import {Platform, KeyboardAvoidingView, View, ScrollView, Text, Button, StyleSheet} from 'react-native';
 import {Bubble, GiftedChat, Send} from 'react-native-gifted-chat';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -82,7 +83,7 @@ const ChatScreen = ({ navigation }: Props) => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <Appbar.Header dark={false} style={styles.header}>
         <Appbar.BackAction onPress={_goBack} />
         <Appbar.Content title={<Text style={styles.setColorText}>Princess Garde</Text>}/>
@@ -102,10 +103,7 @@ const ChatScreen = ({ navigation }: Props) => {
          renderAvatar={null}
          scrollToBottomComponent={scrollToBottomComponent}
        />
-       {
-          Platform.OS === 'android' && <KeyboardAvoidingView behavior="padding" />
-       }
-    </View>
+    </SafeAreaView>
   );
 };
 

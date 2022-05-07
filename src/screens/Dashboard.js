@@ -3,6 +3,7 @@ import { FlatList, View, Text, StyleSheet, ScrollView } from 'react-native';
 import { List, Avatar, Searchbar, Appbar } from 'react-native-paper';
 import { Navigation } from '../types';
 import NavbarBot from '../components/NavbarBot';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type Props = {
   navigation: Navigation;
@@ -17,7 +18,7 @@ const items = [
 
 const Dashboard = ({ navigation }: Props) => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
 
       <Appbar.Header dark={false} style={styles.header}>
         <Appbar.Content style={styles.marginText} title={<Text style={styles.setColorText}>Messages</Text>}/>
@@ -27,26 +28,25 @@ const Dashboard = ({ navigation }: Props) => {
         <Searchbar
           placeholder="Search"
         />
-        <ScrollView style={styles.scrollView}>
-          <FlatList
-            data={items}
-            renderItem={({ item }) => (
-              <List.Item
-                key="{item.id}"
-                onPress={() => navigation.navigate('ChatScreen')}
-                title={item.first_name + ' ' + item.last_name}
-                description={item.content}
-                left={props => <Avatar.Text style={styles.avatar} size={37} label={item.first_name.charAt(0)+item.last_name.charAt(0)} />}
-              />
-            )}
-            keyExtractor={(item) => item.id}
-          />
-        </ScrollView>
+        <FlatList
+          style={styles.scrollView}
+          data={items}
+          renderItem={({ item }) => (
+            <List.Item
+              key="{item.id}"
+              onPress={() => navigation.navigate('ChatScreen')}
+              title={item.first_name + ' ' + item.last_name}
+              description={item.content}
+              left={props => <Avatar.Text style={styles.avatar} size={37} label={item.first_name.charAt(0)+item.last_name.charAt(0)} />}
+            />
+          )}
+          keyExtractor={(item) => item.id}
+        />
       </View>
 
       <NavbarBot navigation={navigation}></NavbarBot>
 
-    </View>
+    </SafeAreaView>
   );
 };
 

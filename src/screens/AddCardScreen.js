@@ -1,5 +1,6 @@
 import React, { memo, useState } from 'react';
 import { FlatList, View, Text, StyleSheet, ScrollView, Image, Alert } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, List, Avatar, Searchbar, Appbar, Card } from 'react-native-paper';
 import { MaskedTextInput} from "react-native-mask-text";
 import { Navigation } from '../types';
@@ -80,7 +81,7 @@ const ChatScreen = ({ navigation }: Props) => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <Appbar.Header dark={false} style={styles.header}>
         <Appbar.BackAction onPress={_goBack} />
         <Appbar.Content title={<Text style={styles.setColorText}>Add Card</Text>}/>
@@ -144,7 +145,7 @@ const ChatScreen = ({ navigation }: Props) => {
       <Button style={styles.logoutBtn} mode="contained" onPress={_saveCard}>
         {loading ? 'Loading...' : 'Save Card'}
       </Button>
-    </View>
+    </SafeAreaView>
   );
 };
 

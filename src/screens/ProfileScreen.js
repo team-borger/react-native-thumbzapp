@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import { FlatList, View, Text, StyleSheet, ScrollView, TouchableHighlight } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, List, Avatar, Searchbar, Appbar } from 'react-native-paper';
 import { Navigation } from '../types';
 import NavbarBot from '../components/NavbarBot';
@@ -11,7 +12,7 @@ type Props = {
 
 const Dashboard = ({ navigation }: Props) => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
 
       <Appbar.Header dark={false} style={styles.header}>
         <Appbar.Content style={styles.marginText} title={<Text style={styles.setColorText}> </Text>}/>
@@ -57,7 +58,7 @@ const Dashboard = ({ navigation }: Props) => {
 
       <NavbarBot navigation={navigation}></NavbarBot>
 
-    </View>
+    </SafeAreaView>
   );
 };
 
