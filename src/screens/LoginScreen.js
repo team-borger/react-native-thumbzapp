@@ -11,11 +11,7 @@ import { emailValidator, passwordValidator } from '../core/utils';
 import { loginAPI } from '../services/auth';
 import { Navigation } from '../types';
 
-type Props = {
-  navigation: Navigation;
-};
-
-const LoginScreen = ({ navigation }: Props) => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState({ value: '', error: '' });
   const [password, setPassword] = useState({ value: '', error: '' });
   const [loading, setLoading] = useState(false);
@@ -150,4 +146,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default memo(LoginScreen);
+export default LoginScreen;
