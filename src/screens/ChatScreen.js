@@ -6,12 +6,16 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Appbar } from 'react-native-paper';
 import { Navigation } from '../types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { loadThreadsAPI } from '../services/messages';
 
 type Props = {
   navigation: Navigation;
 };
 
 const ChatScreen = ({ navigation }: Props) => {
+  const [messages, setMessages] = useState([]);
+
   const _goBack = () => {
     navigation.navigate('Dashboard');
   }
@@ -20,21 +24,37 @@ const ChatScreen = ({ navigation }: Props) => {
 
   const _handlevideoCall = () => console.log('Video Calling...');
 
-  const [messages, setMessages] = useState([]);
+  const getChatsSuccess = (res) => {
+    console.log('aaaa: ', res.data)
+    setMessages(res.data)
+  }
+
+  const getChatsError = err => {
+    const { error, message } = err.response.data;
+    if (error) {
+      Alert.alert('Something went wrong. Please try again.', error,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+    if (message) {
+      Alert.alert('Something went wrong. Please try again.', message,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+  }
+
+  const _getActiveChat = async () => {
+    const jsonValue = await AsyncStorage.getItem('active_chat')
+    const result = jsonValue != null ? JSON.parse(jsonValue) : null
+
+    if (result) {
+      const body = result
+      loadThreadsAPI(body, getChatsSuccess, getChatsError)
+    }
+  }
 
   useEffect(() => {
-    setMessages([
-      {
-         _id: 1,
-         text: 'Hello developer',
-         createdAt: new Date(),
-         user: {
-           _id: 2,
-           name: 'React Native',
-           avatar: 'https://placeimg.com/140/140/any',
-         },
-       },
-    ]);
+    _getActiveChat()
   }, []);
 
   const onSend = useCallback((messages = []) => {

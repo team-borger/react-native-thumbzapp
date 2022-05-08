@@ -65,10 +65,6 @@ const ChatScreen = ({ navigation }: Props) => {
       const expMonth = expiry_date.value.split('/')[0]
       const expYear = expiry_date.value.split('/')[1]
       const body = {
-        user_id: 1,
-        bank: 'Sample Bank',
-        type: 'Sample Type',
-        brand: 'Sample Brand',
         account_number: account_number.value,
         card_cvn: card_cvn.value,
         exp_month: expMonth,
