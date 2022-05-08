@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-import { FlatList, View, Text, StyleSheet, ScrollView } from 'react-native';
+import { FlatList, View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { List, Avatar, Searchbar, Appbar, Card } from 'react-native-paper';
 import { Navigation } from '../types';
 import NavbarBot from '../components/NavbarBot';
@@ -13,12 +13,15 @@ type Props = {
 };
 
 const Dashboard = ({ navigation }: Props) => {
-  const [items, setItems] = useState({})
-  const [clickItems, setClickItems] = useState({})
+  const [items, setItems] = useState([])
 
-  const clickSuccess = async (res) => {
-    await AsyncStorage.setItem('active_chat', JSON.stringify(clickItems))
-    navigation.navigate('ChatScreen')
+  const _onChatClick = (item) => {
+    AsyncStorage.setItem('active_chat', JSON.stringify(item))
+    updateViewedAPI(item.contact.id, clickSuccess, clickError)
+  }
+
+  const clickSuccess = () => {
+    navigation.replace('ChatScreen')
   }
 
   const clickError = err => {
@@ -33,11 +36,6 @@ const Dashboard = ({ navigation }: Props) => {
         [{ text: 'OK' },], { cancelable: false }
       );
     }
-  }
-
-  const _onChatClick = (body) => {
-    setClickItems(body)
-    updateViewedAPI(body,clickSuccess,clickError)
   }
 
   const fetchSuccess = res => {
@@ -60,7 +58,7 @@ const Dashboard = ({ navigation }: Props) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      conversationsAPI(fetchSuccess,fetchError);
+      conversationsAPI(fetchSuccess, fetchError);
     }, [navigation])
   );
 
@@ -68,7 +66,7 @@ const Dashboard = ({ navigation }: Props) => {
     <SafeAreaView style={styles.container}>
 
       <Appbar.Header dark={false} style={styles.header}>
-        <Appbar.Content style={styles.marginText} title={<Text style={styles.setColorText}>Messages</Text>}/>
+        <Appbar.Content style={styles.marginText} title={<Text style={styles.setColorText}>Messages</Text>} />
       </Appbar.Header>
 
       <View style={styles.contentContainer}>
@@ -87,7 +85,7 @@ const Dashboard = ({ navigation }: Props) => {
               onPress={() => _onChatClick(item)}
               title={item.contact.first_name + ' ' + item.contact.last_name}
               description={item.spoiler_chat}
-              left={props => <Avatar.Text style={styles.avatar} size={37} label={item.contact.first_name.charAt(0)+item.contact.last_name.charAt(0)} />}
+              left={props => <Avatar.Text style={styles.avatar} size={37} label={item.contact.first_name.charAt(0) + item.contact.last_name.charAt(0)} />}
             />
           )}
           keyExtractor={(item) => item.id}
@@ -102,13 +100,13 @@ const Dashboard = ({ navigation }: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-      flex: 1,
+    flex: 1,
   },
   contentContainer: {
-      flex: 1,
-      paddingTop: 0,
-      padding: 20,
-      height: '100%'
+    flex: 1,
+    paddingTop: 0,
+    padding: 20,
+    height: '100%'
   },
   marginText: {
     marginLeft: 10
@@ -117,7 +115,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20
   },
-  setColorText : {
+  setColorText: {
     color: '#880ED4'
   },
   header: {
