@@ -10,9 +10,9 @@ export const conversationsAPI = async (callback, err) => {
     )
 }
 
-export const loadThreadsAPI = async (body, callback, err) => {
+export const loadThreadsAPI = async (recepientId, callback, err) => {
     checkConnection(
-        backendAPI.get(`/messages/threads/${body.contact.id}`)
+        backendAPI.get(`/messages/threads/${recepientId}`)
             .then(callback)
             .catch(err),
         err
@@ -28,9 +28,9 @@ export const createMessageAPI = async (body, callback, err) => {
     )
 }
 
-export const updateViewedAPI = async (body, callback, err) => {
+export const updateViewedAPI = async (userId, callback, err) => {
     checkConnection(
-        backendAPI.post(`/messages/update-viewed/${body.id}`, body.id)
+        backendAPI.post(`/messages/update-viewed/${userId}`, userId)
             .then(callback)
             .catch(err),
         err

@@ -1,7 +1,7 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {Platform, KeyboardAvoidingView, View, ScrollView, Text, Button, StyleSheet} from 'react-native';
-import {Bubble, GiftedChat, Send} from 'react-native-gifted-chat';
+import { Platform, KeyboardAvoidingView, View, ScrollView, Text, Button, StyleSheet } from 'react-native';
+import { Bubble, GiftedChat, Send } from 'react-native-gifted-chat';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Appbar } from 'react-native-paper';
@@ -16,6 +16,22 @@ type Props = {
 const ChatScreen = ({ navigation }: Props) => {
   const [messages, setMessages] = useState([]);
 
+  useEffect(() => {
+    _getActiveChat()
+  }, []);
+
+  const _getActiveChat = async () => {
+    try {
+      let value = await AsyncStorage.getItem('active_chat')
+      if (value !== null) {
+        let ret = JSON.parse(value);
+        loadThreadsAPI(ret.contact.id, getChatSuccess, getChatsError)
+      }
+    } catch (error) {
+      console.log('error async storage')
+    }
+  }
+
   const _goBack = () => {
     navigation.navigate('Dashboard');
   }
@@ -24,9 +40,18 @@ const ChatScreen = ({ navigation }: Props) => {
 
   const _handlevideoCall = () => console.log('Video Calling...');
 
-  const getChatsSuccess = (res) => {
-    console.log('aaaa: ', res.data)
-    setMessages(res.data)
+  const getChatSuccess = res => {
+    setMessages(res.data.map(item => ({
+      _id: item.id,
+      createdAt: item.date_created,
+      text: item.message,
+      //   user: {
+      //     _id: 2,
+      //     name: 'React Native',
+      //     avatar: 'https://placeimg.com/140/140/any',
+      // },
+    })))
+    console.log(res.data)
   }
 
   const getChatsError = err => {
@@ -43,20 +68,6 @@ const ChatScreen = ({ navigation }: Props) => {
     }
   }
 
-  const _getActiveChat = async () => {
-    const jsonValue = await AsyncStorage.getItem('active_chat')
-    const result = jsonValue != null ? JSON.parse(jsonValue) : null
-
-    if (result) {
-      const body = result
-      loadThreadsAPI(body, getChatsSuccess, getChatsError)
-    }
-  }
-
-  useEffect(() => {
-    _getActiveChat()
-  }, []);
-
   const onSend = useCallback((messages = []) => {
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, messages),
@@ -69,7 +80,7 @@ const ChatScreen = ({ navigation }: Props) => {
         <View>
           <MaterialCommunityIcons
             name="send-circle"
-            style={{marginBottom: 5, marginRight: 5}}
+            style={{ marginBottom: 5, marginRight: 5 }}
             size={32}
             color="#2e64e5"
           />
@@ -97,7 +108,7 @@ const ChatScreen = ({ navigation }: Props) => {
   };
 
   const scrollToBottomComponent = () => {
-    return(
+    return (
       <FontAwesome name='angle-double-down' size={22} color='#333' />
     );
   }
@@ -106,23 +117,23 @@ const ChatScreen = ({ navigation }: Props) => {
     <SafeAreaView style={{ flex: 1 }}>
       <Appbar.Header dark={false} style={styles.header}>
         <Appbar.BackAction onPress={_goBack} />
-        <Appbar.Content title={<Text style={styles.setColorText}>Princess Garde</Text>}/>
+        <Appbar.Content title={<Text style={styles.setColorText}>Princess Garde</Text>} />
         <Appbar.Action icon="phone" onPress={_handleCall} />
         <Appbar.Action icon="video" onPress={_handlevideoCall} />
       </Appbar.Header>
-       <GiftedChat
-         messages={messages}
-         onSend={(messages) => onSend(messages)}
-         user={{
-           _id: 1,
-         }}
-         renderBubble={renderBubble}
-         alwaysShowSend
-         renderSend={renderSend}
-         scrollToBottom
-         renderAvatar={null}
-         scrollToBottomComponent={scrollToBottomComponent}
-       />
+      <GiftedChat
+        messages={messages}
+        onSend={(messages) => onSend(messages)}
+        user={{
+          _id: 1,
+        }}
+        renderBubble={renderBubble}
+        alwaysShowSend
+        renderSend={renderSend}
+        scrollToBottom
+        renderAvatar={null}
+        scrollToBottomComponent={scrollToBottomComponent}
+      />
     </SafeAreaView>
   );
 };
@@ -140,7 +151,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#eeeeee',
     height: '100%'
   },
-  setColorText : {
+  setColorText: {
     color: '#880ED4'
   },
   title: {
