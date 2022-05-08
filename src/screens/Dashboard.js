@@ -5,7 +5,8 @@ import { Navigation } from '../types';
 import NavbarBot from '../components/NavbarBot';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
-import { conversationsAPI } from '../services/messages';
+import { conversationsAPI, updateViewedAPI } from '../services/messages';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Props = {
   navigation: Navigation;
@@ -13,6 +14,31 @@ type Props = {
 
 const Dashboard = ({ navigation }: Props) => {
   const [items, setItems] = useState({})
+  const [clickItems, setClickItems] = useState({})
+
+  const clickSuccess = async (res) => {
+    await AsyncStorage.setItem('active_chat', JSON.stringify(clickItems))
+    navigation.navigate('ChatScreen')
+  }
+
+  const clickError = err => {
+    const { error, message } = err.response.data;
+    if (error) {
+      Alert.alert('Something went wrong. Please try again.', error,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+    if (message) {
+      Alert.alert('Something went wrong. Please try again.', message,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+  }
+
+  const _onChatClick = (body) => {
+    setClickItems(body)
+    updateViewedAPI(body,clickSuccess,clickError)
+  }
 
   const fetchSuccess = res => {
     setItems(res.data)
@@ -58,7 +84,7 @@ const Dashboard = ({ navigation }: Props) => {
             // </Card>
             <List.Item
               key="{item.id}"
-              onPress={() => navigation.navigate('ChatScreen')}
+              onPress={() => _onChatClick(item)}
               title={item.contact.first_name + ' ' + item.contact.last_name}
               description={item.spoiler_chat}
               left={props => <Avatar.Text style={styles.avatar} size={37} label={item.contact.first_name.charAt(0)+item.contact.last_name.charAt(0)} />}

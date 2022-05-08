@@ -12,7 +12,7 @@ export const conversationsAPI = async (callback, err) => {
 
 export const loadThreadsAPI = async (body, callback, err) => {
     checkConnection(
-        backendAPI.get(`/messages/threads/${body}`)
+        backendAPI.get(`/messages/threads/${body.contact.id}`)
             .then(callback)
             .catch(err),
         err
