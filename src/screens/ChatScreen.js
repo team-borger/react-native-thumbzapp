@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Platform, KeyboardAvoidingView, View, ScrollView, Text, Button, StyleSheet } from 'react-native';
+import { Platform, KeyboardAvoidingView, View, ScrollView, Text, Button, StyleSheet, Alert } from 'react-native';
 import { Bubble, GiftedChat, Send } from 'react-native-gifted-chat';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Appbar } from 'react-native-paper';
 import { Navigation } from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { loadThreadsAPI } from '../services/messages';
+import { loadThreadsAPI, createMessageAPI } from '../services/messages';
 
 type Props = {
   navigation: Navigation;
@@ -15,6 +15,8 @@ type Props = {
 
 const ChatScreen = ({ navigation }: Props) => {
   const [messages, setMessages] = useState([]);
+  const [loginUser, setLoginUser] = useState({});
+  const [chatUser, setChatUser] = useState({});
 
   useEffect(() => {
     _getActiveChat()
@@ -22,10 +24,16 @@ const ChatScreen = ({ navigation }: Props) => {
 
   const _getActiveChat = async () => {
     try {
-      let value = await AsyncStorage.getItem('active_chat')
+      const value = await AsyncStorage.getItem('active_chat')
+      const skeks = await AsyncStorage.getItem('user')
+      if (skeks !== null) {
+        const skek = JSON.parse(skeks);
+        setLoginUser(skek)
+      }
       if (value !== null) {
-        let ret = JSON.parse(value);
-        loadThreadsAPI(ret.contact.id, getChatSuccess, getChatsError)
+        const ret = JSON.parse(value);
+        setChatUser(ret.contact)
+        loadThreadsAPI(ret.contact.id, getChatSuccess, apiError)
       }
     } catch (error) {
       console.log('error async storage')
@@ -45,16 +53,17 @@ const ChatScreen = ({ navigation }: Props) => {
       _id: item.id,
       createdAt: item.date_created,
       text: item.message,
-      //   user: {
-      //     _id: 2,
-      //     name: 'React Native',
-      //     avatar: 'https://placeimg.com/140/140/any',
-      // },
+        user: {
+          _id: item.sender_id
+      },
     })))
-    console.log(res.data)
   }
 
-  const getChatsError = err => {
+  const createSuccess = res => {
+    console.log('success: ', res.data)
+  }
+
+  const apiError = err => {
     const { error, message } = err.response.data;
     if (error) {
       Alert.alert('Something went wrong. Please try again.', error,
@@ -68,9 +77,24 @@ const ChatScreen = ({ navigation }: Props) => {
     }
   }
 
+  const _createMessage = async (payload) => {
+    const skeks = await AsyncStorage.getItem('active_chat')
+    if (skeks !== null) {
+      const skek = JSON.parse(skeks);
+      const contact = skek.contact
+      const body = {
+        recepient_id: contact.id,
+        content: payload[0].text,
+      }
+      createMessageAPI(body, createSuccess, apiError)
+    }
+
+  }
+
   const onSend = useCallback((messages = []) => {
+    _createMessage(messages)
     setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, messages),
+      GiftedChat.prepend(previousMessages.reverse(), messages),
     );
   }, []);
 
@@ -117,18 +141,18 @@ const ChatScreen = ({ navigation }: Props) => {
     <SafeAreaView style={{ flex: 1 }}>
       <Appbar.Header dark={false} style={styles.header}>
         <Appbar.BackAction onPress={_goBack} />
-        <Appbar.Content title={<Text style={styles.setColorText}>Princess Garde</Text>} />
+        <Appbar.Content title={<Text style={styles.setColorText}>{chatUser.first_name + ' ' + chatUser.last_name}</Text>} />
         <Appbar.Action icon="phone" onPress={_handleCall} />
         <Appbar.Action icon="video" onPress={_handlevideoCall} />
       </Appbar.Header>
       <GiftedChat
-        messages={messages}
+        messages={messages.reverse()}
         onSend={(messages) => onSend(messages)}
-        user={{
-          _id: 1,
-        }}
         renderBubble={renderBubble}
         alwaysShowSend
+        user={{
+          _id: loginUser.id,
+        }}
         renderSend={renderSend}
         scrollToBottom
         renderAvatar={null}

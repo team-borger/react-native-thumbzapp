@@ -77,16 +77,22 @@ const Dashboard = ({ navigation }: Props) => {
           style={styles.scrollView}
           data={items}
           renderItem={({ item }) => (
-            // <Card>
-            //   <Text>{item.contact.first_name + ' ' + item.contact.last_name}</Text>
-            // </Card>
-            <List.Item
-              key="{item.id}"
-              onPress={() => _onChatClick(item)}
-              title={item.contact.first_name + ' ' + item.contact.last_name}
-              description={item.spoiler_chat}
-              left={props => <Avatar.Text style={styles.avatar} size={37} label={item.contact.first_name.charAt(0) + item.contact.last_name.charAt(0)} />}
-            />
+            <Card key="{item.id}" style={{marginBottom: 5}} onPress={() => _onChatClick(item)}>
+              <Card.Content style={{padding: 10}}>
+                <View style={styles.alignCenterRow}>
+                  <View style={styles.alignCenterRow}>
+                    <Avatar.Text style={styles.avatar} size={37} label={item.contact.first_name.charAt(0) + item.contact.last_name.charAt(0)} />
+                    <View style={{marginLeft: 10}}>
+                      <View style={{display: 'flex', justifyContent: 'space-between'}}>
+                        <Text style={{fontWeight: 'bold'}}>{item.contact.first_name + ' ' + item.contact.last_name}</Text>
+                        <Text style={{color: 'gray', fontSize: 12}}>{item.date_created}</Text>
+                      </View>
+                      <Text style={{color: 'gray', fontSize: 12}}>{item.spoiler_chat}</Text>
+                    </View>
+                  </View>
+                </View>
+              </Card.Content>
+            </Card>
           )}
           keyExtractor={(item) => item.id}
         />
@@ -101,6 +107,12 @@ const Dashboard = ({ navigation }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  alignCenterRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   contentContainer: {
     flex: 1,

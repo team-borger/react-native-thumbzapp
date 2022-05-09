@@ -56,7 +56,7 @@ const ChatScreen = ({ navigation }: Props) => {
             style={styles.scrollView}
             data={items}
             renderItem={({ item }) => (
-              <Card style={styles.customCard}>
+              <Card style={styles.customCard} key="{item.id}">
                 <Card.Content>
                   <View style={styles.alignCenterRow}>
                     <View style={styles.alignCenterRow}>
