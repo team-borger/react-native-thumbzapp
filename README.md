@@ -25,3 +25,27 @@ Project was created using [Expo](https://expo.io/). If you want standard native 
 ```js
 expo eject
 ```
+Expo bug fix for issue
+```
+Invalid regular expression: /(node_modules[\\\]react[\\\]dist[\\\].*|website\\node_modules\\.*|heapCapture\\bundle\.js|.*\\__tests__\\.*)$/: Unterminated character class
+```
+To fix this bug; look for `node_modules\metro-config\src\defaults\blacklist.js` and replace the values below.
+##### from
+```
+var sharedBlacklist = [
+  /node_modules[/\\]react[/\\]dist[/\\].*/,
+  /website\/node_modules\/.*/,
+  /heapCapture\/bundle\.js/,
+  /.*\/__tests__\/.*/
+];
+```
+##### to this
+```
+var sharedBlacklist = [
+  /node_modules[\/\\]react[\/\\]dist[\/\\].*/,
+  /website\/node_modules\/.*/,
+  /heapCapture\/bundle\.js/,
+  /.*\/__tests__\/.*/
+];
+```
+notice the difference on line 2.

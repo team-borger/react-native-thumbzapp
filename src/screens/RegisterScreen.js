@@ -1,5 +1,6 @@
 import React, { memo, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar } from 'react-native-paper';
 import Background from '../components/Background';
 import Logo from '../components/Logo';
@@ -87,7 +88,7 @@ const RegisterScreen = ({ navigation }: Props) => {
 
   return (
     <Background>
-      <View style={{ flex: 1, width: '100%' }}>
+      <SafeAreaView style={{ flex: 1, width: '100%' }}>
         <Appbar.Header dark={false} style={styles.header}>
         </Appbar.Header>
         <View style={{ flex: 1 }}>
@@ -182,7 +183,7 @@ const RegisterScreen = ({ navigation }: Props) => {
           </View>
         </View>
 
-      </View>
+      </SafeAreaView>
 
     </Background>
   );

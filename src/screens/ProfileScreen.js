@@ -1,17 +1,31 @@
 import React, { memo } from 'react';
-import { FlatList, View, Text, StyleSheet, ScrollView, TouchableHighlight } from 'react-native';
+import { FlatList, View, Text, StyleSheet, ScrollView, TouchableHighlight, Alert } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, List, Avatar, Searchbar, Appbar } from 'react-native-paper';
 import { Navigation } from '../types';
 import NavbarBot from '../components/NavbarBot';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Props = {
   navigation: Navigation;
 };
 
 const Dashboard = ({ navigation }: Props) => {
+
+  _onLogoutPressed = async () => {
+    try {
+      await AsyncStorage.clear();
+      navigation.replace('LoginScreen')
+    } catch {
+      Alert.alert('Something went wrong. Please try again.',
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+  }
+
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
 
       <Appbar.Header dark={false} style={styles.header}>
         <Appbar.Content style={styles.marginText} title={<Text style={styles.setColorText}> </Text>}/>
@@ -50,14 +64,14 @@ const Dashboard = ({ navigation }: Props) => {
             }}
           />
         </View>
-        <Button icon="logout" style={styles.logoutBtn} mode="contained" onPress={() => navigation.navigate('LoginScreen')}>
+        <Button icon="logout" style={styles.logoutBtn} mode="contained" onPress={_onLogoutPressed}>
           Logout
         </Button>
       </View>
 
       <NavbarBot navigation={navigation}></NavbarBot>
 
-    </View>
+    </SafeAreaView>
   );
 };
 
