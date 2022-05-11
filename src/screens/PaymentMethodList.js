@@ -6,17 +6,31 @@ import { Navigation } from '../types';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { IMAGE } from '../constants/Image';
 import { useFocusEffect } from '@react-navigation/native';
-import { getCardListAPI } from '../services/payment';
+import { getCardListAPI, deleteCardAPI } from '../services/payment';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 type Props = {
   navigation: Navigation;
 };
 
 const ChatScreen = ({ navigation }: Props) => {
-  const [items, setItems] = useState({})
+  const [items, setItems] = useState([])
+  const [showAlert, setState] = useState(false)
+  const [choosenItem, setItem] = useState({})
+
+  const hideAlert = () => {
+    setState(false);
+  };
 
   const fetchSuccess = res => {
     setItems(res.data)
+    setState(false)
+  }
+
+  const deleteSuccess = res => {
+    setState(false)
+    getCardListAPI(fetchSuccess,fetchError);
+    navigation.navigate('PaymentMethodList')
   }
 
   const fetchError = err => {
@@ -31,6 +45,16 @@ const ChatScreen = ({ navigation }: Props) => {
         [{ text: 'OK' },], { cancelable: false }
       );
     }
+  }
+
+  const _deleteConfirm = (payload) => {
+    setItem({})
+    setItem(payload)
+    setState(true);
+  }
+
+  const _deleteCard = () => {
+    deleteCardAPI(choosenItem, deleteSuccess, fetchError);
   }
 
   useFocusEffect(
@@ -56,7 +80,7 @@ const ChatScreen = ({ navigation }: Props) => {
             style={styles.scrollView}
             data={items}
             renderItem={({ item }) => (
-              <Card style={styles.customCard} key="{item.id}">
+              <Card style={styles.customCard} key={item.id}>
                 <Card.Content>
                   <View style={styles.alignCenterRow}>
                     <View style={styles.alignCenterRow}>
@@ -66,7 +90,7 @@ const ChatScreen = ({ navigation }: Props) => {
                         <Text style={{color: 'gray', fontSize: 12}}>Expires {item.exp_date}</Text>
                       </View>
                     </View>
-                    <FontAwesome name='trash' size={20} color='gray' />
+                    <FontAwesome name='trash' size={20} color='gray' onPress={() => _deleteConfirm(item)} />
                   </View>
                 </Card.Content>
               </Card>
@@ -77,6 +101,23 @@ const ChatScreen = ({ navigation }: Props) => {
         <Button icon="plus" style={styles.logoutBtn} mode="contained" onPress={() => navigation.navigate('AddCardScreen')}>
           Add Card
         </Button>
+
+        <AwesomeAlert
+          show={showAlert}
+          showProgress={false}
+          title="Are you sure?"
+          message="This won't be reverted!"
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={false}
+          showCancelButton={true}
+          showConfirmButton={true}
+          cancelText="No, cancel"
+          confirmText="Yes, delete it"
+          confirmButtonColor="#DD6B55"
+          onCancelPressed={hideAlert}
+          onConfirmPressed={_deleteCard}
+        />
+
       </View>
 
     </SafeAreaView>

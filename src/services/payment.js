@@ -18,3 +18,12 @@ export const getCardListAPI = async (callback, err) => {
         err
     )
 }
+
+export const deleteCardAPI = async (body, callback, err) => {
+    checkConnection(
+        backendAPI.delete(`/payment_method/card-delete/${body.id}`)
+            .then(callback)
+            .catch(err),
+        err
+    )
+}
