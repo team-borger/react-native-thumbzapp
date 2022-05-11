@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { conversationsAPI, updateViewedAPI } from '../services/messages';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import moment from 'moment'
 
 type Props = {
   navigation: Navigation;
@@ -77,15 +78,15 @@ const Dashboard = ({ navigation }: Props) => {
           style={styles.scrollView}
           data={items}
           renderItem={({ item }) => (
-            <Card key="{item.id}" style={{marginBottom: 5}} onPress={() => _onChatClick(item)}>
-              <Card.Content style={{padding: 10}}>
+            <Card key={item.id} style={{marginBottom: 5}} onPress={() => _onChatClick(item)}>
+              <Card.Content style={{paddingHorizontal: 10, paddingVertical: 5}}>
                 <View style={styles.alignCenterRow}>
                   <View style={styles.alignCenterRow}>
                     <Avatar.Text style={styles.avatar} size={37} label={item.contact.first_name.charAt(0) + item.contact.last_name.charAt(0)} />
-                    <View style={{marginLeft: 10}}>
-                      <View style={{display: 'flex', justifyContent: 'space-between'}}>
+                    <View style={{marginLeft: 10, flex: 1}}>
+                      <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
                         <Text style={{fontWeight: 'bold'}}>{item.contact.first_name + ' ' + item.contact.last_name}</Text>
-                        <Text style={{color: 'gray', fontSize: 12}}>{item.date_created}</Text>
+                        <Text style={{color: 'gray', fontSize: 12}}>{moment(item.date_created).format('hh:mm A')}</Text>
                       </View>
                       <Text style={{color: 'gray', fontSize: 12}}>{item.spoiler_chat}</Text>
                     </View>
