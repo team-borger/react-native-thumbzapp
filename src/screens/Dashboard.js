@@ -8,6 +8,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { conversationsAPI, updateViewedAPI } from '../services/messages';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment'
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 type Props = {
   navigation: Navigation;
@@ -18,10 +19,10 @@ const Dashboard = ({ navigation }: Props) => {
 
   const _onChatClick = (item) => {
     AsyncStorage.setItem('active_chat', JSON.stringify(item))
-    updateViewedAPI(item.contact.id, clickSuccess, clickError)
+    updateViewedAPI(item.id, clickSuccess, clickError)
   }
 
-  const clickSuccess = () => {
+  const clickSuccess = res => {
     navigation.replace('ChatScreen')
   }
 
@@ -57,6 +58,22 @@ const Dashboard = ({ navigation }: Props) => {
     }
   }
 
+  const nameStyle = (payload) => {
+    if (payload.viewed === false && payload.recepient_id !== payload.contact.id) {
+      return {fontWeight: 'bold'}
+    } else {
+      return {color: 'gray', fontWeight: 'bold'}
+    }
+  }
+
+  const otherStyle = (payload) => {
+    if (payload.viewed === false && payload.recepient_id !== payload.contact.id) {
+      return {fontSize: 12 ,fontWeight: 'bold'}
+    } else {
+      return {color: 'gray', fontSize: 12 ,fontWeight: 'bold'}
+    }
+  }
+
   useFocusEffect(
     React.useCallback(() => {
       conversationsAPI(fetchSuccess, fetchError);
@@ -71,24 +88,27 @@ const Dashboard = ({ navigation }: Props) => {
       </Appbar.Header>
 
       <View style={styles.contentContainer}>
-        <Searchbar
-          placeholder="Search"
-        />
+        <Card onPress={() => navigation.replace('SearchContactScreen')}>
+          <Card.Content style={{display: 'flex', flexDirection: 'row'}}>
+            <FontAwesome name='search' size={20} color='gray' style={{marginRight: 20}}/>
+            <Text style={{fontWeight: 'bold', color: 'gray'}}>Search</Text>
+          </Card.Content>
+        </Card>
         <FlatList
           style={styles.scrollView}
           data={items}
           renderItem={({ item }) => (
-            <Card key={item.id} style={{marginBottom: 5}} onPress={() => _onChatClick(item)}>
+            <Card key={item.id} style={item.viewed == true && item.recepient_id !== item.contact.id ? {marginBottom: 5} : {marginBottom: 5}} onPress={() => _onChatClick(item)}>
               <Card.Content style={{paddingHorizontal: 10, paddingVertical: 5}}>
                 <View style={styles.alignCenterRow}>
                   <View style={styles.alignCenterRow}>
                     <Avatar.Text style={styles.avatar} size={37} label={item.contact.first_name.charAt(0) + item.contact.last_name.charAt(0)} />
                     <View style={{marginLeft: 10, flex: 1}}>
                       <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-                        <Text style={{fontWeight: 'bold'}}>{item.contact.first_name + ' ' + item.contact.last_name}</Text>
-                        <Text style={{color: 'gray', fontSize: 12}}>{moment(item.date_created).format('hh:mm A')}</Text>
+                        <Text style={nameStyle(item)}>{item.contact.first_name + ' ' + item.contact.last_name}</Text>
+                        <Text style={otherStyle(item)}>{moment(item.date_created).format('hh:mm A')}</Text>
                       </View>
-                      <Text style={{color: 'gray', fontSize: 12}}>{item.spoiler_chat}</Text>
+                      <Text style={otherStyle(item)}>{item.recepient_id === item.contact.id ? `You: ${item.spoiler_chat}` : item.spoiler_chat}</Text>
                     </View>
                   </View>
                 </View>

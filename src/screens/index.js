@@ -7,3 +7,4 @@ export { default as ChatScreen } from './ChatScreen';
 export { default as ProfileScreen } from './ProfileScreen';
 export { default as AddCardScreen } from './AddCardScreen';
 export { default as PaymentMethodList } from './PaymentMethodList';
+export { default as SearchContactScreen } from './SearchContactScreen';
