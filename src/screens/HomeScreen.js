@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar } from 'react-native-paper';
 import { Navigation } from '../types';
 import NavbarBot from '../components/NavbarBot';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 type Props = {
   navigation: Navigation;
@@ -15,6 +16,7 @@ const Shop = ({ navigation }: Props) => {
 
       <Appbar.Header dark={false} style={styles.header}>
         <Appbar.Content style={styles.marginText} title={<Text style={styles.setColorText}>Shop</Text>}/>
+        <Appbar.Action icon="shopping" color="#880ED4" />
       </Appbar.Header>
 
       <View style={styles.contentContainer}>
