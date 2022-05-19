@@ -32,6 +32,10 @@ export default class AuthService {
     });
   };
 
+  register = user => {
+
+  }
+
   logout = () => {
     ConnectyCube.logout();
     ConnectyCube.destroySession();

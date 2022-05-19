@@ -11,6 +11,7 @@ import { emailValidator, passwordValidator } from '../core/utils';
 import { loginAPI } from '../services/auth';
 import { Navigation } from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthService, CallService } from '../services';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState({ value: '', error: '' });
@@ -57,7 +58,15 @@ const LoginScreen = ({ navigation }) => {
         password : password.value
       };
       setLoading(true)
-      loginAPI(body,loginSuccess,loginError);
+      AuthService.login(body)
+        .then(() => {
+          CallService._setUpListeners()
+          loginAPI(body,loginSuccess,loginError);
+        })
+        .catch(error => {
+          console.error(error);
+          setLoading(false)
+        })
     }
   };
 

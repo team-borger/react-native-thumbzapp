@@ -39,25 +39,27 @@ export default class CallService {
     ConnectyCube.videochat.onRemoteStreamListener = this._onRemoteStreamListener;
   }
 
-  startCall = async () => {
+  startCall = async callee => {
     let calleesIds = []; // User's ids
 
     const session_ = JSON.parse(await AsyncStorage.getItem('session_'))
 
-    if(session_.id == 5757268) calleesIds.push(5744964)
-    else calleesIds.push(5757268)
+    calleesIds.push(callee.connectycube_id)
+    // if(session_.id == 5757268) calleesIds.push(5744964)
+    // else calleesIds.push(5757268)
 
     const sessionType = ConnectyCube.videochat.CallType.VIDEO; // AUDIO is also possible
     const additionalOptions = { bandwidth: 256 };
     this._session = ConnectyCube.videochat.createNewSession(calleesIds, sessionType, additionalOptions);
 
-    return this._session
+    this._session
       .getUserMedia(CallService.MEDIA_OPTIONS)
       .then((stream) => {
         console.log('on sessionCreate', stream)
         this._session.call({});
 
-        return {calee: session_.id, stream: stream}
+        // return {calee: session_.id, stream: stream}
+        RootNavigation.navigate('CallScreen', { calee: session_.id, stream: stream });
       })
       .catch((error) => {
         console.error('session error', error)

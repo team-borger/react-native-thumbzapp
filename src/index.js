@@ -9,6 +9,7 @@ import RegisterScreen from './screens/RegisterScreen'
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen'
 import Dashboard from './screens/Dashboard'
 import ChatScreen from './screens/ChatScreen'
+import CallScreen from './screens/CallScreen'
 import ProfileScreen from './screens/ProfileScreen'
 import AddCardScreen from './screens/AddCardScreen'
 import PaymentMethodList from './screens/PaymentMethodList'
@@ -31,6 +32,7 @@ const App = () => {
           <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} option={{title: 'ForgotPasswordScreen!!'}} />
           <Stack.Screen name="Dashboard" component={Dashboard} option={{title: 'Dashboard!!'}} />
           <Stack.Screen name="ChatScreen" component={ChatScreen} option={{title: 'ChatScreen!!'}} />
+          <Stack.Screen name="CallScreen" component={CallScreen} option={{title: 'CallScreen!!'}} />
           <Stack.Screen name="ProfileScreen" component={ProfileScreen} option={{title: 'ProfileScreen!!'}} />
           <Stack.Screen name="AddCardScreen" component={AddCardScreen} option={{title: 'AddCardScreen!!'}} />
           <Stack.Screen name="PaymentMethodList" component={PaymentMethodList} option={{title: 'PaymentMethodList!!'}} />
