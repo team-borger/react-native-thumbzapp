@@ -33,7 +33,7 @@ export default class AuthService {
   };
 
   register = user => {
-    
+
   }
 
   logout = () => {
