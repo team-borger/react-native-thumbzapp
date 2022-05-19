@@ -6,6 +6,7 @@ import { Navigation } from '../types';
 import NavbarBot from '../components/NavbarBot';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthService, CallService } from '../services';
 
 type Props = {
   navigation: Navigation;
@@ -15,6 +16,7 @@ const Dashboard = ({ navigation }: Props) => {
 
   _onLogoutPressed = async () => {
     try {
+      AuthService.logout()
       await AsyncStorage.clear();
       navigation.replace('LoginScreen')
     } catch {
