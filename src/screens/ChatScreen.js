@@ -45,7 +45,21 @@ const ChatScreen = ({ navigation }: Props) => {
     navigation.navigate('Dashboard');
   }
 
-  const _handleCall = () => console.log('Calling...');
+  const _handleCall = () => {
+    console.log('Calling...')
+    Alert.alert('Calling...', 'message',
+      [
+        {
+          text: "Reject",
+          onPress: () => console.log("Reject Pressed"),
+        },
+        {
+          text: "Accept",
+          onPress: () => console.log("Accept Pressed"),
+        },
+      ], { cancelable: false }
+    );
+  };
 
   const _handlevideoCall = async () => {
     const value = await AsyncStorage.getItem('active_chat')
@@ -57,7 +71,6 @@ const ChatScreen = ({ navigation }: Props) => {
           navigation.navigate('CallScreen', {response: response})
         }
       })
-    // console.log('calling', ret.contact.connectycube_id)
   };
 
   const getChatSuccess = res => {
