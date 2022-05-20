@@ -136,11 +136,15 @@ export default class CallService {
       [
         {
           text: "Reject",
-          onPress: () => CallService.rejectCall(),
+          onPress: () => {
+            this.rejectCall()
+          },
         },
         {
           text: "Accept",
-          onPress: () => CallService.acceptCall(),
+          onPress: () => {
+            this.acceptCall()
+          },
         },
       ], { cancelable: false }
     );
