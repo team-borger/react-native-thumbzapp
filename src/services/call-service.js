@@ -1,5 +1,5 @@
 import * as RootNavigation from '../components/RootNavigation';
-import { Platform, ToastAndroid } from 'react-native';
+import { Platform, ToastAndroid, Alert } from 'react-native';
 import Toast from 'react-native-simple-toast';
 import ConnectyCube from 'react-native-connectycube';
 import CallScreen from "../screens/CallScreen";
@@ -91,6 +91,11 @@ export default class CallService {
     }
   };
 
+  rejectCall = () => {
+    this.stopSounds();
+    this._incomingCallSession.reject({});
+  };
+
   playSound = type => {
     switch (type) {
       case 'outgoing':
@@ -126,12 +131,27 @@ export default class CallService {
     console.log('_onCallListener 2:', extension)
     this.playSound('incoming');
     this.showToast(`Incoming call!`)
+
+    Alert.alert('Incoming call', '...text here...',
+      [
+        {
+          text: "Reject",
+          onPress: () => CallService.rejectCall(),
+        },
+        {
+          text: "Accept",
+          onPress: () => CallService.acceptCall(),
+        },
+      ], { cancelable: false }
+    );
   }
 
   _onUserNotAnswerListener = (session, userId) => {
     console.log('_onUserNotAnswerListener 1:', session)
     console.log('_onUserNotAnswerListener 2:', userId)
     this.showToast(`${userId} could not answer!`)
+
+    RootNavigation.navigate('ChatScreen');
   }
 
   _onAcceptCallListener = (session, userId, extension) => {
