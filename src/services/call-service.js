@@ -52,14 +52,14 @@ export default class CallService {
     const additionalOptions = { bandwidth: 256 };
     this._session = ConnectyCube.videochat.createNewSession(calleesIds, sessionType, additionalOptions);
 
-    this._session
+    return this._session
       .getUserMedia(CallService.MEDIA_OPTIONS)
       .then((stream) => {
         console.log('on sessionCreate', stream)
         this._session.call({});
 
-        // return {calee: session_.id, stream: stream}
-        RootNavigation.navigate('CallScreen', { calee: session_.id, stream: stream });
+        return {calee: session_.id, stream: stream}
+        // RootNavigation.navigate('CallScreen', { calee: session_.id, stream: stream });
       })
       .catch((error) => {
         console.error('session error', error)
