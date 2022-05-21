@@ -1,6 +1,6 @@
 import backendAPI from './index';
 import checkConnection from './checkConnection';
-import { SIGNIN_API, SIGNUP_API } from '../constants/Api';
+import { SIGNIN_API, SIGNUP_API, CHECK_EMAIL_API } from '../constants/Api';
 
 export const loginAPI = async (body, callback, err) => {
     checkConnection(
@@ -14,6 +14,15 @@ export const loginAPI = async (body, callback, err) => {
 export const registerAPI = async (body, callback, err) => {
     checkConnection(
         backendAPI.post(SIGNUP_API, body)
+            .then(callback)
+            .catch(err),
+        err
+    )
+}
+
+export const checkEmailAPI = async (body, callback, err) => {
+    checkConnection(
+        backendAPI.get(CHECK_EMAIL_API + body.email)
             .then(callback)
             .catch(err),
         err
