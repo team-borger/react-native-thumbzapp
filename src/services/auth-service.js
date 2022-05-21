@@ -33,7 +33,27 @@ export default class AuthService {
   };
 
   register = user => {
-
+    return new Promise((resolve, reject) => {
+      ConnectyCube.createSession()
+        .then(() => {
+          ConnectyCube.users.signup(user)
+          .then((user) => {
+            resolve();
+            ConnectyCube.destroySession();
+            AsyncStorage.setItem('connectycube_id', JSON.stringify(user.user.id))
+            return user;
+          })
+          .catch((error) => {
+            console.error('onUserSignup', error)
+            reject();
+            ConnectyCube.destroySession();
+          })
+        })
+        .catch((error) => {
+          console.error('onSessionCreateError', error)
+          reject();
+        })
+    })
   }
 
   logout = () => {

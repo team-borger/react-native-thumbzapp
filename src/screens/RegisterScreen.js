@@ -8,6 +8,8 @@ import Header from '../components/Header';
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import BackButton from '../components/BackButton';
+import { AuthService } from '../services';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { theme } from '../core/theme';
 import { Navigation } from '../types';
 import {
@@ -18,7 +20,7 @@ import {
   lastNameValidator,
   phoneValidator,
 } from '../core/utils';
-import { registerAPI } from '../services/auth';
+import { registerAPI, checkEmailAPI } from '../services/auth';
 
 type Props = {
   navigation: Navigation;
@@ -33,6 +35,33 @@ const RegisterScreen = ({ navigation }: Props) => {
   const [password, setPassword] = useState({ value: '', error: '' });
   const [confirm_password, setConfirmPassword] = useState({ value: '', error: '' });
   const [loading, setLoading] = useState(false);
+  let body = null;
+
+  const emailUnique = res => {
+    if(!Boolean(res.data)) {
+      const CONNECTY_SIGNUP_PARAMS = {
+        full_name: `${body.last_name}, ${body.first_name}`,
+        email: body.email,
+        phone: body.phone,
+        password: body.password,
+      };
+      AuthService.register(CONNECTY_SIGNUP_PARAMS)
+        .then(() => {
+          register();
+        })
+    }
+  };
+
+  const register = async () => {
+    body.connectycube_id = Number(await AsyncStorage.getItem('connectycube_id'))
+    console.log('payload', body)
+    registerAPI(body,registerSuccess,registerError);
+  };
+
+  const emailExists = err => {
+    console.error('emailExists', err.data)
+    setLoading(false)
+  };
 
   const registerSuccess = res => {
     setLoading(false)
@@ -72,7 +101,7 @@ const RegisterScreen = ({ navigation }: Props) => {
       setConfirmPassword({ ...confirm_password, error: confirmPasswordError });
       return;
     } else {
-      const body = {
+      body = {
         first_name: first_name.value,
         middle_name: middle_name.value,
         last_name: last_name.value,
@@ -82,7 +111,7 @@ const RegisterScreen = ({ navigation }: Props) => {
         confirm_password: confirm_password.value,
       };
       setLoading(true)
-      registerAPI(body,registerSuccess,registerError);
+      checkEmailAPI(body, emailUnique, emailExists)
     }
   };
 
