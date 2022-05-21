@@ -15,6 +15,11 @@ import ProfileScreen from './screens/ProfileScreen'
 import AddCardScreen from './screens/AddCardScreen'
 import PaymentMethodList from './screens/PaymentMethodList'
 import SearchContactScreen from './screens/SearchContactScreen'
+import CartScreen from './screens/CartScreen'
+import CheckoutScreen from './screens/CheckoutScreen'
+import PaymentOptions from './screens/PaymentOptions'
+import CallingScreen from './screens/CallingScreen'
+import IncommingCallScreen from './screens/IncommingCallScreen'
 
 const Stack = createNativeStackNavigator();
 
@@ -38,6 +43,11 @@ const App = () => {
           <Stack.Screen name="AddCardScreen" component={AddCardScreen} option={{title: 'AddCardScreen!!'}} />
           <Stack.Screen name="PaymentMethodList" component={PaymentMethodList} option={{title: 'PaymentMethodList!!'}} />
           <Stack.Screen name="SearchContactScreen" component={SearchContactScreen} option={{title: 'SearchContactScreen!!'}} />
+          <Stack.Screen name="CartScreen" component={CartScreen} option={{title: 'CartScreen!!'}} />
+          <Stack.Screen name="CheckoutScreen" component={CheckoutScreen} option={{title: 'CheckoutScreen!!'}} />
+          <Stack.Screen name="PaymentOptions" component={PaymentOptions} option={{title: 'PaymentOptions!!'}} />
+          <Stack.Screen name="CallingScreen" component={CallingScreen} option={{title: 'CallingScreen!!'}} />
+          <Stack.Screen name="IncommingCallScreen" component={IncommingCallScreen} option={{title: 'IncommingCallScreen!!'}} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

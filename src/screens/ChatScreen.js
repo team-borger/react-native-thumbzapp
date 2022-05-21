@@ -163,7 +163,7 @@ const ChatScreen = ({ navigation }: Props) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
       <Appbar.Header dark={false} style={styles.header}>
         <Appbar.BackAction onPress={_goBack} />
         <Appbar.Content title={<Text style={styles.setColorText}>{chatUser.first_name + ' ' + chatUser.last_name}</Text>} />

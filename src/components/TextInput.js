@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: theme.colors.surface,
-    height: 50,
     fontSize: 12,
   },
   error: {
