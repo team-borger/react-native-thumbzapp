@@ -11,12 +11,17 @@ type Props = {
 };
 
 const Shop = ({ navigation }: Props) => {
+
+  const _goToCart = () => {
+    navigation.navigate('CartScreen')
+  }
+
   return (
     <SafeAreaView style={styles.container}>
 
       <Appbar.Header dark={false} style={styles.header}>
         <Appbar.Content style={styles.marginText} title={<Text style={styles.setColorText}>Shop</Text>}/>
-        <Appbar.Action icon="shopping" color="#880ED4" />
+        <Appbar.Action icon="shopping" color="#880ED4" onPress={_goToCart} />
       </Appbar.Header>
 
       <View style={styles.contentContainer}>
