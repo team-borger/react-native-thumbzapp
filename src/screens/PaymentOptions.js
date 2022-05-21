@@ -90,22 +90,30 @@ const ChatScreen = ({ navigation }: Props) => {
                 <FlatList
                   data={items}
                   renderItem={({ item }) => (
-                    <Card key={item.id}>
-                      <Card.Content>
+                    <View key={item.id} style={{borderBottomColor: 'white', borderBottomWidth: 1}}>
+                      <View style={styles.alignCenterRow}>
                         <View style={styles.alignCenterRow}>
-                          <View style={styles.alignCenterRow}>
-                            <Image source={IMAGE.ICON_MASTERCARD} style={styles.image} />
-                            <View>
-                              <Text style={{fontWeight: 'bold'}}>{item.account_number}</Text>
-                              <Text style={{color: 'gray', fontSize: 12}}>Expires {item.exp_date}</Text>
-                            </View>
+                          <Image source={IMAGE.ICON_MASTERCARD} style={styles.image} />
+                          <View>
+                            <Text style={{fontWeight: 'bold'}}>{item.account_number}</Text>
                           </View>
                         </View>
-                      </Card.Content>
-                    </Card>
+                      </View>
+                    </View>
                   )}
                   keyExtractor={(item) => item.id}
                 />
+              }/>
+              <List.Item style={{padding:10, margin: 0, paddingHorizontal: 25}}  onPress={() => navigation.navigate('AddCardScreen')} title={
+                <View style={styles.alignCenterRow}>
+                  <View style={styles.alignCenterRow}>
+                    <FontAwesome name='plus' size={15} color='gray'/>
+                    <View style={{marginRight: 10}}></View>
+                    <View>
+                      <Text style={{fontWeight: 'bold'}}>ADD NEW</Text>
+                    </View>
+                  </View>
+                </View>
               }/>
             </List.Accordion>
             <List.Accordion id="2"
