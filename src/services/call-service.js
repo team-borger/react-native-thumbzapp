@@ -1,5 +1,5 @@
 import * as RootNavigation from '../components/RootNavigation';
-import { Platform, ToastAndroid } from 'react-native';
+import { Platform, ToastAndroid, Alert } from 'react-native';
 import Toast from 'react-native-simple-toast';
 import ConnectyCube from 'react-native-connectycube';
 import CallScreen from "../screens/CallScreen";
@@ -52,14 +52,14 @@ export default class CallService {
     const additionalOptions = { bandwidth: 256 };
     this._session = ConnectyCube.videochat.createNewSession(calleesIds, sessionType, additionalOptions);
 
-    this._session
+    return this._session
       .getUserMedia(CallService.MEDIA_OPTIONS)
       .then((stream) => {
         console.log('on sessionCreate', stream)
         this._session.call({});
 
-        // return {calee: session_.id, stream: stream}
-        RootNavigation.navigate('CallScreen', { calee: session_.id, stream: stream });
+        return {calee: session_.id, stream: stream}
+        // RootNavigation.navigate('CallScreen', { calee: session_.id, stream: stream });
       })
       .catch((error) => {
         console.error('session error', error)
@@ -89,6 +89,11 @@ export default class CallService {
       this._session = null;
       this.mediaDevices = [];
     }
+  };
+
+  rejectCall = () => {
+    this.stopSounds();
+    this._incomingCallSession.reject({});
   };
 
   playSound = type => {
@@ -126,12 +131,31 @@ export default class CallService {
     console.log('_onCallListener 2:', extension)
     this.playSound('incoming');
     this.showToast(`Incoming call!`)
+
+    Alert.alert('Incoming call', '...text here...',
+      [
+        {
+          text: "Reject",
+          onPress: () => {
+            this.rejectCall()
+          },
+        },
+        {
+          text: "Accept",
+          onPress: () => {
+            this.acceptCall()
+          },
+        },
+      ], { cancelable: false }
+    );
   }
 
   _onUserNotAnswerListener = (session, userId) => {
     console.log('_onUserNotAnswerListener 1:', session)
     console.log('_onUserNotAnswerListener 2:', userId)
     this.showToast(`${userId} could not answer!`)
+
+    RootNavigation.navigate('ChatScreen');
   }
 
   _onAcceptCallListener = (session, userId, extension) => {

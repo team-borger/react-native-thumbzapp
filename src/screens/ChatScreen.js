@@ -8,6 +8,7 @@ import { Appbar } from 'react-native-paper';
 import { Navigation } from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { loadThreadsAPI, createMessageAPI } from '../services/messages';
+import { CallService } from '../services';
 
 type Props = {
   navigation: Navigation;
@@ -44,9 +45,33 @@ const ChatScreen = ({ navigation }: Props) => {
     navigation.navigate('Dashboard');
   }
 
-  const _handleCall = () => console.log('Calling...');
+  const _handleCall = () => {
+    console.log('Calling...')
+    Alert.alert('Calling...', 'message',
+      [
+        {
+          text: "Reject",
+          onPress: () => console.log("Reject Pressed"),
+        },
+        {
+          text: "Accept",
+          onPress: () => console.log("Accept Pressed"),
+        },
+      ], { cancelable: false }
+    );
+  };
 
-  const _handlevideoCall = () => console.log('Video Calling...');
+  const _handlevideoCall = async () => {
+    const value = await AsyncStorage.getItem('active_chat')
+    const ret = JSON.parse(value);
+
+    CallService.startCall({connectycube_id: ret.contact.connectycube_id})
+      .then(response => {
+        if(response) {
+          navigation.navigate('CallScreen', {response: response})
+        }
+      })
+  };
 
   const getChatSuccess = res => {
     setMessages(res.data.map(item => ({
