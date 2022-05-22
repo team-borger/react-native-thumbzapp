@@ -33,7 +33,7 @@ export default class CallService {
   _setUpListeners() {
     ConnectyCube.videochat.onCallListener = this._onCallListener;
     ConnectyCube.videochat.onAcceptCallListener = this._onAcceptCallListener;
-    // ConnectyCube.videochat.onRejectCallListener = this._onRejectCallListener;
+    ConnectyCube.videochat.onRejectCallListener = this._onRejectCallListener;
     // ConnectyCube.videochat.onStopCallListener = this._onStopCallListener;
     ConnectyCube.videochat.onUserNotAnswerListener = this._onUserNotAnswerListener;
     ConnectyCube.videochat.onRemoteStreamListener = this._onRemoteStreamListener;
@@ -158,6 +158,15 @@ export default class CallService {
 
     RootNavigation.navigate('ChatScreen');
   }
+
+  _onRejectCallListener = (session, userId, extension) => {
+    console.log('_onRejectCallListener 1:', session)
+    console.log('_onRejectCallListener 2:', userId)
+    console.log('_onRejectCallListener 3:', extension)
+    this.showToast(`${userId} Rejected!`)
+
+    RootNavigation.navigate('ChatScreen');
+  };
 
   _onAcceptCallListener = (session, userId, extension) => {
     console.log('_onAcceptCallListener 1:', session)
