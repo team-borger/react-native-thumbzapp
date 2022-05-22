@@ -132,22 +132,23 @@ export default class CallService {
     this.playSound('incoming');
     this.showToast(`Incoming call!`)
 
-    Alert.alert('Incoming call', '...text here...',
-      [
-        {
-          text: "Reject",
-          onPress: () => {
-            this.rejectCall()
-          },
-        },
-        {
-          text: "Accept",
-          onPress: () => {
-            this.acceptCall()
-          },
-        },
-      ], { cancelable: false }
-    );
+    RootNavigation.navigate('IncommingCallScreen')
+    // Alert.alert('Incoming call', '...text here...',
+    //   [
+    //     {
+    //       text: "Reject",
+    //       onPress: () => {
+    //         this.rejectCall()
+    //       },
+    //     },
+    //     {
+    //       text: "Accept",
+    //       onPress: () => {
+    //         this.acceptCall()
+    //       },
+    //     },
+    //   ], { cancelable: false }
+    // );
   }
 
   _onUserNotAnswerListener = (session, userId) => {
