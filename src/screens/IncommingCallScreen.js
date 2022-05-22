@@ -6,6 +6,7 @@ import { Navigation } from '../types';
 import NavbarBot from '../components/NavbarBot';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CallService } from '../services';
 
 type Props = {
   navigation: Navigation;
@@ -20,7 +21,14 @@ const Calling = ({ navigation }: Props) => {
   }
 
   const _dropCall = () => {
+    CallService.stopCall();
     navigation.navigate('ChatScreen');
+  }
+
+  const _answerCall = () => {
+    // console.log('res',response)
+    CallService.acceptCall();
+    // navigation.navigate('CallScreen', {response: response});
   }
 
   useEffect(() => {
@@ -59,7 +67,7 @@ const Calling = ({ navigation }: Props) => {
           <TouchableOpacity onPress={_dropCall}>
             <Avatar.Icon size={50} icon="phone-hangup" style={{backgroundColor:"#ff4a43"}}/>
           </TouchableOpacity>
-          <TouchableOpacity onPress={_dropCall}>
+          <TouchableOpacity onPress={_answerCall}>
             <Avatar.Icon size={50} icon="phone" style={{backgroundColor:"#30cc45"}} color="white"/>
           </TouchableOpacity>
         </View>

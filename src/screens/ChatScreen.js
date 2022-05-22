@@ -68,7 +68,8 @@ const ChatScreen = ({ navigation }: Props) => {
     CallService.startCall({connectycube_id: ret.contact.connectycube_id})
       .then(response => {
         if(response) {
-          navigation.navigate('CallScreen', {response: response})
+          navigation.navigate('CallingScreen', {response: response})
+          // navigation.navigate('CallScreen', {response: response})
         }
       })
   };

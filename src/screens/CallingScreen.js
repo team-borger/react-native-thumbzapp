@@ -6,6 +6,7 @@ import { Navigation } from '../types';
 import NavbarBot from '../components/NavbarBot';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CallService } from '../services';
 
 type Props = {
   navigation: Navigation;
@@ -20,6 +21,7 @@ const Calling = ({ navigation }: Props) => {
   }
 
   const _dropCall = () => {
+    CallService.stopCall();
     navigation.navigate('ChatScreen');
   }
 
