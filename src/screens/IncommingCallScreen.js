@@ -20,8 +20,8 @@ const Calling = ({ navigation }: Props) => {
     navigation.navigate('ChatScreen');
   }
 
-  const _dropCall = () => {
-    CallService.stopCall();
+  const _rejectCall = () => {
+    CallService.rejectCall();
     navigation.navigate('ChatScreen');
   }
 
@@ -64,7 +64,7 @@ const Calling = ({ navigation }: Props) => {
           <Text style={{color: 'white', fontSize: 18}}>is calling...</Text>
         </View>
         <View style={{marginBottom: 100, display: 'flex', alignItems: 'center', flexDirection:"row", justifyContent: 'space-around'}}>
-          <TouchableOpacity onPress={_dropCall}>
+          <TouchableOpacity onPress={_rejectCall}>
             <Avatar.Icon size={50} icon="phone-hangup" style={{backgroundColor:"#ff4a43"}}/>
           </TouchableOpacity>
           <TouchableOpacity onPress={_answerCall}>
