@@ -7,22 +7,25 @@ import NavbarBot from '../components/NavbarBot';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CallService } from '../services';
+import * as RootNavigation from '../components/RootNavigation';
 
 type Props = {
   navigation: Navigation;
 };
 
-const Calling = ({ navigation }: Props) => {
+const Calling = (response) => {
+  const initiator = response.route.params.initiator
+
   const [loginUser, setLoginUser] = useState({});
   const [chatUser, setChatUser] = useState({});
 
   const _goBack = () => {
-    navigation.navigate('ChatScreen');
+    RootNavigation.navigate('ChatScreen');
   }
 
   const _rejectCall = () => {
     CallService.rejectCall();
-    navigation.navigate('ChatScreen');
+    RootNavigation.navigate('ChatScreen');
   }
 
   const _answerCall = () => {
@@ -60,7 +63,7 @@ const Calling = ({ navigation }: Props) => {
 
       <View style={styles.contentContainer}>
         <View style={{flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-          <Text style={{color: 'white', fontSize: 30, fontWeight: 'bold'}}>Ramund Skekert</Text>
+          <Text style={{color: 'white', fontSize: 30, fontWeight: 'bold'}}>{ initiator }</Text>
           <Text style={{color: 'white', fontSize: 18}}>is calling...</Text>
         </View>
         <View style={{marginBottom: 100, display: 'flex', alignItems: 'center', flexDirection:"row", justifyContent: 'space-around'}}>

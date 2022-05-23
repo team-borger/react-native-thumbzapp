@@ -125,30 +125,27 @@ export default class CallService {
   };
 
   _onCallListener = (session, extension) => {
-    // AsyncStorage.setItem('onCallSession', JSON.stringify(session))
     this._incomingCallSession = session
     console.log('_onCallListener 1:', session)
     console.log('_onCallListener 2:', extension)
     this.playSound('incoming');
     this.showToast(`Incoming call!`)
 
-    RootNavigation.navigate('IncommingCallScreen')
-    // Alert.alert('Incoming call', '...text here...',
-    //   [
-    //     {
-    //       text: "Reject",
-    //       onPress: () => {
-    //         this.rejectCall()
-    //       },
-    //     },
-    //     {
-    //       text: "Accept",
-    //       onPress: () => {
-    //         this.acceptCall()
-    //       },
-    //     },
-    //   ], { cancelable: false }
-    // );
+    ConnectyCube.users
+      .get({
+        filter: {
+          field: "id",
+          param: "eq",
+          value: session.initiatorID,
+        }
+      })
+      .then((result) => {
+        console.log('_onCallListener searchUserById', result.items[0].user.full_name)
+        RootNavigation.navigate('IncomingCallScreen', {initiator: result.items[0].user.full_name})
+      })
+      .catch((error) => {
+        console.error('_onCallListener searchUserById', error)
+      });
   }
 
   _onUserNotAnswerListener = (session, userId) => {
