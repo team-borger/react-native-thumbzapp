@@ -40,7 +40,7 @@ const RegisterScreen = ({ navigation }: Props) => {
   const emailUnique = res => {
     if(!Boolean(res.data)) {
       const CONNECTY_SIGNUP_PARAMS = {
-        full_name: `${body.last_name}, ${body.first_name}`,
+        full_name: `${body.first_name} ${body.last_name}`,
         email: body.email,
         phone: body.phone,
         password: body.password,
