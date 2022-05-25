@@ -135,6 +135,12 @@ export default class CallService {
     else {
       this._session.unmute("audio")
     }
+    this.showToast(`microphone ${ params.status ? 'muted' : 'unmuted' }`)
+  };
+
+  toggleSpeaker = params => {
+    InCallManager.setSpeakerphoneOn(params.status);
+    this.showToast(`Loud speaker ${ params.status ? 'enabled' : 'disabled' }`)
   };
 
   toggleCameras = () => {
