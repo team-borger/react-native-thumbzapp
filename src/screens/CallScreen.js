@@ -16,13 +16,19 @@ const CallScreen = (response) => {
     const [isMuted, setMute] = useState(false);
     const res = response.route.params;
 
-    const _muteCall = () => {
+    const onMuteMicPressed = () => {
       if (isMuted == false) {
         setMute(true)
+        CallService.muteAudio({ status: true });
       } else {
         setMute(false)
+        CallService.muteAudio({ status: false });
       }
-    }
+    };
+
+    const onCameraTogglePressed = () => {
+      CallService.toggleCameras();
+    };
 
     if(res.localKey) {
       return (
@@ -31,11 +37,14 @@ const CallScreen = (response) => {
           <RTCView style={styles.remoteKey} objectFit="cover" key={res.remoteKey} streamURL={res.remoteStream.toURL()} mirror={true}/>
           <View style={styles.dropCallButton}>
             <View style={{display: 'flex', flexDirection: 'row'}}>
-              <TouchableOpacity style={{marginHorizontal: 5}} onPress={_muteCall}>
+              <TouchableOpacity style={{marginHorizontal: 5}} onPress={onMuteMicPressed}>
                 <Avatar.Icon size={50} icon={isMuted ? "microphone-off" : "microphone"} style={{backgroundColor:"white"}}/>
               </TouchableOpacity>
               <TouchableOpacity style={{marginHorizontal: 5}} onPress={onStopCallPressed}>
                 <Avatar.Icon size={50} icon="phone-hangup" style={{backgroundColor:"#ff4a43"}}/>
+              </TouchableOpacity>
+              <TouchableOpacity style={{marginHorizontal: 5}} onPress={onCameraTogglePressed}>
+                <Avatar.Icon size={50} icon="camera-flip" style={{backgroundColor:"#909090"}}/>
               </TouchableOpacity>
             </View>
           </View>
