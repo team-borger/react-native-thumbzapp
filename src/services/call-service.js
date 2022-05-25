@@ -13,6 +13,7 @@ export default class CallService {
   mediaDevices = [];
 
   _incomingCallSession = null;
+  _localStream = null;
 
   outgoingCall = new Sound(require('../assets/audio/dialing.mp3'));
   incomingCall = new Sound(require('../assets/audio/calling.mp3'));
@@ -127,6 +128,19 @@ export default class CallService {
     }
   };
 
+  muteAudio = params => {
+    if(params.status) {
+      this._session.mute("audio")
+    }
+    else {
+      this._session.unmute("audio")
+    }
+  };
+
+  toggleCameras = () => {
+    this._localStream.getVideoTracks().forEach(track => track._switchCamera());
+  };
+
   _onCallListener = (session, extension) => {
     this._incomingCallSession = session
     console.log('_onCallListener 1:', session)
@@ -149,7 +163,7 @@ export default class CallService {
       .catch((error) => {
         console.error('_onCallListener searchUserById', error)
       });
-  }
+  };
 
   _onUserNotAnswerListener = (session, userId) => {
     this.showToast(`${userId} could not answer!`)
@@ -168,19 +182,20 @@ export default class CallService {
     console.log('_onStopCallListener');
     this._session.stop({});
     RootNavigation.navigate('ChatScreen');
-  }
+  };
 
   _onAcceptCallListener = (session, userId, extension) => {
     // this.showToast(`${userId} answered!`)
-  }
+  };
 
   _onRemoteStreamListener = (session, userID, remoteStream) => {
     this._session = session;
+    this._localStream = session.localStream;
     RootNavigation.navigate('CallScreen', {
         localKey: session.currentUserID,
         localStream: session.localStream,
         remoteKey: userID,
         remoteStream: remoteStream,
       });
-  }
+  };
 }
