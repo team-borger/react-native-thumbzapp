@@ -34,7 +34,7 @@ export default class CallService {
     ConnectyCube.videochat.onCallListener = this._onCallListener;
     ConnectyCube.videochat.onAcceptCallListener = this._onAcceptCallListener;
     ConnectyCube.videochat.onRejectCallListener = this._onRejectCallListener;
-    // ConnectyCube.videochat.onStopCallListener = this._onStopCallListener;
+    ConnectyCube.videochat.onStopCallListener = this._onStopCallListener;
     ConnectyCube.videochat.onUserNotAnswerListener = this._onUserNotAnswerListener;
     ConnectyCube.videochat.onRemoteStreamListener = this._onRemoteStreamListener;
   }
@@ -149,35 +149,26 @@ export default class CallService {
   }
 
   _onUserNotAnswerListener = (session, userId) => {
-    console.log('_onUserNotAnswerListener 1:', session)
-    console.log('_onUserNotAnswerListener 2:', userId)
     this.showToast(`${userId} could not answer!`)
 
     RootNavigation.navigate('ChatScreen');
   }
 
   _onRejectCallListener = (session, userId, extension) => {
-    console.log('_onRejectCallListener 1:', session)
-    console.log('_onRejectCallListener 2:', userId)
-    console.log('_onRejectCallListener 3:', extension)
     this.showToast(`${userId} Rejected!`)
 
     RootNavigation.navigate('ChatScreen');
   };
 
+  _onStopCallListener = (session, userId, extension) => {
+    RootNavigation.navigate('ChatScreen');
+  }
+
   _onAcceptCallListener = (session, userId, extension) => {
-    console.log('_onAcceptCallListener 1:', session)
-    console.log('_onAcceptCallListener 2:', userId)
-    console.log('_onAcceptCallListener 3:', extension)
-    this.showToast(`${userId} answered!`)
+    // this.showToast(`${userId} answered!`)
   }
 
   _onRemoteStreamListener = (session, userID, remoteStream) => {
-    console.log('_onRemoteStreamListener 1:', session)
-    console.log('_onRemoteStreamListener 2:', userID)
-    console.log('_onRemoteStreamListener 3:', remoteStream)
-    this.showToast(`_onRemoteStreamListener!`)
-
     RootNavigation.navigate('CallScreen', {
         localKey: session.currentUserID,
         localStream: session.localStream,
