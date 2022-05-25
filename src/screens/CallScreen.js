@@ -4,8 +4,13 @@ import ConnectyCube from 'react-native-connectycube';
 import { Avatar } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RTCView } from 'react-native-connectycube';
+import { CallService } from '../services';
 
 const CallScreen = (response) => {
+
+  const onStopCallPressed = () => {
+    CallService.stopCall();
+  };
 
   const RTCViews = () => {
     const [isMuted, setMute] = useState(false);
@@ -29,7 +34,7 @@ const CallScreen = (response) => {
               <TouchableOpacity style={{marginHorizontal: 5}} onPress={_muteCall}>
                 <Avatar.Icon size={50} icon={isMuted ? "microphone-off" : "microphone"} style={{backgroundColor:"white"}}/>
               </TouchableOpacity>
-              <TouchableOpacity style={{marginHorizontal: 5}}>
+              <TouchableOpacity style={{marginHorizontal: 5}} onPress={onStopCallPressed}>
                 <Avatar.Icon size={50} icon="phone-hangup" style={{backgroundColor:"#ff4a43"}}/>
               </TouchableOpacity>
             </View>
