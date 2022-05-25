@@ -14,16 +14,17 @@ const CallScreen = (response) => {
 
   const RTCViews = () => {
     const [isMuted, setMute] = useState(false);
+    const [isLoudSpeaker, setLoudSpeaker] = useState(false);
     const res = response.route.params;
 
+    const toggleSpeaker = () => {
+      setLoudSpeaker(!isLoudSpeaker);
+      CallService.toggleSpeaker({ status: isLoudSpeaker })
+    };
+
     const onMuteMicPressed = () => {
-      if (isMuted == false) {
-        setMute(true)
-        CallService.muteAudio({ status: true });
-      } else {
-        setMute(false)
-        CallService.muteAudio({ status: false });
-      }
+      setMute(!isMuted);
+      CallService.muteAudio({ status: isMuted });
     };
 
     const onCameraTogglePressed = () => {
@@ -37,8 +38,11 @@ const CallScreen = (response) => {
           <RTCView style={styles.remoteKey} objectFit="cover" key={res.remoteKey} streamURL={res.remoteStream.toURL()} mirror={true}/>
           <View style={styles.dropCallButton}>
             <View style={{display: 'flex', flexDirection: 'row'}}>
+              <TouchableOpacity style={{marginHorizontal: 5}} onPress={toggleSpeaker}>
+                <Avatar.Icon size={50} icon={isLoudSpeaker ? "headphones" : "volume-high"} style={{backgroundColor:"white"}}/>
+              </TouchableOpacity>
               <TouchableOpacity style={{marginHorizontal: 5}} onPress={onMuteMicPressed}>
-                <Avatar.Icon size={50} icon={isMuted ? "microphone-off" : "microphone"} style={{backgroundColor:"white"}}/>
+                <Avatar.Icon size={50} icon={isMuted ? "microphone" : "microphone-off"} style={{backgroundColor:"white"}}/>
               </TouchableOpacity>
               <TouchableOpacity style={{marginHorizontal: 5}} onPress={onStopCallPressed}>
                 <Avatar.Icon size={50} icon="phone-hangup" style={{backgroundColor:"#ff4a43"}}/>
