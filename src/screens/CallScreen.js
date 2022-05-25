@@ -13,8 +13,10 @@ const CallScreen = (response) => {
   };
 
   const RTCViews = () => {
-    const [isMuted, setMute] = useState(false);
-    const [isLoudSpeaker, setLoudSpeaker] = useState(false);
+    const [isMuted, setMute] = useState(true);
+    const [isLoudSpeaker, setLoudSpeaker] = useState(true);
+    const [isCameraFacingFront, setCameraFacingFront] = useState(true);
+
     const res = response.route.params;
 
     const toggleSpeaker = () => {
@@ -34,8 +36,8 @@ const CallScreen = (response) => {
     if(res.localKey) {
       return (
         <View style={styles.blackView}>
-          <RTCView style={styles.localKey} key={res.localKey} streamURL={res.localStream.toURL()} mirror={true}/>
-          <RTCView style={styles.remoteKey} objectFit="cover" key={res.remoteKey} streamURL={res.remoteStream.toURL()} mirror={true}/>
+          <RTCView style={styles.localKey} key={res.localKey} streamURL={res.localStream.toURL()} mirror={isCameraFacingFront ? true : false}/>
+          <RTCView style={styles.remoteKey} objectFit="cover" key={res.remoteKey} streamURL={res.remoteStream.toURL()} mirror={isCameraFacingFront ? false : true}/>
           <View style={styles.dropCallButton}>
             <View style={{display: 'flex', flexDirection: 'row'}}>
               <TouchableOpacity style={{marginHorizontal: 5}} onPress={toggleSpeaker}>
