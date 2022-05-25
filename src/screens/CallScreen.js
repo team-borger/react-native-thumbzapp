@@ -4,8 +4,12 @@ import ConnectyCube from 'react-native-connectycube';
 import { Avatar } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RTCView } from 'react-native-connectycube';
+import { CallService } from '../services';
 
 const CallScreen = (response) => {
+  const onStopCallPressed = () => {
+    CallService.stopCall();
+  };
 
   const RTCViews = () => {
     const res = response.route.params;
@@ -14,7 +18,7 @@ const CallScreen = (response) => {
         <View style={styles.blackView}>
           <RTCView style={styles.localKey} key={res.localKey} streamURL={res.localStream.toURL()} mirror={true}/>
           <RTCView style={styles.remoteKey} objectFit="cover" key={res.remoteKey} streamURL={res.remoteStream.toURL()} mirror={true}/>
-          <TouchableOpacity style={styles.dropCallButton}>
+          <TouchableOpacity onPress={onStopCallPressed} style={styles.dropCallButton}>
             <Avatar.Icon size={50} icon="phone-hangup" style={{backgroundColor:"#ff4a43"}}/>
           </TouchableOpacity>
         </View>

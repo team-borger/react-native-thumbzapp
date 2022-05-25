@@ -82,12 +82,15 @@ export default class CallService {
   stopCall = () => {
     this.stopSounds();
 
+    console.log('stopCall session before', this._session);
     if (this._session) {
+      RootNavigation.navigate('ChatScreen');
       this.playSound('end')
       this._session.stop({});
-      ConnectyCube.videochat.clearSession(this._session.ID);
-      this._session = null;
+      // ConnectyCube.videochat.clearSession(this._session.ID);
+      // this._session = null;
       this.mediaDevices = [];
+      console.log('stopCall session after', this._session);
     }
   };
 
@@ -161,6 +164,9 @@ export default class CallService {
   };
 
   _onStopCallListener = (session, userId, extension) => {
+    // opponent only
+    console.log('_onStopCallListener');
+    this._session.stop({});
     RootNavigation.navigate('ChatScreen');
   }
 
@@ -169,6 +175,7 @@ export default class CallService {
   }
 
   _onRemoteStreamListener = (session, userID, remoteStream) => {
+    this._session = session;
     RootNavigation.navigate('CallScreen', {
         localKey: session.currentUserID,
         localStream: session.localStream,
