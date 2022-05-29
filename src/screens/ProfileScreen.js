@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { FlatList, View, Text, StyleSheet, ScrollView, TouchableHighlight, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, List, Avatar, Searchbar, Appbar } from 'react-native-paper';
@@ -13,8 +13,13 @@ type Props = {
 };
 
 const Dashboard = ({ navigation }: Props) => {
+  const [loginUser, setLoginUser] = useState({});
 
-  _onLogoutPressed = async () => {
+  useEffect(() => {
+    getLoginUser()
+  }, []);
+
+  const _onLogoutPressed = async () => {
     try {
       AuthService.logout()
       await AsyncStorage.clear();
@@ -23,6 +28,19 @@ const Dashboard = ({ navigation }: Props) => {
       Alert.alert('Something went wrong. Please try again.',
         [{ text: 'OK' },], { cancelable: false }
       );
+    }
+  }
+
+  const getLoginUser = async () => {
+    try {
+      const skeks = await AsyncStorage.getItem('user')
+      if (skeks !== null) {
+        const skek = JSON.parse(skeks);
+        setLoginUser(skek)
+        console.log(skek)
+      }
+    } catch (error) {
+      console.log('error async storage')
     }
   }
 
@@ -37,7 +55,7 @@ const Dashboard = ({ navigation }: Props) => {
         <View style={styles.whiteBg}>
           <Avatar.Icon size={40} icon="account" color="white" style={styles.avatar} />
           <View style={{marginLeft: 10}}>
-            <Text style={{fontSize: 18, fontWeight: 'bold'}}>Princess Garde</Text>
+            <Text style={{fontSize: 18, fontWeight: 'bold'}}>{loginUser.first_name} {loginUser.last_name}</Text>
             <View style={styles.skeks}>
               <FontAwesome name='circle' size={10} color='green' />
               <View style={{marginLeft: 2}}>
