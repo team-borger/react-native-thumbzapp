@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "732692503999",
+    "project_id": "thumbzupp-e67ab",
+    "storage_bucket": "thumbzupp-e67ab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732692503999:android:9dc2cf5adbf8e6e998d50a",
+        "android_client_info": {
+          "package_name": "com.eclairab.thumbzupp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "732692503999-im6s5nfrm575d07dcgsi5gtrs0m3q0am.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUDRzXbERFPdwPmkVugzKKPwjuLFWN4hA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "732692503999-im6s5nfrm575d07dcgsi5gtrs0m3q0am.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
