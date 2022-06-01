@@ -61,6 +61,7 @@ const Cart = ({ navigation }: Props) => {
 
   const _onCheckoutPressed = () => {
     AsyncStorage.setItem('checkout', JSON.stringify(items))
+    AsyncStorage.setItem('paymentMethod', JSON.stringify({}))
     navigation.navigate('CheckoutScreen');
   }
 

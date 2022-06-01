@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableHighlight, Platform, ToastAndroid, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar, Button } from 'react-native-paper';
 import { Navigation } from '../types';
@@ -8,6 +8,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { IMAGE } from '../constants/Image';
 import NumericInput from 'react-native-numeric-input'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
+import Toast from 'react-native-simple-toast';
 
 type Props = {
   navigation: Navigation;
@@ -17,18 +19,36 @@ const Checkout = ({ navigation }: Props) => {
   const [subTotal, setTotal] = useState(0)
   const [items, setItems] = useState([])
   const [totalItem, setTotalItem] = useState([])
+  const [payMethod, setPayment] = useState({})
+
+  const showToast = text => {
+    const commonToast = Platform.OS === 'android' ? ToastAndroid : Toast;
+
+    commonToast.showWithGravity(text, Toast.LONG, Toast.TOP);
+  };
 
   useEffect(() => {
     _getCheckout()
   }, []);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      _getCheckout()
+    }, [navigation])
+  );
+
   const _getCheckout = async () => {
     try {
       const value = await AsyncStorage.getItem('checkout')
+      const payment = await AsyncStorage.getItem('paymentMethod')
       if (value !== null) {
         const ret = JSON.parse(value);
         setItems(ret)
         setsubtotal(ret)
+      }
+      if (payment !== null) {
+        const pay = JSON.parse(payment);
+        setPayment(pay)
       }
     } catch (error) {
       console.log('error async storage')
@@ -51,7 +71,12 @@ const Checkout = ({ navigation }: Props) => {
   }
 
   const _onPlaceOrder = () => {
-    navigation.navigate('PaymentSuccessScreen')
+    if (payMethod.id) {
+      navigation.navigate('PaymentSuccessScreen')
+    } else {
+      showToast(`Please add payment method`)
+    }
+
   }
 
   return (
@@ -111,6 +136,10 @@ const Checkout = ({ navigation }: Props) => {
               <FontAwesome name='angle-right' size={20} color='black' />
             </View>
           </TouchableHighlight>
+          <View style={{marginLeft: 50, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+            <Image source={payMethod.account_number ? IMAGE.ICON_MASTERCARD : ''} style={styles.image} />
+            <Text style={{color: '#880ED4'}}>{payMethod.account_number}</Text>
+          </View>
         </View>
       </View>
 
@@ -134,8 +163,8 @@ const styles = StyleSheet.create({
       backgroundColor: '#F5FCFF',
   },
   image: {
-    width: 50,
-    height: 50,
+    width: 30,
+    height: 30,
     resizeMode: 'contain',
     marginRight: 10
   },
