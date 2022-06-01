@@ -51,7 +51,7 @@ const Checkout = ({ navigation }: Props) => {
   }
 
   const _onPlaceOrder = () => {
-    console.log('Skekert')
+    navigation.navigate('PaymentSuccessScreen')
   }
 
   return (

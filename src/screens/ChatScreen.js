@@ -145,7 +145,7 @@ const ChatScreen = ({ navigation }: Props) => {
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: '#2e64e5',
+            backgroundColor: '#880ED4',
           },
         }}
         textStyle={{

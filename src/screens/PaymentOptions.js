@@ -104,7 +104,7 @@ const ChatScreen = ({ navigation }: Props) => {
                   keyExtractor={(item) => item.id}
                 />
               }/>
-              <List.Item style={{padding:10, margin: 0, paddingHorizontal: 25}}  onPress={() => navigation.navigate('AddCardScreen')} title={
+              <List.Item style={{padding:10, margin: 0, paddingHorizontal: 25}}  onPress={() => navigation.navigate('AddPaymentScreen')} title={
                 <View style={styles.alignCenterRow}>
                   <View style={styles.alignCenterRow}>
                     <FontAwesome name='plus' size={15} color='gray'/>
