@@ -109,6 +109,7 @@ const RegisterScreen = ({ navigation }: Props) => {
         email: email.value,
         password: password.value,
         confirm_password: confirm_password.value,
+        role_id: 3,
       };
       setLoading(true)
       checkEmailAPI(body, emailUnique, emailExists)
