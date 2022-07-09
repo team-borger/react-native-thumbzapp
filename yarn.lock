@@ -6164,6 +6164,11 @@
     "js-base64" "2.5.2"
     "react-native-webrtc" "1.92.0"
 
+"react-native-easy-bottomsheet@^1.0.8":
+  "integrity" "sha512-PBBFncDEemQ6zs4ee0ndRn+nNk0KLEUOd/UPbPsPcKGdmGj9rooJJnGaNp5KHeLeLMyCjFWoqRgHMdBvwIMeHw=="
+  "resolved" "https://registry.npmjs.org/react-native-easy-bottomsheet/-/react-native-easy-bottomsheet-1.0.8.tgz"
+  "version" "1.0.8"
+
 "react-native-gesture-handler@~2.2.0":
   "integrity" "sha512-WF25CNgn164bF9juW8N/jICIFXiEOgsxCuY7DRlnFdiH5ZfvMYtZHRC+zr1fFMap2ty1f2HWDQNVVSo0FDXP4A=="
   "resolved" "https://registry.npmjs.org/react-native-gesture-handler/-/react-native-gesture-handler-2.2.0.tgz"
