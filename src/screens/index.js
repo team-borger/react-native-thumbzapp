@@ -16,3 +16,4 @@ export { default as CallingScreen } from './CallingScreen';
 export { default as IncomingCallScreen } from './IncomingCallScreen';
 export { default as AddPaymentScreen } from './AddPaymentScreen';
 export { default as PaymentSuccessScreen } from './PaymentSuccessScreen';
+export { default as ProductInfoScreen } from './ProductInfoScreen';
