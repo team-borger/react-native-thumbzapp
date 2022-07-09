@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableHighlight, Platform, ToastAndroid, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList, Image, TouchableHighlight, Platform, ToastAndroid, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar, Button } from 'react-native-paper';
 import { Navigation } from '../types';
@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import { SliderBox } from "react-native-image-slider-box";
+import BottomSheet from "react-native-easy-bottomsheet";
 
 type Props = {
   navigation: Navigation;
@@ -19,6 +20,8 @@ type Props = {
 const ProductInfo = ({ navigation }: Props) => {
   const [product, setProduct] = useState({})
   const [images, setImages] = useState([])
+  const [isVisible, setVisible] = useState(false);
+  const [quantity, setQuantity] = useState(0);
 
   const showToast = text => {
     const commonToast = Platform.OS === 'android' ? ToastAndroid : Toast;
@@ -49,6 +52,10 @@ const ProductInfo = ({ navigation }: Props) => {
     }
   }
 
+  const addCart = () => {
+    setVisible(false);
+  }
+
   return (
     <SafeAreaView style={styles.container}>
 
@@ -66,7 +73,48 @@ const ProductInfo = ({ navigation }: Props) => {
         </View>
       </View>
 
-      <Button icon="cart" style={styles.logoutBtn} mode="contained" >
+      <BottomSheet
+        bottomSheetIconColor="#0A2463"
+        bottomSheetStyle={{
+          backgroundColor: "white",
+          maxHeight: "70%",
+          minHeight: "30%",
+        }}
+        bottomSheetTitleStyle={{color: '#0A2463'}}
+        setBottomSheetVisible={setVisible}
+        bottomSheetVisible={isVisible}
+      >
+        <View style={{marginBottom: 5, paddingHorizontal: 20, paddingVertical: 10}}>
+          <View style={styles.alignCenterRow}>
+            <View style={styles.alignCenterRow}>
+              <View>
+                <Text style={{fontWeight: 'bold'}}>Quantity</Text>
+              </View>
+            </View>
+            <View>
+              <NumericInput
+                onChange={value => setQuantity(value)}
+                totalHeight={30}
+                iconSize={25}
+                minValue={1}
+                valueType='real'
+              />
+            </View>
+
+          </View>
+          <View style={{marginTop: 50}}>
+            <Button style={styles.btn} icon="cart" mode="contained" onPress={addCart}>
+              Add to Cart
+            </Button>
+          </View>
+        </View>
+      </BottomSheet>
+
+      <Button icon="cart" style={styles.logoutBtn} mode="contained"
+        onPress={() => {
+          setVisible(true);
+        }}
+      >
         Add to Cart
       </Button>
 
