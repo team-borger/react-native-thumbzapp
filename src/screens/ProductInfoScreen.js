@@ -1,17 +1,18 @@
 import React, { memo, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList, Image, TouchableHighlight, Platform, ToastAndroid, Alert } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Platform, ToastAndroid, Alert, TouchableHighlight } from 'react-native';
+import { Appbar, Badge } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Appbar, Button } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import { Navigation } from '../types';
-import NavbarBot from '../components/NavbarBot';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { IMAGE } from '../constants/Image';
 import NumericInput from 'react-native-numeric-input'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import { SliderBox } from "react-native-image-slider-box";
 import BottomSheet from "react-native-easy-bottomsheet";
+import { addCartAPI, cartAllAPI } from '../services/products';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 type Props = {
   navigation: Navigation;
@@ -22,6 +23,8 @@ const ProductInfo = ({ navigation }: Props) => {
   const [images, setImages] = useState([])
   const [isVisible, setVisible] = useState(false);
   const [quantity, setQuantity] = useState(0);
+  const [loginuser, setUser] = useState({});
+  const [count, setCount] = useState(0);
 
   const showToast = text => {
     const commonToast = Platform.OS === 'android' ? ToastAndroid : Toast;
@@ -32,8 +35,48 @@ const ProductInfo = ({ navigation }: Props) => {
   useFocusEffect(
     React.useCallback(() => {
       _getProductInfo()
+      _geUserInfo()
+      cartAllAPI(fetchSuccess, fetchError)
     }, [navigation])
   );
+
+  const fetchSuccess = res => {
+    setCount(res.data.length)
+  }
+
+  const fetchError = err => {
+    const { error, message } = err.response.data;
+    if (error) {
+      Alert.alert('Something went wrong. Please try again.', error,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+    if (message) {
+      Alert.alert('Something went wrong. Please try again.', message,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+  }
+
+  const checkCount = () => {
+    if (count > 0) {
+      return {display: 'flex'}
+    } else {
+      return {display: 'none'}
+    }
+  }
+
+  const _geUserInfo = async () => {
+    try {
+      const value = await AsyncStorage.getItem('user')
+      if (value !== null) {
+        const ret = JSON.parse(value);
+        setUser(ret)
+      }
+    } catch (error) {
+      console.log('error async storage')
+    }
+  }
 
   const _getProductInfo = async () => {
     try {
@@ -53,12 +96,66 @@ const ProductInfo = ({ navigation }: Props) => {
   }
 
   const addCart = () => {
+    let body = {
+      quantity: quantity,
+      product_id: product.id,
+      user_id: loginuser.id
+    }
+    addCartAPI(body, addSuccess, addError)
+  }
+
+  const addSuccess = res => {
+    cartAllAPI(fetchSuccess, fetchError)
     setVisible(false);
+  }
+
+  const addError = err => {
+    const { error, message } = err.response.data;
+    if (error) {
+      Alert.alert('Something went wrong. Please try again.', error,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+    if (message) {
+      Alert.alert('Something went wrong. Please try again.', message,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+  }
+
+  const _goBack = () => {
+    navigation.navigate('HomeScreen')
+  }
+
+  const _goToCart = () => {
+    navigation.navigate('CartScreen')
   }
 
   return (
     <SafeAreaView style={styles.container}>
-
+      <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 10 }}>
+        <TouchableHighlight onPress={_goBack} underlayColor="#eeeeee">
+          <MaterialCommunityIcons
+            name="arrow-left"
+            size={25}
+            color="#333"
+          />
+        </TouchableHighlight>
+        <View>
+          <TouchableHighlight onPress={_goToCart} underlayColor="#eeeeee" style={{ marginRight: 5 }}>
+            <MaterialCommunityIcons
+              name="shopping"
+              size={25}
+              color="#880ED4"
+            />
+          </TouchableHighlight>
+          <View>
+            <TouchableHighlight onPress={_goToCart} underlayColor="#eeeeee" style={{ position: 'absolute', top: -30, right: -5 }}>
+              <Badge>{ count }</Badge>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </View>
       <View style={styles.contentContainer}>
         <View style={styles.skeks}>
         <SliderBox
@@ -97,10 +194,10 @@ const ProductInfo = ({ navigation }: Props) => {
                 totalHeight={30}
                 iconSize={25}
                 minValue={1}
+                maxValue={product.quantity}
                 valueType='real'
               />
             </View>
-
           </View>
           <View style={{marginTop: 50}}>
             <Button style={styles.btn} icon="cart" mode="contained" onPress={addCart}>

@@ -1,13 +1,14 @@
 import React, { memo,useState } from 'react';
 import { FlatList, View, Text, StyleSheet, TouchableHighlight } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Appbar, Searchbar, Card, Title, Paragraph, Avatar } from 'react-native-paper';
+import { Appbar, Searchbar, Card, Title, Paragraph, Avatar, Badge } from 'react-native-paper';
 import { Navigation } from '../types';
 import NavbarBot from '../components/NavbarBot';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useFocusEffect } from '@react-navigation/native';
-import { productsListAPI } from '../services/products';
+import { productsListAPI, cartAllAPI } from '../services/products';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 type Props = {
   navigation: Navigation;
@@ -16,6 +17,7 @@ type Props = {
 const Shop = ({ navigation }: Props) => {
   const [search, setSearch] = useState('')
   const [products, setProducts] = useState([])
+  const [count, setCount] = useState(0);
 
   const _goToCart = () => {
     navigation.navigate('CartScreen')
@@ -61,16 +63,33 @@ const Shop = ({ navigation }: Props) => {
   useFocusEffect(
     React.useCallback(() => {
       onChangeSearch('')
+      cartAllAPI(cartAllSuccess, fetchError)
     }, [navigation])
   );
 
+  const cartAllSuccess = res => {
+    setCount(res.data.length)
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-
-      <Appbar.Header dark={false} style={styles.header}>
-        <Appbar.Content style={styles.marginText} title={<Text style={styles.setColorText}>Shop</Text>}/>
-        <Appbar.Action icon="shopping" color="#880ED4" onPress={_goToCart} />
-      </Appbar.Header>
+      <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 10 }}>
+        <Text style={styles.headerText}>Shop</Text>
+        <View>
+          <TouchableHighlight onPress={_goToCart} underlayColor="#eeeeee" style={{ marginRight: 5 }}>
+            <MaterialCommunityIcons
+              name="shopping"
+              size={25}
+              color="#880ED4"
+            />
+          </TouchableHighlight>
+          <View>
+            <TouchableHighlight onPress={_goToCart} underlayColor="#eeeeee" style={{ position: 'absolute', top: -30, right: -5 }}>
+              <Badge>{ count }</Badge>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </View>
 
       <View style={styles.contentContainer}>
         <Searchbar
@@ -149,6 +168,11 @@ const styles = StyleSheet.create({
   },
   setColorText : {
     color: '#880ED4'
+  },
+  headerText : {
+    color: '#880ED4',
+    fontSize: 20,
+    fontWeight: 'bold'
   },
   header: {
     backgroundColor: 'transparent'

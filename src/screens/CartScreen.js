@@ -1,7 +1,7 @@
 import React, { memo, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Appbar, Button } from 'react-native-paper';
+import { Appbar, Button, ToggleButton } from 'react-native-paper';
 import { Navigation } from '../types';
 import { useFocusEffect } from '@react-navigation/native';
 import NavbarBot from '../components/NavbarBot';
@@ -9,6 +9,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { IMAGE } from '../constants/Image';
 import NumericInput from 'react-native-numeric-input'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { cartAllAPI } from '../services/products';
 
 type Props = {
   navigation: Navigation;
@@ -16,26 +17,25 @@ type Props = {
 
 const Cart = ({ navigation }: Props) => {
   const [subTotal, setTotal] = useState(0)
-  const [items, setItems] = useState([
-    {
-      id: 1,
-      item: 'Item 1',
-      price: 189,
-      quantity: 1
-    },
-    {
-      id: 2,
-      item: 'Item 2',
-      price: 99,
-      quantity: 1
-    },
-    {
-      id: 3,
-      item: 'Item 3',
-      price: 102,
-      quantity: 1
+  const [items, setItems] = useState([])
+
+  const fetchSuccess = res => {
+    setItems(res.data)
+  }
+
+  const fetchError = err => {
+    const { error, message } = err.response.data;
+    if (error) {
+      Alert.alert('Something went wrong. Please try again.', error,
+        [{ text: 'OK' },], { cancelable: false }
+      );
     }
-  ])
+    if (message) {
+      Alert.alert('Something went wrong. Please try again.', message,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+  }
 
   const changeQuantity = (value, payload) => {
     let index = items.findIndex(el => el.id === payload.id);
@@ -68,6 +68,7 @@ const Cart = ({ navigation }: Props) => {
   useFocusEffect(
     React.useCallback(() => {
       setsubtotal()
+      cartAllAPI(fetchSuccess, fetchError)
     }, [navigation])
   );
 
@@ -90,16 +91,17 @@ const Cart = ({ navigation }: Props) => {
                   <View style={styles.alignCenterRow}>
                     <Image source={IMAGE.DEFAULT_ITEM} style={styles.image} />
                     <View>
-                      <Text style={{fontWeight: 'bold'}}>{item.item}</Text>
-                      <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {item.price}</Text>
+                      <Text style={{fontWeight: 'bold'}}>{item.products[0].name}</Text>
+                      <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {item.products[0].price}</Text>
                     </View>
                   </View>
                   <View>
                     <NumericInput
-                      onChange={(value) => changeQuantity(value, item)}
+                      value={item.quantity}
+                      onChange={value => changeQuantity(value, item)}
                       totalHeight={30}
                       iconSize={25}
-                      minValue={1}
+                      step={1}
                       valueType='real'
                     />
                   </View>
