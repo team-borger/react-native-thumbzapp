@@ -18,6 +18,7 @@ type Props = {
 const Cart = ({ navigation }: Props) => {
   const [subTotal, setTotal] = useState(0)
   const [items, setItems] = useState([])
+  const [loginuser, setUser] = useState({})
 
   const fetchSuccess = res => {
     setItems(res.data)
@@ -46,7 +47,7 @@ const Cart = ({ navigation }: Props) => {
   const setsubtotal = () => {
     var totalValue = 0
     for (let item of items) {
-      totalValue = totalValue + (item.price * item.quantity)
+      totalValue = totalValue + (item.quantity * item.products[0].price)
     }
     setTotal(totalValue)
   }
@@ -68,9 +69,27 @@ const Cart = ({ navigation }: Props) => {
   useFocusEffect(
     React.useCallback(() => {
       setsubtotal()
-      cartAllAPI(fetchSuccess, fetchError)
+      _geUserInfo()
     }, [navigation])
   );
+
+  const _geUserInfo = async () => {
+    try {
+      const value = await AsyncStorage.getItem('user')
+      if (value !== null) {
+        const ret = JSON.parse(value);
+        setUser(ret)
+        _getCartInfo(ret)
+      }
+    } catch (error) {
+      console.log('error async storage')
+    }
+  }
+
+  const _getCartInfo = (payload) => {
+    let body = payload.id
+    cartAllAPI(body, fetchSuccess, fetchError)
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -89,21 +108,17 @@ const Cart = ({ navigation }: Props) => {
               <View key={item.id} style={{marginBottom: 5, paddingHorizontal: 20, paddingVertical: 10, borderTopColor: '#eeeeee',  borderTopWidth: 2,}}>
                 <View style={styles.alignCenterRow}>
                   <View style={styles.alignCenterRow}>
-                    <Image source={IMAGE.DEFAULT_ITEM} style={styles.image} />
+                    <Image source={{ uri: `http://202.137.120.41:8089/storage/uploads/products/${item.products[0].id}/${item.products[0].images[0].photo}` }} style={styles.image} />
                     <View>
                       <Text style={{fontWeight: 'bold'}}>{item.products[0].name}</Text>
-                      <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {item.products[0].price}</Text>
+                      <View style={{display: 'flex', flexDirection: 'row'}}>
+                        <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {item.products[0].price}</Text>
+                        <Text style={{color: 'gray', fontSize: 12}}> X {item.quantity}</Text>
+                      </View>
                     </View>
                   </View>
                   <View>
-                    <NumericInput
-                      value={item.quantity}
-                      onChange={value => changeQuantity(value, item)}
-                      totalHeight={30}
-                      iconSize={25}
-                      step={1}
-                      valueType='real'
-                    />
+                    <Text style={{color: '#880ED4', fontSize: 15, fontWeight: 'bold'}}>{'\u20B1'} {item.quantity * item.products[0].price}</Text>
                   </View>
 
                 </View>

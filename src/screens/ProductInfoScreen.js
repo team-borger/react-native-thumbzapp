@@ -36,9 +36,13 @@ const ProductInfo = ({ navigation }: Props) => {
     React.useCallback(() => {
       _getProductInfo()
       _geUserInfo()
-      cartAllAPI(fetchSuccess, fetchError)
     }, [navigation])
   );
+
+  const _getCartInfo = (payload) => {
+    let body = payload.id
+    cartAllAPI(body, fetchSuccess, fetchError)
+  }
 
   const fetchSuccess = res => {
     setCount(res.data.length)
@@ -72,6 +76,7 @@ const ProductInfo = ({ navigation }: Props) => {
       if (value !== null) {
         const ret = JSON.parse(value);
         setUser(ret)
+        _getCartInfo(ret)
       }
     } catch (error) {
       console.log('error async storage')
