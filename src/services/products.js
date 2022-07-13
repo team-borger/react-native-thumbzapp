@@ -19,9 +19,9 @@ export const addCartAPI = async (body, callback, err) => {
     )
 }
 
-export const cartAllAPI = async (callback, err) => {
+export const cartAllAPI = async (body, callback, err) => {
     checkConnection(
-        backendAPI.get(`/cart/all`)
+        backendAPI.get(`/cart/user/${body}`)
             .then(callback)
             .catch(err),
         err

@@ -18,6 +18,7 @@ const Shop = ({ navigation }: Props) => {
   const [search, setSearch] = useState('')
   const [products, setProducts] = useState([])
   const [count, setCount] = useState(0);
+  const [loginuser, setUser] = useState({});
 
   const _goToCart = () => {
     navigation.navigate('CartScreen')
@@ -63,9 +64,27 @@ const Shop = ({ navigation }: Props) => {
   useFocusEffect(
     React.useCallback(() => {
       onChangeSearch('')
-      cartAllAPI(cartAllSuccess, fetchError)
+      _geUserInfo()
     }, [navigation])
   );
+
+  const _getCartInfo = (payload) => {
+    let body = payload.id
+    cartAllAPI(body, cartAllSuccess, fetchError)
+  }
+
+  const _geUserInfo = async () => {
+    try {
+      const value = await AsyncStorage.getItem('user')
+      if (value !== null) {
+        const ret = JSON.parse(value);
+        setUser(ret)
+        _getCartInfo(ret)
+      }
+    } catch (error) {
+      console.log('error async storage')
+    }
+  }
 
   const cartAllSuccess = res => {
     setCount(res.data.length)
