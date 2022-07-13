@@ -22,6 +22,7 @@ const Cart = ({ navigation }: Props) => {
 
   const fetchSuccess = res => {
     setItems(res.data)
+    setsubtotal(res.data)
   }
 
   const fetchError = err => {
@@ -44,9 +45,9 @@ const Cart = ({ navigation }: Props) => {
     setsubtotal()
   }
 
-  const setsubtotal = () => {
+  const setsubtotal = (payload) => {
     var totalValue = 0
-    for (let item of items) {
+    for (let item of payload) {
       totalValue = totalValue + (item.quantity * item.products[0].price)
     }
     setTotal(totalValue)
@@ -68,7 +69,6 @@ const Cart = ({ navigation }: Props) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      setsubtotal()
       _geUserInfo()
     }, [navigation])
   );
