@@ -59,7 +59,7 @@ const Checkout = ({ navigation }: Props) => {
     var totalValue = 0
     var totalItem = 0
     for (let item of payload) {
-      totalValue = totalValue + (item.price * item.quantity)
+      totalValue = totalValue + (item.quantity * item.products[0].price)
       totalItem = totalItem + item.quantity
     }
     setTotal(totalValue)
@@ -95,10 +95,10 @@ const Checkout = ({ navigation }: Props) => {
               <View key={item.id} style={{marginBottom: 5, paddingHorizontal: 20, paddingVertical: 10, borderTopColor: '#eeeeee',  borderTopWidth: 2,}}>
                 <View style={styles.alignCenterRow}>
                   <View style={styles.alignCenterRow}>
-                    <Image source={IMAGE.DEFAULT_ITEM} style={styles.image} />
+                    <Image source={{ uri: `http://202.137.120.41:8089/storage/uploads/products/${item.products[0].id}/${item.products[0].images[0].photo}` }} style={styles.image} />
                     <View>
-                      <Text style={{fontWeight: 'bold'}}>{item.item}</Text>
-                      <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {item.price}</Text>
+                      <Text style={{fontWeight: 'bold'}}>{item.products[0].name}</Text>
+                      <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {item.products[0].price}</Text>
                     </View>
                   </View>
                   <View>
@@ -124,7 +124,7 @@ const Checkout = ({ navigation }: Props) => {
           </View>
         </View>
         <View style={styles.skeks}>
-          <TouchableHighlight onPress={() => navigation.navigate('PaymentOptions')}>
+          <TouchableHighlight onPress={() => navigation.navigate('PaymentOptions')} underlayColor="#eeeeee">
             <View
               style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: 20, alignItems: 'center'}}>
               <View style={{display: 'flex', flexDirection:'row', alignItems: 'center'}}>
