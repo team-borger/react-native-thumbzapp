@@ -1,7 +1,7 @@
 import React, { memo, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Appbar, Button } from 'react-native-paper';
+import { Appbar, Button, ToggleButton } from 'react-native-paper';
 import { Navigation } from '../types';
 import { useFocusEffect } from '@react-navigation/native';
 import NavbarBot from '../components/NavbarBot';
@@ -9,6 +9,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { IMAGE } from '../constants/Image';
 import NumericInput from 'react-native-numeric-input'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { cartAllAPI } from '../services/products';
 
 type Props = {
   navigation: Navigation;
@@ -16,26 +17,27 @@ type Props = {
 
 const Cart = ({ navigation }: Props) => {
   const [subTotal, setTotal] = useState(0)
-  const [items, setItems] = useState([
-    {
-      id: 1,
-      item: 'Item 1',
-      price: 189,
-      quantity: 1
-    },
-    {
-      id: 2,
-      item: 'Item 2',
-      price: 99,
-      quantity: 1
-    },
-    {
-      id: 3,
-      item: 'Item 3',
-      price: 102,
-      quantity: 1
+  const [items, setItems] = useState([])
+  const [loginuser, setUser] = useState({})
+
+  const fetchSuccess = res => {
+    setItems(res.data)
+    setsubtotal(res.data)
+  }
+
+  const fetchError = err => {
+    const { error, message } = err.response.data;
+    if (error) {
+      Alert.alert('Something went wrong. Please try again.', error,
+        [{ text: 'OK' },], { cancelable: false }
+      );
     }
-  ])
+    if (message) {
+      Alert.alert('Something went wrong. Please try again.', message,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+  }
 
   const changeQuantity = (value, payload) => {
     let index = items.findIndex(el => el.id === payload.id);
@@ -43,10 +45,10 @@ const Cart = ({ navigation }: Props) => {
     setsubtotal()
   }
 
-  const setsubtotal = () => {
+  const setsubtotal = (payload) => {
     var totalValue = 0
-    for (let item of items) {
-      totalValue = totalValue + (item.price * item.quantity)
+    for (let item of payload) {
+      totalValue = totalValue + (item.quantity * item.products[0].price)
     }
     setTotal(totalValue)
   }
@@ -61,14 +63,33 @@ const Cart = ({ navigation }: Props) => {
 
   const _onCheckoutPressed = () => {
     AsyncStorage.setItem('checkout', JSON.stringify(items))
+    AsyncStorage.setItem('paymentMethod', JSON.stringify({}))
     navigation.navigate('CheckoutScreen');
   }
 
   useFocusEffect(
     React.useCallback(() => {
-      setsubtotal()
+      _geUserInfo()
     }, [navigation])
   );
+
+  const _geUserInfo = async () => {
+    try {
+      const value = await AsyncStorage.getItem('user')
+      if (value !== null) {
+        const ret = JSON.parse(value);
+        setUser(ret)
+        _getCartInfo(ret)
+      }
+    } catch (error) {
+      console.log('error async storage')
+    }
+  }
+
+  const _getCartInfo = (payload) => {
+    let body = payload.id
+    cartAllAPI(body, fetchSuccess, fetchError)
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -87,20 +108,17 @@ const Cart = ({ navigation }: Props) => {
               <View key={item.id} style={{marginBottom: 5, paddingHorizontal: 20, paddingVertical: 10, borderTopColor: '#eeeeee',  borderTopWidth: 2,}}>
                 <View style={styles.alignCenterRow}>
                   <View style={styles.alignCenterRow}>
-                    <Image source={IMAGE.DEFAULT_ITEM} style={styles.image} />
+                    <Image source={{ uri: `http://202.137.120.41:8089/storage/uploads/products/${item.products[0].id}/${item.products[0].images[0].photo}` }} style={styles.image} />
                     <View>
-                      <Text style={{fontWeight: 'bold'}}>{item.item}</Text>
-                      <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {item.price}</Text>
+                      <Text style={{fontWeight: 'bold'}}>{item.products[0].name}</Text>
+                      <View style={{display: 'flex', flexDirection: 'row'}}>
+                        <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {item.products[0].price}</Text>
+                        <Text style={{color: 'gray', fontSize: 12}}> X {item.quantity}</Text>
+                      </View>
                     </View>
                   </View>
                   <View>
-                    <NumericInput
-                      onChange={(value) => changeQuantity(value, item)}
-                      totalHeight={30}
-                      iconSize={25}
-                      minValue={1}
-                      valueType='real'
-                    />
+                    <Text style={{color: '#880ED4', fontSize: 15, fontWeight: 'bold'}}>{'\u20B1'} {item.quantity * item.products[0].price}</Text>
                   </View>
 
                 </View>

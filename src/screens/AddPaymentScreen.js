@@ -18,7 +18,7 @@ type Props = {
   navigation: Navigation;
 };
 
-const AddCard = ({ navigation }: Props) => {
+const AddPayment = ({ navigation }: Props) => {
   const [account_number, setAccountNumber] = useState({ value: '', error: '' });
   const [card_cvn, setCardCvn] = useState({ value: '', error: '' });
   const [expiry_date, setExpiryDate] = useState({ value: '', error: '' });
@@ -48,7 +48,10 @@ const AddCard = ({ navigation }: Props) => {
   }
 
   const _goBack = () => {
-    navigation.navigate('PaymentMethodList');
+
+    // Skeks Api send to Xendit
+
+    navigation.navigate('PaymentOptions');
   }
 
   const _saveCard = () => {
@@ -145,7 +148,7 @@ const AddCard = ({ navigation }: Props) => {
   );
 };
 
-export default AddCard;
+export default AddPayment;
 
 const styles = StyleSheet.create({
   carddetails: {

@@ -1,13 +1,15 @@
 import React, { memo, useState } from 'react';
-import { FlatList, View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import { FlatList, View, Text, StyleSheet, ScrollView, Image, Platform, ToastAndroid, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, List, Avatar, Searchbar, Appbar, Card } from 'react-native-paper';
 import { Navigation } from '../types';
+import Toast from 'react-native-simple-toast';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { IMAGE } from '../constants/Image';
 import { useFocusEffect } from '@react-navigation/native';
 import { getCardListAPI, deleteCardAPI } from '../services/payment';
 import AwesomeAlert from 'react-native-awesome-alerts';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Props = {
   navigation: Navigation;
@@ -17,6 +19,12 @@ const ChatScreen = ({ navigation }: Props) => {
   const [items, setItems] = useState([])
   const [showAlert, setState] = useState(false)
   const [choosenItem, setItem] = useState({})
+
+  const showToast = text => {
+    const commonToast = Platform.OS === 'android' ? ToastAndroid : Toast;
+
+    commonToast.showWithGravity(text, Toast.LONG, Toast.TOP);
+  };
 
   const hideAlert = () => {
     setState(false);
@@ -31,6 +39,15 @@ const ChatScreen = ({ navigation }: Props) => {
     setState(false)
     getCardListAPI(fetchSuccess,fetchError);
     navigation.navigate('PaymentMethodList')
+  }
+
+  const _isConfirm = () => {
+    if (items[0].id) {
+      AsyncStorage.setItem('paymentMethod', JSON.stringify(items[0]))
+      navigation.navigate('CheckoutScreen')
+    } else {
+      showToast(`Please add payment method`)
+    }
   }
 
   const fetchError = err => {
@@ -104,7 +121,7 @@ const ChatScreen = ({ navigation }: Props) => {
                   keyExtractor={(item) => item.id}
                 />
               }/>
-              <List.Item style={{padding:10, margin: 0, paddingHorizontal: 25}}  onPress={() => navigation.navigate('AddCardScreen')} title={
+              <List.Item style={{padding:10, margin: 0, paddingHorizontal: 25}}  onPress={() => navigation.navigate('AddPaymentScreen')} title={
                 <View style={styles.alignCenterRow}>
                   <View style={styles.alignCenterRow}>
                     <FontAwesome name='plus' size={15} color='gray'/>
@@ -131,7 +148,7 @@ const ChatScreen = ({ navigation }: Props) => {
             </List.Accordion>
           </List.AccordionGroup>
         </View>
-        <Button style={styles.logoutBtn} mode="contained" onPress={() => navigation.navigate('CheckoutScreen')}>
+        <Button style={styles.logoutBtn} mode="contained" onPress={_isConfirm}>
           Confirm
         </Button>
 

@@ -20,6 +20,9 @@ import CheckoutScreen from './screens/CheckoutScreen'
 import PaymentOptions from './screens/PaymentOptions'
 import CallingScreen from './screens/CallingScreen'
 import IncomingCallScreen from './screens/IncomingCallScreen'
+import AddPaymentScreen from './screens/AddPaymentScreen'
+import PaymentSuccessScreen from './screens/PaymentSuccessScreen'
+import ProductInfoScreen from './screens/ProductInfoScreen'
 
 const Stack = createNativeStackNavigator();
 
@@ -48,6 +51,9 @@ const App = () => {
           <Stack.Screen name="PaymentOptions" component={PaymentOptions} option={{title: 'PaymentOptions!!'}} />
           <Stack.Screen name="CallingScreen" component={CallingScreen} option={{title: 'CallingScreen!!'}} />
           <Stack.Screen name="IncomingCallScreen" component={IncomingCallScreen} option={{title: 'IncomingCallScreen!!'}} />
+          <Stack.Screen name="AddPaymentScreen" component={AddPaymentScreen} option={{title: 'AddPaymentScreen!!'}} />
+          <Stack.Screen name="PaymentSuccessScreen" component={PaymentSuccessScreen} option={{title: 'PaymentSuccessScreen!!'}} />
+          <Stack.Screen name="ProductInfoScreen" component={ProductInfoScreen} option={{title: 'ProductInfoScreen!!'}} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
