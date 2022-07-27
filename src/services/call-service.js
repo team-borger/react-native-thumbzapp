@@ -38,6 +38,7 @@ export default class CallService {
     ConnectyCube.videochat.onStopCallListener = this._onStopCallListener;
     ConnectyCube.videochat.onUserNotAnswerListener = this._onUserNotAnswerListener;
     ConnectyCube.videochat.onRemoteStreamListener = this._onRemoteStreamListener;
+    ConnectyCube.videochat.onSessionConnectionStateChangedListener = this._onSessionConnectionStateChangedListener;
   }
 
   startCall = async callee => {
@@ -203,5 +204,9 @@ export default class CallService {
         remoteKey: userID,
         remoteStream: remoteStream,
       });
+  };
+
+  _onSessionConnectionStateChangedListener = (session, userID, connectionState) => {
+    console.log(connectionState)
   };
 }
