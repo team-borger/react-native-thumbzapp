@@ -2,21 +2,22 @@ import React, { memo, useState } from 'react';
 import { TouchableOpacity, StyleSheet, Text, View, Alert } from 'react-native';
 import Background from '../components/Background';
 import Logo from '../components/Logo';
-import Header from '../components/Header';
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
-import BackButton from '../components/BackButton';
+import Banner from '../components/Banner';
 import { theme } from '../core/theme';
 import { emailValidator, passwordValidator } from '../core/utils';
 import { loginAPI } from '../services/auth';
 import { Navigation } from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { AuthService, CallService } from '../services';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState({ value: '', error: '' });
   const [password, setPassword] = useState({ value: '', error: '' });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   _storeUserData = async (payload) => {
     await AsyncStorage.setItem('Token', payload.user.token)
@@ -71,63 +72,75 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <Background>
-
-      <Logo />
-
-      <TextInput
-        placeholder="Email"
-        returnKeyType="next"
-        value={email.value}
-        onChangeText={text => setEmail({ value: text, error: '' })}
-        error={!!email.error}
-        errorText={email.error}
-        autoCapitalize="none"
-        autoCompleteType="email"
-        textContentType="emailAddress"
-        keyboardType="email-address"
+    <SafeAreaView style={styles.container}>
+      <Banner
+        visible={error}
+        positive="close"
+        message="Incorrect credentials."
+        icon="https://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-error-icon.png"
       />
 
-      <TextInput
-        placeholder="Password"
-        returnKeyType="done"
-        value={password.value}
-        onChangeText={text => setPassword({ value: text, error: '' })}
-        error={!!password.error}
-        errorText={password.error}
-        secureTextEntry
-      />
+      <Background>
 
-      <View style={{ paddingLeft: 20, paddingRight: 20, width: '100%' }}>
-        <Button mode="contained" onPress={_onLoginPressed}>
-        {loading ? 'Loading...' : 'Login'}
-        </Button>
-      </View>
+        <Logo />
 
-      <View style={styles.forgotPassword}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('ForgotPasswordScreen')}
-        >
-          <Text style={styles.forgotText}>Forgot password?</Text>
-        </TouchableOpacity>
-      </View>
+        <TextInput
+          placeholder="Email"
+          returnKeyType="next"
+          value={email.value}
+          onChangeText={text => setEmail({ value: text, error: '' })}
+          error={!!email.error}
+          errorText={email.error}
+          autoCapitalize="none"
+          autoCompleteType="email"
+          textContentType="emailAddress"
+          keyboardType="email-address"
+        />
 
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20, }}>
-        <View style={styles.hairline} />
-        <Text style={styles.loginButtonBelowText1}>OR</Text>
-        <View style={styles.hairline} />
-      </View>
+        <TextInput
+          placeholder="Password"
+          returnKeyType="done"
+          value={password.value}
+          onChangeText={text => setPassword({ value: text, error: '' })}
+          error={!!password.error}
+          errorText={password.error}
+          secureTextEntry
+        />
 
-      <View style={{ paddingLeft: 20, paddingRight: 20, width: '100%' }}>
-        <Button mode="contained" onPress={() => navigation.navigate('RegisterScreen')}>
-          Create an account
-        </Button>
-      </View>
-    </Background>
+        <View style={{ paddingLeft: 20, paddingRight: 20, width: '100%' }}>
+          <Button mode="contained" onPress={_onLoginPressed}>
+          {loading ? 'Loading...' : 'Login'}
+          </Button>
+        </View>
+
+        <View style={styles.forgotPassword}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ForgotPasswordScreen')}
+          >
+            <Text style={styles.forgotText}>Forgot password?</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20, }}>
+          <View style={styles.hairline} />
+          <Text style={styles.loginButtonBelowText1}>OR</Text>
+          <View style={styles.hairline} />
+        </View>
+
+        <View style={{ paddingLeft: 20, paddingRight: 20, width: '100%' }}>
+          <Button mode="contained" onPress={() => navigation.navigate('RegisterScreen')}>
+            Create an account
+          </Button>
+        </View>
+      </Background>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   hairline: {
     backgroundColor: 'white',
     height: 1,
