@@ -27,7 +27,7 @@ const LoginScreen = ({ navigation }) => {
   const loginSuccess = res => {
     const { token } = res.data;
     _storeUserData(res.data)
-    navigation.replace('Dashboard')
+    navigation.replace('HomeScreen')
   }
 
   const loginError = err => {

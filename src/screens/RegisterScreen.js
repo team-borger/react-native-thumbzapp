@@ -109,6 +109,7 @@ const RegisterScreen = ({ navigation }: Props) => {
         email: email.value,
         password: password.value,
         confirm_password: confirm_password.value,
+        country: 'PH',
         role_id: 3,
       };
       setLoading(true)
@@ -148,6 +149,15 @@ const RegisterScreen = ({ navigation }: Props) => {
 
               <TextInput
                 placeholder="Last name"
+                returnKeyType="next"
+                value={last_name.value}
+                onChangeText={text => setLastName({ value: text, error: '' })}
+                error={!!last_name.error}
+                errorText={last_name.error}
+              />
+
+              <TextInput
+                placeholder="Country"
                 returnKeyType="next"
                 value={last_name.value}
                 onChangeText={text => setLastName({ value: text, error: '' })}
