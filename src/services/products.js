@@ -10,6 +10,15 @@ export const productsListAPI = async (body, callback, err) => {
     )
 }
 
+export const foodListAPI = async (body, callback, err) => {
+    checkConnection(
+        backendAPI.post(`/food/search`, body)
+            .then(callback)
+            .catch(err),
+        err
+    )
+}
+
 export const addCartAPI = async (body, callback, err) => {
     checkConnection(
         backendAPI.post(`/cart/create`, body)

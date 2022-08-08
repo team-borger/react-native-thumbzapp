@@ -24,6 +24,10 @@ const Shop = ({ navigation }: Props) => {
     navigation.navigate('CartScreen')
   }
 
+  const _goBack = () => {
+    navigation.navigate('HomeScreen')
+  }
+
   const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
   const fetchSuccess = res => {
@@ -92,14 +96,24 @@ const Shop = ({ navigation }: Props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 10, backgroundColor: '#880ED4' }}>
-        <Text style={styles.headerText}>Thumbzupp</Text>
+      <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 10 }}>
+        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+          <TouchableHighlight onPress={_goBack} underlayColor="#eeeeee">
+            <MaterialCommunityIcons
+              name="arrow-left"
+              size={25}
+              color="#333"
+              style={{marginRight: 15}}
+            />
+          </TouchableHighlight>
+          <Text style={styles.headerText}>Shopping</Text>
+        </View>
         <View>
           <TouchableHighlight onPress={_goToCart} underlayColor="#eeeeee" style={{ marginRight: 5 }}>
             <MaterialCommunityIcons
               name="shopping"
               size={25}
-              color="#fff"
+              color="#880ED4"
             />
           </TouchableHighlight>
           <View>
@@ -110,46 +124,13 @@ const Shop = ({ navigation }: Props) => {
         </View>
       </View>
 
-      <View style={{padding: 10, backgroundColor: '#880ED4'}}>
+      <View style={styles.contentContainer}>
         <Searchbar
           placeholder="Search"
-          style={products.length > 0 ? {marginBottom: 5} : {}}
+          style={products.length > 0 ? {marginBottom: 20} : {}}
           onChangeText={onChangeSearch}
           value={search}
         />
-      </View>
-
-      <View style={styles.mininav}>
-        <TouchableHighlight style={styles.navitem} underlayColor="#eeeeee" onPress={() => navigation.navigate('ShoppingScreen')}>
-          <Card>
-            <Card.Content>
-              <View>
-                <Text style={{fontWeight: 'bold', fontSize: 15}}>Shopping</Text>
-              </View>
-              <View>
-                <Text style={{fontSize: 12}}>Find everything here</Text>
-              </View>
-            </Card.Content>
-          </Card>
-        </TouchableHighlight>
-        <TouchableHighlight style={styles.navitem} underlayColor="#eeeeee" onPress={() => navigation.navigate('FoodScreen')}>
-          <Card>
-            <Card.Content>
-              <View>
-                <Text style={{fontWeight: 'bold', fontSize: 15}}>Food</Text>
-              </View>
-              <View>
-                <Text style={{fontSize: 12}}>Satisfy your cravings</Text>
-              </View>
-            </Card.Content>
-          </Card>
-        </TouchableHighlight>
-      </View>
-
-      <View style={styles.contentContainer}>
-        <View style={{paddingHorizontal: 5, marginBottom: 10, paddingTop: 5}}>
-          <Text style={{fontSize: 20, fontWeight: 'bold', color: '#880ED4'}}>Top Products</Text>
-        </View>
         <FlatList
           data={products}
           numColumns={2}
@@ -185,18 +166,7 @@ const Shop = ({ navigation }: Props) => {
 const styles = StyleSheet.create({
   container: {
       flex: 1,
-      backgroundColor: '#EEEEEE',
-  },
-  mininav: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'flex-start',
-    paddingHorizontal: 10,
-    paddingTop: 10
-  },
-  navitem: {
-    width: '50%',
-    padding: 5
+      backgroundColor: '#F5FCFF',
   },
   yawa: {
     height: 150,
@@ -211,8 +181,7 @@ const styles = StyleSheet.create({
     width: '100%' // is 50% of container width
   },
   cardStyle: {
-    marginHorizontal: 5,
-    marginBottom: 10
+    margin: 5
   },
   contentContainer: {
       flex: 1,
@@ -234,7 +203,7 @@ const styles = StyleSheet.create({
     color: '#880ED4'
   },
   headerText : {
-    color: '#FFF',
+    color: '#880ED4',
     fontSize: 20,
     fontWeight: 'bold'
   },
