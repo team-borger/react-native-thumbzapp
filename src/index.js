@@ -23,6 +23,8 @@ import IncomingCallScreen from './screens/IncomingCallScreen'
 import AddPaymentScreen from './screens/AddPaymentScreen'
 import PaymentSuccessScreen from './screens/PaymentSuccessScreen'
 import ProductInfoScreen from './screens/ProductInfoScreen'
+import ShoppingScreen from './screens/ShoppingScreen'
+import FoodScreen from './screens/FoodScreen'
 
 const Stack = createNativeStackNavigator();
 
@@ -54,6 +56,8 @@ const App = () => {
           <Stack.Screen name="AddPaymentScreen" component={AddPaymentScreen} option={{title: 'AddPaymentScreen!!'}} />
           <Stack.Screen name="PaymentSuccessScreen" component={PaymentSuccessScreen} option={{title: 'PaymentSuccessScreen!!'}} />
           <Stack.Screen name="ProductInfoScreen" component={ProductInfoScreen} option={{title: 'ProductInfoScreen!!'}} />
+          <Stack.Screen name="ShoppingScreen" component={ShoppingScreen} option={{title: 'ShoppingScreen!!'}} />
+          <Stack.Screen name="FoodScreen" component={FoodScreen} option={{title: 'FoodScreen!!'}} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
