@@ -14,6 +14,9 @@ const Skekert = ({ navigation }) => {
       <View style={styles.centerFLex}>
         <FontAwesome name='user' onPress={() => navigation.navigate("ProfileScreen")} size={22} color='#333' />
       </View>
+      <View style={styles.centerFLex}>
+        <FontAwesome name='steam' onPress={() => navigation.navigate("NetLoadScreen")} size={22} color='#333' />
+      </View>
     </View>
   );
 };
