@@ -15,7 +15,7 @@ type Props = {
   navigation: Navigation;
 };
 
-const Shop = ({ navigation }: Props) => {
+const FoodMerchant = ({ navigation }: Props) => {
   const [search, setSearch] = useState('')
   const [products, setProducts] = useState([])
   const [count, setCount] = useState(0);
@@ -211,4 +211,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default memo(Shop);
+export default memo(FoodMerchant);
