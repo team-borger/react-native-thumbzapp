@@ -32,6 +32,7 @@ const Shop = ({ navigation }: Props) => {
   const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
   const fetchSuccess = res => {
+    console.log('sasaasa: ',res.data.data)
     setProducts(res.data.data)
   }
 
@@ -57,6 +58,7 @@ const Shop = ({ navigation }: Props) => {
       first: 100,
       skip: 0
     }
+    console.log(body)
     setTimeout(() => {
       merchantFoodListAPI(body, fetchSuccess, fetchError)
     }, 1000)
