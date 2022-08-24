@@ -33,6 +33,12 @@ export const lastNameValidator = (last_name: string) => {
   return '';
 };
 
+export const countryValidator = (country: string) => {
+  if (!country || country.length <= 0) return 'Country cannot be empty.';
+
+  return '';
+};
+
 export const phoneValidator = (phone: string) => {
   if (!phone || phone.length <= 0) return 'Mobile number cannot be empty.';
 

@@ -26,6 +26,7 @@ import ProductInfoScreen from './screens/ProductInfoScreen'
 import ShoppingScreen from './screens/ShoppingScreen'
 import FoodScreen from './screens/FoodScreen'
 import NetLoadScreen from './screens/NetLoadScreen'
+import FoodMerchantInfoScreen from './screens/FoodMerchantInfoScreen'
 
 
 const Stack = createNativeStackNavigator();
@@ -61,6 +62,7 @@ const App = () => {
           <Stack.Screen name="ShoppingScreen" component={ShoppingScreen} option={{title: 'ShoppingScreen!!'}} />
           <Stack.Screen name="FoodScreen" component={FoodScreen} option={{title: 'FoodScreen!!'}} />
           <Stack.Screen name="NetLoadScreen" component={NetLoadScreen} option={{title: 'NetLoadScreen!!'}} />
+          <Stack.Screen name="FoodMerchantInfoScreen" component={FoodMerchantInfoScreen} option={{title: 'FoodMerchantInfoScreen!!'}} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
