@@ -15,7 +15,7 @@ type Props = {
   navigation: Navigation;
 };
 
-const Shop = ({ navigation }: Props) => {
+const FoodMerchant = ({ navigation }: Props) => {
   const [search, setSearch] = useState('')
   const [products, setProducts] = useState([])
   const [count, setCount] = useState(0);
@@ -32,7 +32,6 @@ const Shop = ({ navigation }: Props) => {
   const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
   const fetchSuccess = res => {
-    console.log('sasaasa: ',res.data.data)
     setProducts(res.data.data)
   }
 
@@ -58,7 +57,6 @@ const Shop = ({ navigation }: Props) => {
       first: 100,
       skip: 0
     }
-    console.log(body)
     setTimeout(() => {
       merchantFoodListAPI(body, fetchSuccess, fetchError)
     }, 1000)
@@ -213,4 +211,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default memo(Shop);
+export default memo(FoodMerchant);

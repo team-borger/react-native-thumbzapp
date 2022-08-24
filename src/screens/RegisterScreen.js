@@ -12,15 +12,22 @@ import { AuthService } from '../services';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { theme } from '../core/theme';
 import { Navigation } from '../types';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {
   emailValidator,
   passwordValidator,
   confirmPasswordValidator,
   firstNameValidator,
   lastNameValidator,
+  countryValidator,
   phoneValidator,
 } from '../core/utils';
+import { COUNTRIES } from '../constants/Country';
 import { registerAPI, checkEmailAPI } from '../services/auth';
+import SelectDropdown from 'react-native-select-dropdown'
+import { MaskedTextInput } from "react-native-mask-text";
+import ImgToBase64 from 'react-native-image-base64';
+import { IMAGE } from '../constants/Image';
 
 type Props = {
   navigation: Navigation;
@@ -30,6 +37,7 @@ const RegisterScreen = ({ navigation }: Props) => {
   const [first_name, setFirstName] = useState({ value: '', error: '' });
   const [middle_name, setMiddleName] = useState({ value: '', error: '' });
   const [last_name, setLastName] = useState({ value: '', error: '' });
+  const [country, setCountry] = useState({ value: '', error: '' });
   const [phone, setPhone] = useState({ value: '', error: '' });
   const [email, setEmail] = useState({ value: '', error: '' });
   const [password, setPassword] = useState({ value: '', error: '' });
@@ -85,16 +93,21 @@ const RegisterScreen = ({ navigation }: Props) => {
   }
 
   const _onSignUpPressed = () => {
+    // ImgToBase64.getBase64String('file://')
+    // .then(base64String => console.log(base64String))
+    // .catch(err => console.log(err));
     const firstNameError = firstNameValidator(first_name.value);
     const lastNameError = lastNameValidator(last_name.value);
+    const countryError = countryValidator(country.value);
     const phoneError = phoneValidator(phone.value);
     const emailError = emailValidator(email.value);
     const passwordError = passwordValidator(password.value);
     const confirmPasswordError = confirmPasswordValidator(confirm_password.value, password.value);
 
-    if (firstNameError || lastNameError || phoneError || emailError || passwordError || confirmPasswordError) {
+    if (firstNameError || lastNameError || countryError || phoneError || emailError || passwordError || confirmPasswordError) {
       setFirstName({ ...first_name, error: firstNameError });
       setLastName({ ...last_name, error: lastNameError });
+      setCountry({ ...country, error: countryError });
       setPhone({ ...phone, error: phoneError });
       setEmail({ ...email, error: emailError });
       setPassword({ ...password, error: passwordError });
@@ -109,11 +122,18 @@ const RegisterScreen = ({ navigation }: Props) => {
         email: email.value,
         password: password.value,
         confirm_password: confirm_password.value,
-        country: 'PH',
+        country: country.value,
         role_id: 3,
+        profile_image: null
       };
+      console.log(body)
+      console.log(body)
       setLoading(true)
       checkEmailAPI(body, emailUnique, emailExists)
+      // ImgToBase64.getBase64String(IMAGE.LOGO)
+      // .then(base64String => console.log('aaa: ',base64String))
+      // .catch(err => doSomethingWith(err));
+
     }
   };
 
@@ -128,6 +148,7 @@ const RegisterScreen = ({ navigation }: Props) => {
           </View>
           <View style={{flex: 1}}>
             <ScrollView style={styles.scrollView}>
+
               <TextInput
                 placeholder="First name"
                 returnKeyType="next"
@@ -156,23 +177,51 @@ const RegisterScreen = ({ navigation }: Props) => {
                 errorText={last_name.error}
               />
 
-              <TextInput
-                placeholder="Country"
-                returnKeyType="next"
-                value={last_name.value}
-                onChangeText={text => setLastName({ value: text, error: '' })}
-                error={!!last_name.error}
-                errorText={last_name.error}
-              />
+              <View style={{marginHorizontal: 20, marginTop: 10, marginBottom: 5}}>
+                <SelectDropdown
+                  data={COUNTRIES}
+                  onSelect={(selectedItem, index) => {
+                    country.value = selectedItem
+                  }}
+                  defaultButtonText={'Select country'}
+                  buttonTextAfterSelection={(selectedItem, index) => {
+                    return selectedItem;
+                  }}
+                  rowTextForSelection={(item, index) => {
+                    return item;
+                  }}
+                  buttonStyle={styles.dropdown1BtnStyle}
+                  buttonTextStyle={styles.dropdown1BtnTxtStyle}
+                  renderDropdownIcon={isOpened => {
+                    return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={10} />;
+                  }}
+                  dropdownIconPosition={'right'}
+                  dropdownStyle={styles.dropdown1DropdownStyle}
+                  rowStyle={styles.dropdown1RowStyle}
+                  rowTextStyle={styles.dropdown1RowTxtStyle}
+                  selectedRowStyle={styles.dropdown1SelectedRowStyle}
+                  search
+                  searchInputStyle={styles.dropdown1searchInputStyleStyle}
+                  searchPlaceHolder={'Search here'}
+                  searchPlaceHolderColor={'darkgrey'}
+                  renderSearchInputLeftIcon={() => {
+                    return <FontAwesome name={'search'} color={'#444'} size={18} />;
+                  }}
+                />
+              </View>
 
-              <TextInput
-                placeholder="Mobile number"
-                returnKeyType="next"
-                value={phone.value}
-                onChangeText={text => setPhone({ value: text, error: '' })}
-                error={!!phone.error}
-                errorText={phone.error}
-              />
+              <View style={{marginHorizontal: 20, marginTop: 10, marginBottom: 5}}>
+                <MaskedTextInput
+                  placeholder="Mobile number"
+                  mask="99999999999"
+                  keyboardType="numeric"
+                  value={phone.value}
+                  onChangeText={text => setPhone({ value: text, error: '' })}
+                  style={styles.inputPhone}
+                  error={!!phone.error}
+                  errorText={phone.error}
+                />
+              </View>
 
               <TextInput
                 placeholder="Email"
@@ -230,6 +279,41 @@ const RegisterScreen = ({ navigation }: Props) => {
 };
 
 const styles = StyleSheet.create({
+  dropdown1BtnStyle: {
+    width: '100%',
+    height: 57,
+    backgroundColor: '#FFF',
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#444'
+  },
+  inputPhone: {
+    width: '100%',
+    height: 57,
+    backgroundColor: '#FFF',
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#444',
+    paddingHorizontal: 15,
+    color: '#777',
+    fontSize: 12
+  },
+  dropdown1BtnTxtStyle: {
+    color: '#777',
+    textAlign: 'left',
+    backgroundColor: theme.colors.surface,
+    fontSize: 12,
+  },
+  dropdown1DropdownStyle: {backgroundColor: '#EFEFEF'},
+  dropdown1RowStyle: {backgroundColor: '#EFEFEF', borderBottomColor: '#C5C5C5', paddingHorizontal: 10},
+  dropdown1RowTxtStyle: {color: '#444', textAlign: 'left'},
+  dropdown1SelectedRowStyle: {backgroundColor: 'rgba(0,0,0,0.1)'},
+  dropdown1searchInputStyleStyle: {
+    backgroundColor: '#EFEFEF',
+    borderRadius: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#444',
+  },
   header: {
     height: 5,
     backgroundColor: 'transparent'
