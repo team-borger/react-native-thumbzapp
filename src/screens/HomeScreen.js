@@ -212,7 +212,7 @@ const Shop = ({ navigation }: Props) => {
                   </Card>
                 </TouchableHighlight>
               )}
-              <TouchableHighlight style={styles.cardStyle} onPress={() => navigation.navigate('ShoppingScreen')}>
+              <TouchableHighlight style={styles.cardStyle} onPress={() => navigation.navigate('FoodScreen')}>
                 <Card style={{height: 228, backgroundColor: '#ead3f9'}}>
                   <Card.Content>
                     <View style={{height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
