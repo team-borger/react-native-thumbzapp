@@ -8,6 +8,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useFocusEffect } from '@react-navigation/native';
 import { cartAllAPI } from '../services/products';
 import { merchantFoodListAPI } from '../services/users';
+import { foodSearchAPI } from '../services/food';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -18,15 +19,17 @@ type Props = {
 const FoodMerchant = ({ navigation }: Props) => {
   const [search, setSearch] = useState('')
   const [products, setProducts] = useState([])
+  const [foodList, setFoodList] = useState([])
   const [count, setCount] = useState(0);
   const [loginuser, setUser] = useState({});
+  const [merchantInfo, setMerchant] = useState({});
 
   const _goToCart = () => {
     navigation.navigate('CartScreen')
   }
 
   const _goBack = () => {
-    navigation.navigate('HomeScreen')
+    navigation.navigate('FoodScreen')
   }
 
   const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
@@ -54,7 +57,7 @@ const FoodMerchant = ({ navigation }: Props) => {
     const body = {
       keyword: query,
       merchant_type: 'Food',
-      first: 100,
+      take: 100,
       skip: 0
     }
     setTimeout(() => {
@@ -71,12 +74,22 @@ const FoodMerchant = ({ navigation }: Props) => {
     React.useCallback(() => {
       onChangeSearch('')
       _geUserInfo()
+      _geMerchantInfo()
     }, [navigation])
   );
 
   const _getCartInfo = (payload) => {
     let body = payload.id
     cartAllAPI(body, cartAllSuccess, fetchError)
+  }
+
+  const _getFoodList = (payload) => {
+    let body = {
+      merchant_id: payload.id,
+      skip: 0,
+      take: 100
+    }
+    foodSearchAPI(body, foodSearchSuccess, fetchError)
   }
 
   const _geUserInfo = async () => {
@@ -92,8 +105,25 @@ const FoodMerchant = ({ navigation }: Props) => {
     }
   }
 
+  const _geMerchantInfo = async () => {
+    try {
+      const value = await AsyncStorage.getItem('choosenFoodMerchant')
+      if (value !== null) {
+        const ret = JSON.parse(value);
+        setMerchant(ret)
+        _getFoodList(ret)
+      }
+    } catch (error) {
+      console.log('error async storage')
+    }
+  }
+
   const cartAllSuccess = res => {
     setCount(res.data.length)
+  }
+
+  const foodSearchSuccess = res => {
+    setFoodList(res.data.data)
   }
 
   return (
@@ -108,12 +138,12 @@ const FoodMerchant = ({ navigation }: Props) => {
               style={{marginRight: 15}}
             />
           </TouchableHighlight>
-          <Text style={styles.headerText}>Food</Text>
+          <Text style={styles.headerText}>{ merchantInfo.shop_name }</Text>
         </View>
         <View>
           <TouchableHighlight onPress={_goToCart} underlayColor="#eeeeee" style={{ marginRight: 5 }}>
             <MaterialCommunityIcons
-              name="shopping"
+              name="food"
               size={25}
               color="#880ED4"
             />
@@ -129,22 +159,25 @@ const FoodMerchant = ({ navigation }: Props) => {
       <View style={styles.contentContainer}>
         <Searchbar
           placeholder="Search"
-          style={products.length > 0 ? {marginBottom: 20} : {}}
+          style={foodList.length > 0 ? {marginBottom: 20} : {}}
           onChangeText={onChangeSearch}
           value={search}
         />
         <FlatList
-          data={products}
+          data={foodList}
           numColumns={2}
           renderItem={({ item }) => (
             <View style={styles.skeks}>
               <View style={styles.item}>
                 <TouchableHighlight style={styles.cardStyle} key={item.id} onPress={() => selectProduct(item)}>
                   <Card>
-                    <Card.Cover style={styles.yawa} source={{ uri: `http://202.137.120.41:8089/storage/uploads/users/${item.id}/${item.images[0].photo}` }} />
+                    <Card.Cover style={styles.yawa} source={{ uri: `http://202.137.120.41:8089/storage/uploads/foods/${item.id}/${item.images[0].photo}` }} />
                     <Card.Content>
                       <View style={{marginTop: 5, marginBottom: 20}}>
-                        <Text>{ item.shop_name }</Text>
+                        <Text>{ item.name }</Text>
+                      </View>
+                      <View>
+                        <Text>{'\u20B1'} { item.price }</Text>
                       </View>
                     </Card.Content>
                   </Card>
