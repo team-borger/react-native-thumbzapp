@@ -32,7 +32,6 @@ const Shop = ({ navigation }: Props) => {
   const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
   const fetchSuccess = res => {
-    console.log('sasaasa: ',res.data.data)
     setProducts(res.data.data)
   }
 
@@ -55,7 +54,7 @@ const Shop = ({ navigation }: Props) => {
     const body = {
       keyword: query,
       merchant_type: 'Food',
-      first: 100,
+      take: 100,
       skip: 0
     }
     console.log(body)
@@ -115,7 +114,7 @@ const Shop = ({ navigation }: Props) => {
         <View>
           <TouchableHighlight onPress={_goToCart} underlayColor="#eeeeee" style={{ marginRight: 5 }}>
             <MaterialCommunityIcons
-              name="shopping"
+              name="food"
               size={25}
               color="#880ED4"
             />
@@ -145,8 +144,8 @@ const Shop = ({ navigation }: Props) => {
                   <Card>
                     <Card.Cover style={styles.yawa} source={{ uri: `http://202.137.120.41:8089/storage/uploads/users/${item.id}/${item.images[0].photo}` }} />
                     <Card.Content>
-                      <View style={{marginTop: 5, marginBottom: 20}}>
-                        <Text>{ item.shop_name }</Text>
+                      <View style={{marginTop: 10}}>
+                        <Text style={{color: '#880ED4', fontWeight: 'bold'}}>{ item.shop_name }</Text>
                       </View>
                     </Card.Content>
                   </Card>

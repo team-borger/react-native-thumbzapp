@@ -52,7 +52,7 @@ const Shop = ({ navigation }: Props) => {
     setSearch(query)
     const body = {
       keyword: query,
-      first: 100,
+      take: 100,
       skip: 0
     }
     setTimeout(() => {
