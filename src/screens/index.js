@@ -21,3 +21,5 @@ export { default as ShoppingScreen } from './ShoppingScreen';
 export { default as FoodScreen } from './FoodScreen';
 export { default as NetLoadScreen } from './NetLoadScreen';
 export { default as FoodMerchantInfoScreen } from './FoodMerchantInfoScreen';
+export { default as CartFoodScreen } from './CartFoodScreen';
+export { default as FoodInfoScreen } from './FoodInfoScreen';

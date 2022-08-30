@@ -11,14 +11,14 @@ import { useFocusEffect } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import { SliderBox } from "react-native-image-slider-box";
 import BottomSheet from "react-native-easy-bottomsheet";
-import { addCartAPI, cartAllAPI } from '../services/products';
+import { addCartFoodAPI, cartFoodAllAPI } from '../services/food';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 type Props = {
   navigation: Navigation;
 };
 
-const ProductInfo = ({ navigation }: Props) => {
+const FoodInfo = ({ navigation }: Props) => {
   const [product, setProduct] = useState({})
   const [images, setImages] = useState([])
   const [isVisible, setVisible] = useState(false);
@@ -41,7 +41,7 @@ const ProductInfo = ({ navigation }: Props) => {
 
   const _getCartInfo = (payload) => {
     let body = payload.id
-    cartAllAPI(body, fetchSuccess, fetchError)
+    cartFoodAllAPI(body, fetchSuccess, fetchError)
   }
 
   const fetchSuccess = res => {
@@ -85,12 +85,12 @@ const ProductInfo = ({ navigation }: Props) => {
 
   const _getProductInfo = async () => {
     try {
-      const value = await AsyncStorage.getItem('choosenProduct')
+      const value = await AsyncStorage.getItem('choosenFoodMerchant')
       if (value !== null) {
         const ret = JSON.parse(value);
         let photos = []
         for (let item of ret.images) {
-          photos.push(`http://202.137.120.113:8089/storage/uploads/products/${ret.id}/${item.photo}`)
+          photos.push(`http://202.137.120.113:8089/storage/uploads/foods/${ret.id}/${item.photo}`)
         }
         setImages(photos)
         setProduct(ret)
@@ -106,11 +106,11 @@ const ProductInfo = ({ navigation }: Props) => {
       product_id: product.id,
       user_id: loginuser.id
     }
-    addCartAPI(body, addSuccess, addError)
+    addCartFoodAPI(body, addSuccess, addError)
   }
 
   const addSuccess = res => {
-    cartAllAPI(fetchSuccess, fetchError)
+    cartFoodAllAPI(fetchSuccess, fetchError)
     setVisible(false);
   }
 
@@ -169,7 +169,8 @@ const ProductInfo = ({ navigation }: Props) => {
           onCurrentImagePressed={index => console.warn(`image ${index} pressed`)}
           />
           <View style={{margin: 10}}>
-            <Text style={{fontSize: 17}}>{product.name}</Text>
+            <Text style={{fontSize: 17, fontWeight: 'bold'}}>{product.name}</Text>
+            <Text style={{fontSize: 12}}>{product.description}</Text>
             <Text style={{color: '#880ED4', fontSize: 15, marginTop: 10}}>{'\u20B1'}{product.price}</Text>
           </View>
         </View>
@@ -283,4 +284,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default memo(ProductInfo);
+export default memo(FoodInfo);

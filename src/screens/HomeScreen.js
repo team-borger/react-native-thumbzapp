@@ -7,7 +7,7 @@ import NavbarBot from '../components/NavbarBot';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useFocusEffect } from '@react-navigation/native';
 import { productsListAPI, cartAllAPI } from '../services/products';
-import { foodSearchAPI } from '../services/food';
+import { foodSearchAPI, cartFoodAllAPI } from '../services/food';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -20,6 +20,7 @@ const Shop = ({ navigation }: Props) => {
   const [products, setProducts] = useState([])
   const [foods, setFoods] = useState([])
   const [count, setCount] = useState(0);
+  const [countFood, setCountFood] = useState(0);
   const [loginuser, setUser] = useState({});
 
   const _goToCart = () => {
@@ -78,6 +79,7 @@ const Shop = ({ navigation }: Props) => {
   const _getCartInfo = (payload) => {
     let body = payload.id
     cartAllAPI(body, cartAllSuccess, fetchError)
+    cartFoodAllAPI(body, cartFoodAllSuccess, fetchError)
   }
 
   const _geUserInfo = async () => {
@@ -95,6 +97,10 @@ const Shop = ({ navigation }: Props) => {
 
   const cartAllSuccess = res => {
     setCount(res.data.length)
+  }
+
+  const cartFoodAllSuccess = res => {
+    setCountFood(res.data.length)
   }
 
   return (
@@ -140,7 +146,7 @@ const Shop = ({ navigation }: Props) => {
               </View>
 
               <View style={{ position: 'absolute', top: -5, right: 0 }}>
-                <Badge>{ count }</Badge>
+                <Badge>{ countFood }</Badge>
               </View>
             </Card.Content>
           </Card>
