@@ -6,7 +6,7 @@ import { Navigation } from '../types';
 import NavbarBot from '../components/NavbarBot';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useFocusEffect } from '@react-navigation/native';
-import { cartAllAPI } from '../services/products';
+import { cartFoodAllAPI } from '../services/food';
 import { merchantFoodListAPI } from '../services/users';
 import { foodSearchAPI } from '../services/food';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -25,7 +25,7 @@ const FoodMerchant = ({ navigation }: Props) => {
   const [merchantInfo, setMerchant] = useState({});
 
   const _goToCart = () => {
-    navigation.navigate('CartScreen')
+    navigation.navigate('CartFoodScreen')
   }
 
   const _goBack = () => {
@@ -67,7 +67,7 @@ const FoodMerchant = ({ navigation }: Props) => {
 
   const selectProduct = (payload) => {
     AsyncStorage.setItem('choosenFoodMerchant', JSON.stringify(payload))
-    navigation.replace('FoodMerchantInfoScreen')
+    navigation.replace('FoodInfoScreen')
   }
 
   useFocusEffect(
@@ -80,7 +80,7 @@ const FoodMerchant = ({ navigation }: Props) => {
 
   const _getCartInfo = (payload) => {
     let body = payload.id
-    cartAllAPI(body, cartAllSuccess, fetchError)
+    cartFoodAllAPI(body, cartAllSuccess, fetchError)
   }
 
   const _getFoodList = (payload) => {
@@ -171,7 +171,7 @@ const FoodMerchant = ({ navigation }: Props) => {
               <View style={styles.item}>
                 <TouchableHighlight style={styles.cardStyle} key={item.id} onPress={() => selectProduct(item)}>
                   <Card>
-                    <Card.Cover style={styles.yawa} source={{ uri: `http://202.137.120.41:8089/storage/uploads/foods/${item.id}/${item.images[0].photo}` }} />
+                    <Card.Cover style={styles.yawa} source={{ uri: `http://202.137.120.113:8089/storage/uploads/foods/${item.id}/${item.images[0].photo}` }} />
                     <Card.Content>
                       <View style={{marginTop: 5, marginBottom: 20}}>
                         <Text>{ item.name }</Text>

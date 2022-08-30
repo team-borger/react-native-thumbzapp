@@ -139,7 +139,7 @@ const Shop = ({ navigation }: Props) => {
               <View style={styles.item}>
                 <TouchableHighlight style={styles.cardStyle} key={item.id} onPress={() => selectProduct(item)}>
                   <Card>
-                    <Card.Cover style={styles.yawa} source={{ uri: `http://202.137.120.41:8089/storage/uploads/products/${item.id}/${item.images[0].photo}` }} />
+                    <Card.Cover style={styles.yawa} source={{ uri: `http://202.137.120.113:8089/storage/uploads/products/${item.id}/${item.images[0].photo}` }} />
                     <Card.Content>
                       <View style={{marginTop: 5, marginBottom: 20}}>
                         <Text>{ item.name }</Text>

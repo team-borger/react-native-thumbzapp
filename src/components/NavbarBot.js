@@ -6,7 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const Skekert = ({ navigation }) => {
 
   const _openWeb = () => {
-    Linking.openURL('fb://page/102846081890951')
+    Linking.openURL('fb://page/1138454812942659')
   }
 
   return (
