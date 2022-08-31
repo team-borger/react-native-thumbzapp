@@ -19,6 +19,10 @@ const LoginScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
+  // AsyncStorage.setItem('eskek', 'zz')
+  // console.log(AsyncStorage.setItem('eskek'))
+  // console.log(AsyncStorage.getAllKeys())
+
   _storeUserData = async (payload) => {
     await AsyncStorage.setItem('Token', payload.user.token)
     await AsyncStorage.setItem('user', JSON.stringify(payload.user))
