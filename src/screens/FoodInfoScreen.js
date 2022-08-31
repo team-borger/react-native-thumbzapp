@@ -103,7 +103,7 @@ const FoodInfo = ({ navigation }: Props) => {
   const addCart = () => {
     let body = {
       quantity: quantity,
-      product_id: product.id,
+      food_id: product.id,
       user_id: loginuser.id
     }
     addCartFoodAPI(body, addSuccess, addError)
@@ -133,7 +133,7 @@ const FoodInfo = ({ navigation }: Props) => {
   }
 
   const _goToCart = () => {
-    navigation.navigate('CartScreen')
+    navigation.navigate('CartFoodScreen')
   }
 
   return (
@@ -149,7 +149,7 @@ const FoodInfo = ({ navigation }: Props) => {
         <View>
           <TouchableHighlight onPress={_goToCart} underlayColor="#eeeeee" style={{ marginRight: 5 }}>
             <MaterialCommunityIcons
-              name="shopping"
+              name="food"
               size={25}
               color="#880ED4"
             />

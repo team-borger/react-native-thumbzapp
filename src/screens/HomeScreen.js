@@ -106,7 +106,7 @@ const Shop = ({ navigation }: Props) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 10, backgroundColor: '#880ED4' }}>
-        <Text style={styles.headerText}>Thumbzupp</Text>
+        <Text style={styles.headerText}>ThumbzUpp</Text>
       </View>
 
       <View style={{padding: 10, backgroundColor: '#880ED4'}}>
