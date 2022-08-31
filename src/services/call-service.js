@@ -207,6 +207,6 @@ export default class CallService {
   };
 
   _onSessionConnectionStateChangedListener = (session, userID, connectionState) => {
-    console.log(connectionState)
+    console.log('conStateListener', {session, userID, connectionState})
   };
 }
