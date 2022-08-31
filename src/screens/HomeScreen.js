@@ -1,5 +1,5 @@
 import React, { memo,useState } from 'react';
-import { FlatList, View, Text, StyleSheet, TouchableHighlight } from 'react-native';
+import { FlatList, View, Text, StyleSheet, TouchableHighlight, ScrollView, List } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar, Searchbar, Card, Title, Paragraph, Avatar, Badge } from 'react-native-paper';
 import { Navigation } from '../types';
@@ -7,6 +7,7 @@ import NavbarBot from '../components/NavbarBot';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useFocusEffect } from '@react-navigation/native';
 import { productsListAPI, cartAllAPI } from '../services/products';
+import { foodSearchAPI, cartFoodAllAPI } from '../services/food';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -17,7 +18,9 @@ type Props = {
 const Shop = ({ navigation }: Props) => {
   const [search, setSearch] = useState('')
   const [products, setProducts] = useState([])
+  const [foods, setFoods] = useState([])
   const [count, setCount] = useState(0);
+  const [countFood, setCountFood] = useState(0);
   const [loginuser, setUser] = useState({});
 
   const _goToCart = () => {
@@ -28,6 +31,10 @@ const Shop = ({ navigation }: Props) => {
 
   const fetchSuccess = res => {
     setProducts(res.data.data)
+  }
+
+  const foodFetchSuccess = res => {
+    setFoods(res.data.data)
   }
 
   const fetchError = err => {
@@ -48,11 +55,12 @@ const Shop = ({ navigation }: Props) => {
     setSearch(query)
     const body = {
       keyword: query,
-      first: 100,
+      take: 7,
       skip: 0
     }
     setTimeout(() => {
       productsListAPI(body, fetchSuccess, fetchError)
+      foodSearchAPI(body, foodFetchSuccess, fetchError)
     }, 1000)
   }
 
@@ -71,6 +79,7 @@ const Shop = ({ navigation }: Props) => {
   const _getCartInfo = (payload) => {
     let body = payload.id
     cartAllAPI(body, cartAllSuccess, fetchError)
+    cartFoodAllAPI(body, cartFoodAllSuccess, fetchError)
   }
 
   const _geUserInfo = async () => {
@@ -90,24 +99,14 @@ const Shop = ({ navigation }: Props) => {
     setCount(res.data.length)
   }
 
+  const cartFoodAllSuccess = res => {
+    setCountFood(res.data.length)
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 10, backgroundColor: '#880ED4' }}>
         <Text style={styles.headerText}>Thumbzupp</Text>
-        <View>
-          <TouchableHighlight onPress={_goToCart} underlayColor="#eeeeee" style={{ marginRight: 5 }}>
-            <MaterialCommunityIcons
-              name="shopping"
-              size={25}
-              color="#fff"
-            />
-          </TouchableHighlight>
-          <View>
-            <TouchableHighlight onPress={_goToCart} underlayColor="#eeeeee" style={{ position: 'absolute', top: -30, right: -5 }}>
-              <Badge>{ count }</Badge>
-            </TouchableHighlight>
-          </View>
-        </View>
       </View>
 
       <View style={{padding: 10, backgroundColor: '#880ED4'}}>
@@ -129,6 +128,10 @@ const Shop = ({ navigation }: Props) => {
               <View>
                 <Text style={{fontSize: 12}}>Find everything here</Text>
               </View>
+
+              <View style={{ position: 'absolute', top: -5, right: 0 }}>
+                <Badge>{ count }</Badge>
+              </View>
             </Card.Content>
           </Card>
         </TouchableHighlight>
@@ -141,27 +144,35 @@ const Shop = ({ navigation }: Props) => {
               <View>
                 <Text style={{fontSize: 12}}>Satisfy your cravings</Text>
               </View>
+
+              <View style={{ position: 'absolute', top: -5, right: 0 }}>
+                <Badge>{ countFood }</Badge>
+              </View>
             </Card.Content>
           </Card>
         </TouchableHighlight>
       </View>
 
       <View style={styles.contentContainer}>
-        <View style={{paddingHorizontal: 5, marginBottom: 10, paddingTop: 5}}>
-          <Text style={{fontSize: 20, fontWeight: 'bold', color: '#880ED4'}}>Top Products</Text>
-        </View>
-        <FlatList
-          data={products}
-          numColumns={2}
-          renderItem={({ item }) => (
-            <View style={styles.skeks}>
-              <View style={styles.item}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={{paddingHorizontal: 5, marginBottom: 10, paddingTop: 5, display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between'}}>
+            <Text style={{fontSize: 20, fontWeight: 'bold', color: '#880ED4'}}>Top Products</Text>
+            <TouchableHighlight underlayColor="#eeeeee" onPress={() => navigation.navigate('ShoppingScreen')}>
+              <Text>View All</Text>
+            </TouchableHighlight>
+          </View>
+          <View>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              >
+              {products.map((item, index) =>
                 <TouchableHighlight style={styles.cardStyle} key={item.id} onPress={() => selectProduct(item)}>
                   <Card>
-                    <Card.Cover style={styles.yawa} source={{ uri: `http://202.137.120.41:8089/storage/uploads/products/${item.id}/${item.images[0].photo}` }} />
+                    <Card.Cover style={styles.yawa} source={{ uri: `http://202.137.120.113:8089/storage/uploads/products/${item.id}/${item.images[0].photo}` }} />
                     <Card.Content>
                       <View style={{marginTop: 5, marginBottom: 20}}>
-                        <Text>{ item.name }</Text>
+                        <Text numberOfLines={1}>{ item.name }</Text>
                       </View>
                       <View>
                         <Text>{'\u20B1'} { item.price }</Text>
@@ -169,11 +180,57 @@ const Shop = ({ navigation }: Props) => {
                     </Card.Content>
                   </Card>
                 </TouchableHighlight>
-              </View>
-            </View>
-          )}
-          keyExtractor={(item) => item.id}
-        />
+              )}
+              <TouchableHighlight style={styles.cardStyle} onPress={() => navigation.navigate('ShoppingScreen')}>
+                <Card style={{height: 228, backgroundColor: '#ead3f9'}}>
+                  <Card.Content>
+                    <View style={{height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                      <Text>View All</Text>
+                    </View>
+                  </Card.Content>
+                </Card>
+              </TouchableHighlight>
+            </ScrollView>
+          </View>
+          <View style={{paddingHorizontal: 5, marginBottom: 10, paddingTop: 15, display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between'}}>
+            <Text style={{fontSize: 20, fontWeight: 'bold', color: '#880ED4'}}>Favorite Food</Text>
+            <TouchableHighlight underlayColor="#eeeeee" onPress={() => navigation.navigate('ShoppingScreen')}>
+              <Text>View All</Text>
+            </TouchableHighlight>
+          </View>
+          <View>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              >
+              {foods.map((item, index) =>
+                <TouchableHighlight style={styles.cardStyle} key={item.id} onPress={() => selectProduct(item)}>
+                  <Card>
+                    <Card.Cover style={styles.yawa} source={{ uri: `http://202.137.120.113:8089/storage/uploads/foods/${item.id}/${item.images[0].photo}` }} />
+                    <Card.Content>
+                      <View style={{marginTop: 5, marginBottom: 20}}>
+                        <Text numberOfLines={1}>{ item.name }</Text>
+                      </View>
+                      <View>
+                        <Text>{'\u20B1'} { item.price }</Text>
+                      </View>
+                    </Card.Content>
+                  </Card>
+                </TouchableHighlight>
+              )}
+              <TouchableHighlight style={styles.cardStyle} onPress={() => navigation.navigate('FoodScreen')}>
+                <Card style={{height: 228, backgroundColor: '#ead3f9'}}>
+                  <Card.Content>
+                    <View style={{height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                      <Text>View All</Text>
+                    </View>
+                  </Card.Content>
+                </Card>
+              </TouchableHighlight>
+            </ScrollView>
+          </View>
+        </ScrollView>
+
       </View>
 
       <NavbarBot navigation={navigation}></NavbarBot>
@@ -212,7 +269,8 @@ const styles = StyleSheet.create({
   },
   cardStyle: {
     marginHorizontal: 5,
-    marginBottom: 10
+    marginBottom: 10,
+    width: 150
   },
   contentContainer: {
       flex: 1,
