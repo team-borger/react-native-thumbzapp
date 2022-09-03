@@ -13,6 +13,7 @@ import { SliderBox } from "react-native-image-slider-box";
 import BottomSheet from "react-native-easy-bottomsheet";
 import { addCartAPI, cartAllAPI } from '../services/products';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import environment from '../../environment';
 
 type Props = {
   navigation: Navigation;
@@ -90,7 +91,7 @@ const ProductInfo = ({ navigation }: Props) => {
         const ret = JSON.parse(value);
         let photos = []
         for (let item of ret.images) {
-          photos.push(`http://202.137.120.113:8089/storage/uploads/products/${ret.id}/${item.photo}`)
+          photos.push(`${environment.APP_URL}/storage/uploads/products/${ret.id}/${item.photo}`)
         }
         setImages(photos)
         setProduct(ret)
