@@ -11,6 +11,7 @@ import { merchantFoodListAPI } from '../services/users';
 import { foodSearchAPI } from '../services/food';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import environment from '../../environment';
 
 type Props = {
   navigation: Navigation;
@@ -171,7 +172,7 @@ const FoodMerchant = ({ navigation }: Props) => {
               <View style={styles.item}>
                 <TouchableHighlight style={styles.cardStyle} key={item.id} onPress={() => selectProduct(item)}>
                   <Card>
-                    <Card.Cover style={styles.yawa} source={{ uri: `http://202.137.120.113:8089/storage/uploads/foods/${item.id}/${item.images[0].photo}` }} />
+                    <Card.Cover style={styles.yawa} source={{ uri: `${environment.APP_URL}/storage/uploads/foods/${item.id}/${item.images[0].photo}` }} />
                     <Card.Content>
                       <View style={{marginTop: 5, marginBottom: 20}}>
                         <Text>{ item.name }</Text>

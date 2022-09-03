@@ -13,6 +13,7 @@ import { SliderBox } from "react-native-image-slider-box";
 import BottomSheet from "react-native-easy-bottomsheet";
 import { addCartFoodAPI, cartFoodAllAPI } from '../services/food';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import environment from '../../environment';
 
 type Props = {
   navigation: Navigation;
@@ -90,7 +91,7 @@ const FoodInfo = ({ navigation }: Props) => {
         const ret = JSON.parse(value);
         let photos = []
         for (let item of ret.images) {
-          photos.push(`http://202.137.120.113:8089/storage/uploads/foods/${ret.id}/${item.photo}`)
+          photos.push(`${environment.APP_URL}/storage/uploads/foods/${ret.id}/${item.photo}`)
         }
         setImages(photos)
         setProduct(ret)
@@ -103,7 +104,7 @@ const FoodInfo = ({ navigation }: Props) => {
   const addCart = () => {
     let body = {
       quantity: quantity,
-      product_id: product.id,
+      food_id: product.id,
       user_id: loginuser.id
     }
     addCartFoodAPI(body, addSuccess, addError)
@@ -133,7 +134,7 @@ const FoodInfo = ({ navigation }: Props) => {
   }
 
   const _goToCart = () => {
-    navigation.navigate('CartScreen')
+    navigation.navigate('CartFoodScreen')
   }
 
   return (
@@ -149,7 +150,7 @@ const FoodInfo = ({ navigation }: Props) => {
         <View>
           <TouchableHighlight onPress={_goToCart} underlayColor="#eeeeee" style={{ marginRight: 5 }}>
             <MaterialCommunityIcons
-              name="shopping"
+              name="food"
               size={25}
               color="#880ED4"
             />

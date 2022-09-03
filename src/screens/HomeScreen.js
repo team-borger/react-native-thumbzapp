@@ -10,6 +10,7 @@ import { productsListAPI, cartAllAPI } from '../services/products';
 import { foodSearchAPI, cartFoodAllAPI } from '../services/food';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import environment from '../../environment';
 
 type Props = {
   navigation: Navigation;
@@ -106,7 +107,7 @@ const Shop = ({ navigation }: Props) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 10, backgroundColor: '#880ED4' }}>
-        <Text style={styles.headerText}>Thumbzupp</Text>
+        <Text style={styles.headerText}>ThumbzUpp</Text>
       </View>
 
       <View style={{padding: 10, backgroundColor: '#880ED4'}}>
@@ -169,7 +170,7 @@ const Shop = ({ navigation }: Props) => {
               {products.map((item, index) =>
                 <TouchableHighlight style={styles.cardStyle} key={item.id} onPress={() => selectProduct(item)}>
                   <Card>
-                    <Card.Cover style={styles.yawa} source={{ uri: `http://202.137.120.113:8089/storage/uploads/products/${item.id}/${item.images[0].photo}` }} />
+                    <Card.Cover style={styles.yawa} source={{ uri: `${environment.APP_URL}/storage/uploads/products/${item.id}/${item.images[0].photo}` }} />
                     <Card.Content>
                       <View style={{marginTop: 5, marginBottom: 20}}>
                         <Text numberOfLines={1}>{ item.name }</Text>
@@ -206,7 +207,7 @@ const Shop = ({ navigation }: Props) => {
               {foods.map((item, index) =>
                 <TouchableHighlight style={styles.cardStyle} key={item.id} onPress={() => selectProduct(item)}>
                   <Card>
-                    <Card.Cover style={styles.yawa} source={{ uri: `http://202.137.120.113:8089/storage/uploads/foods/${item.id}/${item.images[0].photo}` }} />
+                    <Card.Cover style={styles.yawa} source={{ uri: `${environment.APP_URL}/storage/uploads/foods/${item.id}/${item.images[0].photo}` }} />
                     <Card.Content>
                       <View style={{marginTop: 5, marginBottom: 20}}>
                         <Text numberOfLines={1}>{ item.name }</Text>

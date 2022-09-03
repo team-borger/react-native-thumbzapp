@@ -19,6 +19,7 @@ const ChatScreen = ({ navigation }: Props) => {
   const [items, setItems] = useState([])
   const [showAlert, setState] = useState(false)
   const [choosenItem, setItem] = useState({})
+  const [payType, setPayType] = useState('')
 
   const showToast = text => {
     const commonToast = Platform.OS === 'android' ? ToastAndroid : Toast;
@@ -44,7 +45,11 @@ const ChatScreen = ({ navigation }: Props) => {
   const _isConfirm = () => {
     if (items[0].id) {
       AsyncStorage.setItem('paymentMethod', JSON.stringify(items[0]))
-      navigation.navigate('CheckoutScreen')
+      if (payType == 'food') {
+        navigation.navigate('CheckoutFoodScreen');
+      } else {
+        navigation.navigate('CheckoutScreen');
+      }
     } else {
       showToast(`Please add payment method`)
     }
@@ -74,14 +79,31 @@ const ChatScreen = ({ navigation }: Props) => {
     deleteCardAPI(choosenItem, deleteSuccess, fetchError);
   }
 
+  const _getPayType = async () => {
+    try {
+      const value = await AsyncStorage.getItem('payType')
+      if (value !== null) {
+        const ret = JSON.parse(value);
+        setPayType(ret)
+      }
+    } catch (error) {
+      console.log('error async storage')
+    }
+  }
+
   useFocusEffect(
     React.useCallback(() => {
       getCardListAPI(fetchSuccess,fetchError);
+      _getPayType()
     }, [navigation])
   );
 
   const _goBack = () => {
-    navigation.navigate('CheckoutScreen');
+    if (payType == 'food') {
+      navigation.navigate('CheckoutFoodScreen');
+    } else {
+      navigation.navigate('CheckoutScreen');
+    }
   }
 
   return (

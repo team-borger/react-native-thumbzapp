@@ -10,6 +10,7 @@ import { IMAGE } from '../constants/Image';
 import NumericInput from 'react-native-numeric-input'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { cartFoodAllAPI } from '../services/food';
+import environment from '../../environment';
 
 type Props = {
   navigation: Navigation;
@@ -21,9 +22,8 @@ const Cart = ({ navigation }: Props) => {
   const [loginuser, setUser] = useState({})
 
   const fetchSuccess = res => {
-    console.log(res.data)
-    // setItems(res.data)
-    // setsubtotal(res.data)
+    setItems(res.data)
+    setsubtotal(res.data)
   }
 
   const fetchError = err => {
@@ -49,7 +49,7 @@ const Cart = ({ navigation }: Props) => {
   const setsubtotal = (payload) => {
     var totalValue = 0
     for (let item of payload) {
-      totalValue = totalValue + (item.quantity * item.products[0].price)
+      totalValue = totalValue + (item.quantity * item.foods[0].price)
     }
     setTotal(totalValue)
   }
@@ -63,9 +63,9 @@ const Cart = ({ navigation }: Props) => {
   }
 
   const _onCheckoutPressed = () => {
-    AsyncStorage.setItem('checkout', JSON.stringify(items))
+    AsyncStorage.setItem('checkoutFood', JSON.stringify(items))
     AsyncStorage.setItem('paymentMethod', JSON.stringify({}))
-    navigation.navigate('CheckoutScreen');
+    navigation.navigate('CheckoutFoodScreen');
   }
 
   useFocusEffect(
@@ -109,17 +109,17 @@ const Cart = ({ navigation }: Props) => {
               <View key={item.id} style={{marginBottom: 5, paddingHorizontal: 20, paddingVertical: 10, borderTopColor: '#eeeeee',  borderTopWidth: 2,}}>
                 <View style={styles.alignCenterRow}>
                   <View style={styles.alignCenterRow}>
-                    <Image source={{ uri: `http://202.137.120.113:8089/storage/uploads/food/${item.foods[0].id}/${item.foods[0].images[0].photo}` }} style={styles.image} />
+                    <Image source={{ uri: `${environment.APP_URL}/storage/uploads/foods/${item.foods[0].id}/${item.foods[0].images[0].photo}` }} style={styles.image} />
                     <View>
-                      <Text style={{fontWeight: 'bold'}}>{item.products[0].name}</Text>
+                      <Text style={{fontWeight: 'bold'}}>{item.foods[0].name}</Text>
                       <View style={{display: 'flex', flexDirection: 'row'}}>
-                        <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {item.products[0].price}</Text>
+                        <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {item.foods[0].price}</Text>
                         <Text style={{color: 'gray', fontSize: 12}}> X {item.quantity}</Text>
                       </View>
                     </View>
                   </View>
                   <View>
-                    <Text style={{color: '#880ED4', fontSize: 15, fontWeight: 'bold'}}>{'\u20B1'} {item.quantity * item.products[0].price}</Text>
+                    <Text style={{color: '#880ED4', fontSize: 15, fontWeight: 'bold'}}>{'\u20B1'} {item.quantity * item.foods[0].price}</Text>
                   </View>
 
                 </View>

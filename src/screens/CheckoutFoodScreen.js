@@ -40,7 +40,7 @@ const Checkout = ({ navigation }: Props) => {
 
   const _getCheckout = async () => {
     try {
-      const value = await AsyncStorage.getItem('checkout')
+      const value = await AsyncStorage.getItem('checkoutFood')
       const payment = await AsyncStorage.getItem('paymentMethod')
       if (value !== null) {
         const ret = JSON.parse(value);
@@ -60,7 +60,7 @@ const Checkout = ({ navigation }: Props) => {
     var totalValue = 0
     var totalItem = 0
     for (let item of payload) {
-      totalValue = totalValue + (item.quantity * item.products[0].price)
+      totalValue = totalValue + (item.quantity * item.foods[0].price)
       totalItem = totalItem + item.quantity
     }
     setTotal(totalValue)
@@ -68,7 +68,7 @@ const Checkout = ({ navigation }: Props) => {
   }
 
   const _goBack = () => {
-    navigation.navigate('CartScreen');
+    navigation.navigate('CartFoodScreen');
   }
 
   const _onPlaceOrder = () => {
@@ -80,7 +80,7 @@ const Checkout = ({ navigation }: Props) => {
   }
 
   const _goPay = () => {
-    AsyncStorage.setItem('payType', JSON.stringify('shop'))
+    AsyncStorage.setItem('payType', JSON.stringify('food'))
     navigation.navigate('PaymentOptions')
   }
 
@@ -100,10 +100,10 @@ const Checkout = ({ navigation }: Props) => {
               <View key={item.id} style={{marginBottom: 5, paddingHorizontal: 20, paddingVertical: 10, borderTopColor: '#eeeeee',  borderTopWidth: 2,}}>
                 <View style={styles.alignCenterRow}>
                   <View style={styles.alignCenterRow}>
-                    <Image source={{ uri: `${environment.APP_URL}/storage/uploads/products/${item.products[0].id}/${item.products[0].images[0].photo}` }} style={styles.image} />
+                    <Image source={{ uri: `${environment.APP_URL}/storage/uploads/foods/${item.foods[0].id}/${item.foods[0].images[0].photo}` }} style={styles.image} />
                     <View>
-                      <Text style={{fontWeight: 'bold'}}>{item.products[0].name}</Text>
-                      <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {item.products[0].price}</Text>
+                      <Text style={{fontWeight: 'bold'}}>{item.foods[0].name}</Text>
+                      <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {item.foods[0].price}</Text>
                     </View>
                   </View>
                   <View>

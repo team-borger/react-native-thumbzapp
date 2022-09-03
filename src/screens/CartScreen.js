@@ -10,6 +10,7 @@ import { IMAGE } from '../constants/Image';
 import NumericInput from 'react-native-numeric-input'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { cartAllAPI } from '../services/products';
+import environment from '../../environment';
 
 type Props = {
   navigation: Navigation;
@@ -108,7 +109,7 @@ const Cart = ({ navigation }: Props) => {
               <View key={item.id} style={{marginBottom: 5, paddingHorizontal: 20, paddingVertical: 10, borderTopColor: '#eeeeee',  borderTopWidth: 2,}}>
                 <View style={styles.alignCenterRow}>
                   <View style={styles.alignCenterRow}>
-                    <Image source={{ uri: `http://202.137.120.113:8089/storage/uploads/products/${item.products[0].id}/${item.products[0].images[0].photo}` }} style={styles.image} />
+                    <Image source={{ uri: `${environment.APP_URL}/storage/uploads/products/${item.products[0].id}/${item.products[0].images[0].photo}` }} style={styles.image} />
                     <View>
                       <Text style={{fontWeight: 'bold'}}>{item.products[0].name}</Text>
                       <View style={{display: 'flex', flexDirection: 'row'}}>
