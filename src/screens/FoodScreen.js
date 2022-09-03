@@ -10,6 +10,7 @@ import { cartFoodAllAPI } from '../services/food';
 import { merchantFoodListAPI } from '../services/users';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import environment from '../../environment';
 
 type Props = {
   navigation: Navigation;
@@ -142,7 +143,7 @@ const Shop = ({ navigation }: Props) => {
               <View style={styles.item}>
                 <TouchableHighlight style={styles.cardStyle} key={item.id} onPress={() => selectProduct(item)}>
                   <Card>
-                    <Card.Cover style={styles.yawa} source={{ uri: `http://202.137.120.113:8089/storage/uploads/users/${item.id}/${item.images[0].photo}` }} />
+                    <Card.Cover style={styles.yawa} source={{ uri: `${environment.APP_URL}/storage/uploads/users/${item.id}/${item.images[0].photo}` }} />
                     <Card.Content>
                       <View style={{marginTop: 10}}>
                         <Text style={{color: '#880ED4', fontWeight: 'bold'}}>{ item.shop_name }</Text>
