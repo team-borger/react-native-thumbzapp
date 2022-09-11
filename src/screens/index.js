@@ -24,3 +24,4 @@ export { default as FoodMerchantInfoScreen } from './FoodMerchantInfoScreen';
 export { default as CartFoodScreen } from './CartFoodScreen';
 export { default as FoodInfoScreen } from './FoodInfoScreen';
 export { default as CheckoutFoodScreen } from './CheckoutFoodScreen';
+export { default as LoadProcessScreen } from './LoadProcessScreen';
