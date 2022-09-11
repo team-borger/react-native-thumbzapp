@@ -18,9 +18,11 @@ type Props = {
 
 const LoadProcess = ({ navigation }: Props) => {
   const [loadRegular, setLoadRegular] = useState({})
+  const [loadRegularData, setLoadRegularData] = useState([])
   const [loadPromo, setLoadPromo] = useState([])
   const [networkInfo, setNetworkInfo] = useState({})
-  const [form, setForm] = useState({})
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [loadChoice, setLoadChoice] = useState('')
   const [tabNow, setTabNow] = useState('Regular')
 
   useFocusEffect(
@@ -37,7 +39,9 @@ const LoadProcess = ({ navigation }: Props) => {
         _getInfo(ret.provider)
         setLoadRegular(ret.loadregular)
         setLoadPromo(ret.loadpromo)
-        setForm(ret.numberinfo)
+        setPhoneNumber(ret.numberinfo.phone_number)
+        let data = JSON.parse(ret.loadregular.data)
+        setLoadRegularData(data)
       }
     } catch (error) {
       console.log('error async storage')
@@ -95,7 +99,7 @@ const LoadProcess = ({ navigation }: Props) => {
           />
           <View style={{marginLeft: 15}}>
             <Text>{networkInfo.network_name} load for</Text>
-            <Text style={{fontWeight: 'bold', fontSize: 15, marginTop: 5}}>{form.phone_number}</Text>
+            <Text style={{fontWeight: 'bold', fontSize: 15, marginTop: 5}}>{phoneNumber}</Text>
           </View>
         </View>
         <View>
@@ -103,26 +107,38 @@ const LoadProcess = ({ navigation }: Props) => {
             <TouchableHighlight underlayColor="#eeeeee" onPress={() => {setTabNow('Regular')}} style={ tabNow === 'Regular' ? styles.activeTab : styles.notActiveTab }>
               <Text style={tabNow === 'Regular' ? styles.activeTextTab : styles.notActiveTextTab}>Regular</Text>
             </TouchableHighlight>
-            <TouchableHighlight underlayColor="#eeeeee" onPress={() => {setTabNow('Promo')}} style={ tabNow === 'Promo' ? styles.activeTab : styles.notActiveTab }>
+            <TouchableHighlight underlayColor="#eeeeee" onPress={() => {setTabNow('Promo'); setLoadChoice('')}} style={ tabNow === 'Promo' ? styles.activeTab : styles.notActiveTab }>
               <Text style={tabNow === 'Promo' ? styles.activeTextTab : styles.notActiveTextTab}>Promo</Text>
             </TouchableHighlight>
           </View>
           <View style={tabNow === 'Regular' ? {} : {display: 'none'}}>
-            <Text>Regular</Text>
+            <View style={{width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' ,padding: '10%'}}>
+              {loadRegularData.map((item, index) =>
+                <TouchableHighlight key={index} onPress={() => setLoadChoice(item)} style={{width: '33%', padding: 5}} underlayColor="#fff">
+                  <View style={{padding: 5}}>
+                    <View style={ loadChoice === item ? styles.loadActive : styles.loadNotActive }>
+                      <Text style={ loadChoice === item ? styles.loadActiveText : styles.loadNotActiveText }>{item}</Text>
+                      <Text style={loadChoice === item ? {color: '#fff'} : {}}>PHP</Text>
+                    </View>
+                  </View>
+                </TouchableHighlight>
+              )}
+            </View>
           </View>
           <View style={tabNow === 'Promo' ? {} : {display: 'none'}}>
             <Text>Promo</Text>
           </View>
         </View>
       </View>
-
-      <Button icon="cart" style={styles.logoutBtn} mode="contained"
-        onPress={() => {
-          console.log('true')
-        }}
-      >
-        Next
-      </Button>
+      <View style={loadChoice !== '' ? {} : {display: 'none'}}>
+        <Button style={styles.logoutBtn} mode="contained"
+          onPress={() => {
+            console.log('true')
+          }}
+        >
+          Next
+        </Button>
+      </View>
 
     </SafeAreaView>
   );
@@ -132,6 +148,39 @@ const styles = StyleSheet.create({
   container: {
       flex: 1,
       backgroundColor: '#F5FCFF',
+  },
+  loadNotActive: {
+    borderWidth: 1,
+    borderColor: '#880ED4',
+    borderRadius: 10,
+    padding: 5,
+    width: '100%',
+    aspectRatio: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  loadActive: {
+    backgroundColor: '#880ED4',
+    borderWidth: 1,
+    borderColor: '#fff',
+    borderRadius: 10,
+    padding: 5,
+    width: '100%',
+    aspectRatio: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  loadNotActiveText: {
+    color: '#880ED4',
+    fontWeight: 'bold',
+    fontSize: 20
+  },
+  loadActiveText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 20
   },
   activeTab: {
     width: '50%',

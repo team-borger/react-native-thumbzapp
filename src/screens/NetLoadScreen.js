@@ -52,7 +52,6 @@ const Shop = ({ navigation }: Props) => {
     const body = {
       phone_number: unMask(phone_number)
     }
-    console.log(body)
     findNetworkAPI(body, fetchSuccess, fetchError)
   }
 
