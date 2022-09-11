@@ -16,11 +16,7 @@ const MyComponent = (props) => {
         {
           label: props.positive,
           onPress: () => setVisible(false),
-        },
-        {
-          label: 'Learn more',
-          onPress: () => setVisible(false),
-        },
+        }
       ]}
       icon={({size}) => (
         <Image
