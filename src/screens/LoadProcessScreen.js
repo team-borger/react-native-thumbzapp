@@ -1,6 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, Platform, ToastAndroid, Alert, TouchableHighlight, Image } from 'react-native';
-import { Appbar } from 'react-native-paper';
+import { View, Text, StyleSheet, FlatList, Platform, ToastAndroid, Alert, TouchableHighlight, Image,TouchableOpacity } from 'react-native';
+import { Appbar, RadioButton } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
 import { Navigation } from '../types';
@@ -38,6 +38,7 @@ const LoadProcess = ({ navigation }: Props) => {
         const ret = JSON.parse(value);
         _getInfo(ret.provider)
         setLoadRegular(ret.loadregular)
+        console.log(ret.loadregular)
         setLoadPromo(ret.loadpromo)
         setPhoneNumber(ret.numberinfo.phone_number)
         let data = JSON.parse(ret.loadregular.data)
@@ -74,6 +75,29 @@ const LoadProcess = ({ navigation }: Props) => {
     navigation.navigate('NetLoadScreen')
   }
 
+  const setRegularChoice = (item) => {
+    const payload = {
+      load_type: 'Regular',
+      amount: item
+    }
+    setLoadChoice(payload)
+  }
+
+  const setPromoChoice = (item) => {
+    const payload = {
+      load_type: 'Promo',
+      promo_id: item.id,
+      promo_name: item.product_name,
+      amount: item.value
+    }
+    setLoadChoice(payload)
+  }
+
+  const loadCheckout = () => {
+    AsyncStorage.setItem('loadCheckout', JSON.stringify(loadChoice))
+    navigation.replace('LoadCheckoutScreen')
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 10 }}>
@@ -104,7 +128,7 @@ const LoadProcess = ({ navigation }: Props) => {
         </View>
         <View>
           <View style={{display: 'flex', flexDirection: 'row'}}>
-            <TouchableHighlight underlayColor="#eeeeee" onPress={() => {setTabNow('Regular')}} style={ tabNow === 'Regular' ? styles.activeTab : styles.notActiveTab }>
+            <TouchableHighlight underlayColor="#eeeeee" onPress={() => {setTabNow('Regular'); setLoadChoice('')}} style={ tabNow === 'Regular' ? styles.activeTab : styles.notActiveTab }>
               <Text style={tabNow === 'Regular' ? styles.activeTextTab : styles.notActiveTextTab}>Regular</Text>
             </TouchableHighlight>
             <TouchableHighlight underlayColor="#eeeeee" onPress={() => {setTabNow('Promo'); setLoadChoice('')}} style={ tabNow === 'Promo' ? styles.activeTab : styles.notActiveTab }>
@@ -114,11 +138,11 @@ const LoadProcess = ({ navigation }: Props) => {
           <View style={tabNow === 'Regular' ? {} : {display: 'none'}}>
             <View style={{width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' ,padding: '10%'}}>
               {loadRegularData.map((item, index) =>
-                <TouchableHighlight key={index} onPress={() => setLoadChoice(item)} style={{width: '33%', padding: 5}} underlayColor="#fff">
+                <TouchableHighlight key={index} onPress={() => {setRegularChoice(item)}} style={{width: '33%', padding: 5}} underlayColor="#fff">
                   <View style={{padding: 5}}>
-                    <View style={ loadChoice === item ? styles.loadActive : styles.loadNotActive }>
-                      <Text style={ loadChoice === item ? styles.loadActiveText : styles.loadNotActiveText }>{item}</Text>
-                      <Text style={loadChoice === item ? {color: '#fff'} : {}}>PHP</Text>
+                    <View style={ loadChoice.amount === item ? styles.loadActive : styles.loadNotActive }>
+                      <Text style={ loadChoice.amount === item ? styles.loadActiveText : styles.loadNotActiveText }>{item}</Text>
+                      <Text style={loadChoice.amount === item ? {color: '#fff'} : {}}>PHP</Text>
                     </View>
                   </View>
                 </TouchableHighlight>
@@ -126,14 +150,38 @@ const LoadProcess = ({ navigation }: Props) => {
             </View>
           </View>
           <View style={tabNow === 'Promo' ? {} : {display: 'none'}}>
-            <Text>Promo</Text>
+            <FlatList
+              data={loadPromo}
+              renderItem={({ item }) => (
+                <TouchableOpacity key={item.id} onPress={() => {setPromoChoice(item)}} style={{marginBottom: 5, paddingHorizontal: 20, paddingVertical: 10, borderBottomColor: '#eeeeee',  borderBottomWidth: 2, width: '100%', flexDirection: 'row', alignItems:'center'}}>
+                  <View style={{width: '20%'}}>
+                    <View style={{width: 50, height: 50, borderColor: 'red' ,borderWidth: 1, borderRadius: 50, borderColor: '#d99cff', justifyContent: 'center', alignItems: 'center'}}>
+                      <Text style={{color: '#880ED4', fontWeight: 'bold'}}>{item.value}</Text>
+                      <Text style={{fontSize: 10, color: '#888888', fontWeight: 'bold'}}>PHP</Text>
+                    </View>
+                  </View>
+                  <View style={{paddingHorizontal: 5, paddingVertical: 5, width: '70%'}}>
+                    <Text style={{fontSize: 15, fontWeight: 'bold', color: '#880ED4'}}>{item.product_name}</Text>
+                    <Text style={{fontSize: 12, color: '#555555', marginTop: 5}}>{item.product_description}</Text>
+                  </View>
+                  <View style={{paddingHorizontal: 5, paddingVertical: 5}}>
+                    <RadioButton
+                      value={item.id}
+                      status={ loadChoice.promo_id === item.id ? 'checked' : 'unchecked' }
+                      onPress={() => {setPromoChoice(item)}}
+                    />
+                  </View>
+                </TouchableOpacity>
+              )}
+              keyExtractor={(item) => item.id}
+            />
           </View>
         </View>
       </View>
       <View style={loadChoice !== '' ? {} : {display: 'none'}}>
         <Button style={styles.logoutBtn} mode="contained"
           onPress={() => {
-            console.log('true')
+            loadCheckout()
           }}
         >
           Next
