@@ -29,7 +29,6 @@ const LoginScreen = ({ navigation }) => {
   }
 
   const loginSuccess = res => {
-    console.log(res.data)
     const { token } = res.data;
     _storeUserData(res.data)
     navigation.replace('HomeScreen')

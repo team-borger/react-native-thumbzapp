@@ -5,18 +5,20 @@ import { Appbar, Button, ToggleButton } from 'react-native-paper';
 import { Navigation } from '../types';
 import { useFocusEffect } from '@react-navigation/native';
 import NavbarBot from '../components/NavbarBot';
+import AppbarButton from '../components/AppbarButton';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { IMAGE } from '../constants/Image';
 import NumericInput from 'react-native-numeric-input'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { cartFoodAllAPI } from '../services/food';
 import environment from '../../environment';
+import moment from 'moment';
 
 type Props = {
   navigation: Navigation;
 };
 
-const LoadCheckout = ({ navigation }: Props) => {
+const LoadPayed = ({ navigation }: Props) => {
   const [loginuser, setUser] = useState({})
   const [loadInfo, setLoadInfo] = useState({})
   const [loading, setLoading] = useState(false)
@@ -63,30 +65,35 @@ const LoadCheckout = ({ navigation }: Props) => {
   return (
     <SafeAreaView style={styles.container}>
 
-      <Appbar.Header dark={false} style={styles.header}>
-        <Appbar.BackAction onPress={_goBack} />
-        <Appbar.Content style={styles.marginText} title={<Text style={styles.setColorText}>Payment</Text>}/>
-      </Appbar.Header>
+    <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 10, backgroundColor: '#880ED4' }}>
+      <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+        <Text style={styles.headerText}>Payment</Text>
+      </View>
+      <AppbarButton mode="contained" onPress={() => navigation.navigate('HomeScreen')}>
+        DONE
+      </AppbarButton>
+    </View>
 
       <View style={styles.contentContainer}>
         <View style={styles.skeks}>
-          <View style={{paddingVertical: 30, backgroundColor: '#880ED4', alignItems: 'center'}}>
-            <Text style={{color:'white', fontSize: 20, fontWeight: 'bold'}}>{loadInfo.load_type === 'Regular' ? `PHP ${loadInfo.amount}` : loadInfo.promo_name}</Text>
-          </View>
           <View style={{padding: 10, backgroundColor: '#f9efff'}}>
-            <Text style={{color: '#880ED4', fontSize:12, fontWeight: 'bold'}}>YOU ARE ABOUT TO PAY</Text>
+            <Text style={{color: '#880ED4', fontSize:15, fontWeight: 'bold', textAlign: 'center'}}>Payment Received</Text>
           </View>
-          <View style={{flexDirection: 'row', justifyContent:'space-between', padding: 20, borderBottomColor: '#eeeeee', borderBottomWidth: 2}}>
-            <Text>Total Amount</Text>
-            <Text style={{fontWeight: 'bold'}}>PHP {loadInfo.amount}</Text>
+          <View style={{paddingVertical: 30, alignItems: 'center', borderBottomColor: '#eeeeee', borderBottomWidth: 2}}>
+            <Text style={{fontSize: 30, fontWeight: 'bold'}}>{`PHP ${loadInfo.amount}`}.00</Text>
+          </View>
+          <View style={{padding: 20, borderBottomColor: '#eeeeee', borderBottomWidth: 2}}>
+            <View style={{flexDirection: 'row', justifyContent:'space-between', marginBottom: 10}}>
+              <Text>Amount Due</Text>
+              <Text style={{fontWeight: 'bold'}}>PHP {loadInfo.amount}.00</Text>
+            </View>
+            <View style={{flexDirection: 'row', justifyContent:'space-between'}}>
+              <Text>Payment Method</Text>
+              <Text style={{fontWeight: 'bold'}}>ThumbzUpp</Text>
+            </View>
           </View>
           <View style={{paddingHorizontal: '15%', paddingVertical: 20}}>
-            <Text style={{textAlign: 'center', color: '#777777', fontSize: 13}}>Please review to ensure that the details are correct before you proceed.</Text>
-          </View>
-          <View style={{ paddingLeft: 20, paddingRight: 20 }}>
-            <Button mode="contained" style={styles.btn} onPress={() => {loadPay()}}>
-              {loading ? 'Paying...' : `PAY PHP ${loadInfo.amount}.00`}
-            </Button>
+            <Text style={{textAlign: 'center', color: '#777777', fontSize: 13}}>{moment().format('DD MMMM YYYY hh:mm A')}</Text>
           </View>
         </View>
       </View>
@@ -144,11 +151,17 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   setColorText : {
-    color: '#880ED4'
+    // color: '#880ED4'
+    color: 'white'
   },
   header: {
-    backgroundColor: 'transparent'
-  }
+    backgroundColor: '#880ED4'
+  },
+  headerText : {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
 });
 
-export default memo(LoadCheckout);
+export default memo(LoadPayed);
