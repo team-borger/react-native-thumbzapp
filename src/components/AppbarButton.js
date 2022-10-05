@@ -5,7 +5,7 @@ import { theme } from '../core/theme';
 
 type Props = React.ComponentProps<typeof PaperButton>;
 
-const Button = ({ mode, style, children, ...props }: Props) => (
+const AppbarButton = ({ mode, style, children, ...props }: Props) => (
   <PaperButton
     style={[
       styles.button,
@@ -22,18 +22,15 @@ const Button = ({ mode, style, children, ...props }: Props) => (
 
 const styles = StyleSheet.create({
   button: {
-    width: '100%',
-    marginVertical: 10,
-    height: 50,
-    borderRadius: 5,
-    backgroundColor: '#6a0ba7'
+    height: 30,
+    backgroundColor: 'white'
   },
   text: {
     fontWeight: 'bold',
-    fontSize: 15,
-    lineHeight: 26,
+    fontSize: 10,
+    color: '#880ED4',
     textTransform: 'none'
   },
 });
 
-export default memo(Button);
+export default memo(AppbarButton);

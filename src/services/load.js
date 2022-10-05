@@ -1,27 +1,27 @@
 import backendAPI from './index';
 import checkConnection from './checkConnection';
 
-export const foodSearchAPI = async (body, callback, err) => {
+export const loadListAPI = async (callback, err) => {
     checkConnection(
-        backendAPI.post(`/food/search`, body)
+        backendAPI.get(`/network_provider/all`)
             .then(callback)
             .catch(err),
         err
     )
 }
 
-export const cartFoodAllAPI = async (body, callback, err) => {
+export const findNetworkAPI = async (body, callback, err) => {
     checkConnection(
-        backendAPI.get(`/cart_food/user/${body}`)
+        backendAPI.post(`/network_prefix/find`, body)
             .then(callback)
             .catch(err),
         err
     )
 }
 
-export const addCartFoodAPI = async (body, callback, err) => {
+export const networkInfoAPI = async (body, callback, err) => {
     checkConnection(
-        backendAPI.post(`/cart_food/create`, body)
+        backendAPI.get(`/network_provider/self/${body.id}`)
             .then(callback)
             .catch(err),
         err
