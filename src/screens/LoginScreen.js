@@ -17,7 +17,7 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState({ value: '', error: '' });
   const [password, setPassword] = useState({ value: '', error: '' });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error_, setError] = useState(false);
 
   // AsyncStorage.setItem('eskek', 'zz')
   // console.log(AsyncStorage.setItem('eskek'))
@@ -38,11 +38,13 @@ const LoginScreen = ({ navigation }) => {
     const { error, message } = err.response.data;
     setLoading(false)
     if (error) {
+      setError = !error_
       Alert.alert('Login Error', error,
         [{ text: 'OK' },], { cancelable: false }
       );
     }
     if (message) {
+      setError = !error_
       Alert.alert('Login Error', message,
         [{ text: 'OK' },], { cancelable: false }
       );
@@ -78,7 +80,8 @@ const LoginScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Banner
-        visible={error}
+        visible={error_}
+        // visible={true}
         positive="close"
         message="Incorrect credentials."
         icon="https://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-error-icon.png"
