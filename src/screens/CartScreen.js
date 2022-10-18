@@ -71,7 +71,7 @@ const Cart = ({ navigation }: Props) => {
   }
 
   const _onCheckoutPressed = () => {
-    AsyncStorage.setItem('checkout', JSON.stringify(items))
+    AsyncStorage.setItem('checkout', JSON.stringify(selected))
     AsyncStorage.setItem('paymentMethod', JSON.stringify({}))
     navigation.navigate('CheckoutScreen');
   }
@@ -79,6 +79,7 @@ const Cart = ({ navigation }: Props) => {
   useFocusEffect(
     React.useCallback(() => {
       _geUserInfo()
+      setSelected([])
     }, [navigation])
   );
 
