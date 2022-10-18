@@ -38,10 +38,12 @@ const LoadProcess = ({ navigation }: Props) => {
         const ret = JSON.parse(value);
         _getInfo(ret.provider)
         setLoadRegular(ret.loadregular)
-        console.log(ret.loadregular)
         setLoadPromo(ret.loadpromo)
         setPhoneNumber(ret.numberinfo.phone_number)
-        let data = JSON.parse(ret.loadregular.data)
+        let data = []
+        if (ret.loadregular.data) {
+          data = JSON.parse(ret.loadregular.data)
+        }
         setLoadRegularData(data)
       }
     } catch (error) {
