@@ -38,7 +38,6 @@ const Shop = ({ navigation }: Props) => {
   }
 
   const fetchError = err => {
-    console.log(err)
     if (err.response.data.error_message) {
       setBannerMessage(err.response.data.error_message)
       setBannerOn(true)
