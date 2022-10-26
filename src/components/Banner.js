@@ -1,13 +1,20 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { Image } from 'react-native';
 import { Banner } from 'react-native-paper';
 
 const MyComponent = (props) => {
   const [visible, setVisible] = React.useState(props.visible);
 
-  const toggle = () => {
-    setVisible = !visible
-  }
+  useEffect(() => {
+    if (visible == true) {
+      setVisible(true)
+
+      setTimeout(() => {
+        setVisible(false)
+      }, 3000)
+    }
+  }, [visible]);
+
 
   return (
     <Banner

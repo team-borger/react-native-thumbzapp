@@ -49,3 +49,6 @@ var sharedBlacklist = [
 ];
 ```
 notice the difference on line 2.
+
+
+4. When updating App logo, please read docs of [icon-set-creator](https://github.com/martiliones/icon-set-creator).
