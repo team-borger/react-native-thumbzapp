@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar } from 'react-native-paper';
@@ -63,11 +63,11 @@ const RegisterScreen = ({ navigation }: Props) => {
   const register = async () => {
     body.connectycube_id = Number(await AsyncStorage.getItem('connectycube_id'))
     console.log('payload', body)
-    registerAPI(body,registerSuccess,registerError);
+    registerAPI(body, registerSuccess, registerError);
   };
 
   const emailExists = err => {
-    console.error('emailExists', err.data)
+    console.error('emailExists', err)
     setLoading(false)
   };
 
@@ -93,16 +93,13 @@ const RegisterScreen = ({ navigation }: Props) => {
   }
 
   const _onSignUpPressed = () => {
-    // ImgToBase64.getBase64String('file://')
-    // .then(base64String => console.log(base64String))
-    // .catch(err => console.log(err));
-    const firstNameError = firstNameValidator(first_name.value);
-    const lastNameError = lastNameValidator(last_name.value);
-    const countryError = countryValidator(country.value);
-    const phoneError = phoneValidator(phone.value);
-    const emailError = emailValidator(email.value);
-    const passwordError = passwordValidator(password.value);
-    const confirmPasswordError = confirmPasswordValidator(confirm_password.value, password.value);
+    // const firstNameError = firstNameValidator('Alan Benedict');
+    // const lastNameError = lastNameValidator('Golpz');
+    // const countryError = countryValidator('PHILIPPINES');
+    // const phoneError = phoneValidator('54545454676');
+    // const emailError = emailValidator('test@gmail.com');
+    // const passwordError = passwordValidator('password');
+    // const confirmPasswordError = confirmPasswordValidator('password', 'password');
 
     if (firstNameError || lastNameError || countryError || phoneError || emailError || passwordError || confirmPasswordError) {
       setFirstName({ ...first_name, error: firstNameError });
@@ -126,8 +123,19 @@ const RegisterScreen = ({ navigation }: Props) => {
         role_id: 3,
         profile_image: null
       };
-      console.log(body)
-      console.log(body)
+      // body = {
+      //   first_name: 'Alan Benedict',
+      //   middle_name: 'Brandino',
+      //   last_name: 'Golpeo',
+      //   phone: '09123123123',
+      //   email: 'ben@ttest.com',
+      //   password: '12345678',
+      //   confirm_password: '12345678',
+      //   country: 'PHILIPPINES',
+      //   role_id: 3,
+      //   profile_image: null
+      // };
+      // console.log(body)
       setLoading(true)
       checkEmailAPI(body, emailUnique, emailExists)
       // ImgToBase64.getBase64String(IMAGE.LOGO)

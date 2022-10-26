@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { TouchableOpacity, StyleSheet, Text, View, Alert } from 'react-native';
 import Background from '../components/Background';
 import Logo from '../components/Logo';
@@ -18,6 +18,17 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState({ value: '', error: '' });
   const [loading, setLoading] = useState(false);
   const [error_, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    if (error_ == true) {
+
+      setTimeout(() => {
+        setError(false)
+      }, 3000)
+      setError(true)
+    }
+  }, [error_]);
 
   // AsyncStorage.setItem('eskek', 'zz')
   // console.log(AsyncStorage.setItem('eskek'))
@@ -38,13 +49,15 @@ const LoginScreen = ({ navigation }) => {
     const { error, message } = err.response.data;
     setLoading(false)
     if (error) {
-      setError = !error_
+      setError(true)
+      setErrorMessage(error)
       Alert.alert('Login Error', error,
         [{ text: 'OK' },], { cancelable: false }
       );
     }
     if (message) {
-      setError = !error_
+      setError(true)
+      setErrorMessage(message)
       Alert.alert('Login Error', message,
         [{ text: 'OK' },], { cancelable: false }
       );
@@ -71,21 +84,28 @@ const LoginScreen = ({ navigation }) => {
           loginAPI(body,loginSuccess,loginError);
         })
         .catch(error => {
-          console.error(error);
+          setError(true)
+          setErrorMessage(error.info.errors[0])
+          console.error(error.info.errors[0]);
           setLoading(false)
         })
     }
   };
 
-  return (
-    <SafeAreaView style={styles.container}>
+  const showBanner = () => {
+    return (
       <Banner
-        visible={error_}
-        // visible={true}
+        visible={true}
         positive="close"
-        message="Incorrect credentials."
+        message={errorMessage}
         icon="https://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-error-icon.png"
       />
+    )
+  }
+
+  return (
+    <SafeAreaView style={styles.container}>
+      { error_ && showBanner() }
 
       <Background>
 
