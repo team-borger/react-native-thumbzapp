@@ -30,9 +30,15 @@ const LoginScreen = ({ navigation }) => {
     }
   }, [error_]);
 
-  // AsyncStorage.setItem('eskek', 'zz')
-  // console.log(AsyncStorage.setItem('eskek'))
-  // console.log(AsyncStorage.getAllKeys())
+  const firstRendered = async () => {
+    const token = await AsyncStorage.getItem('Token')
+    if( token !== null ) {
+      navigation.replace('HomeScreen')
+    }
+  }
+
+  firstRendered()
+
 
   _storeUserData = async (payload) => {
     await AsyncStorage.setItem('Token', payload.user.token)

@@ -101,6 +101,14 @@ const RegisterScreen = ({ navigation }: Props) => {
     // const passwordError = passwordValidator('password');
     // const confirmPasswordError = confirmPasswordValidator('password', 'password');
 
+    const firstNameError = firstNameValidator(first_name.value);
+    const lastNameError = lastNameValidator(last_name.value);
+    const countryError = countryValidator(country.value);
+    const phoneError = phoneValidator(phone.value);
+    const emailError = emailValidator(email.value);
+    const passwordError = passwordValidator(password.value);
+    const confirmPasswordError = confirmPasswordValidator(confirm_password.value, password.value);
+
     if (firstNameError || lastNameError || countryError || phoneError || emailError || passwordError || confirmPasswordError) {
       setFirstName({ ...first_name, error: firstNameError });
       setLastName({ ...last_name, error: lastNameError });
