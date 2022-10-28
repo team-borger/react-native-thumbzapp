@@ -1,7 +1,7 @@
 import React, { memo, useState } from 'react';
-import { FlatList, View, Text, StyleSheet, ScrollView, Image, Platform, ToastAndroid, Alert } from 'react-native';
+import { FlatList, View, Text, StyleSheet, ScrollView, Image, Platform, ToastAndroid, Alert, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button, List, Avatar, Searchbar, Appbar, Card } from 'react-native-paper';
+import { Button, List, Avatar, Searchbar, Appbar, Card, RadioButton } from 'react-native-paper';
 import { Navigation } from '../types';
 import Toast from 'react-native-simple-toast';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -10,6 +10,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { getCardListAPI, deleteCardAPI } from '../services/payment';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused} from '@react-navigation/native';
 
 type Props = {
   navigation: Navigation;
@@ -20,6 +21,8 @@ const ChatScreen = ({ navigation }: Props) => {
   const [showAlert, setState] = useState(false)
   const [choosenItem, setItem] = useState({})
   const [payType, setPayType] = useState('')
+  const [listItemsRefresh, setListItemsRefresh] = useState(false)
+  const [statusChecked, setChecked] = useState(null)
 
   const showToast = text => {
     const commonToast = Platform.OS === 'android' ? ToastAndroid : Toast;
@@ -44,7 +47,7 @@ const ChatScreen = ({ navigation }: Props) => {
 
   const _isConfirm = () => {
     if (items[0].id) {
-      AsyncStorage.setItem('paymentMethod', JSON.stringify(items[0]))
+      AsyncStorage.setItem('paymentMethod', JSON.stringify(choosenItem))
       if (payType == 'food') {
         navigation.navigate('CheckoutFoodScreen');
       } else {
@@ -67,16 +70,6 @@ const ChatScreen = ({ navigation }: Props) => {
         [{ text: 'OK' },], { cancelable: false }
       );
     }
-  }
-
-  const _deleteConfirm = (payload) => {
-    setItem({})
-    setItem(payload)
-    setState(true);
-  }
-
-  const _deleteCard = () => {
-    deleteCardAPI(choosenItem, deleteSuccess, fetchError);
   }
 
   const _getPayType = async () => {
@@ -106,6 +99,28 @@ const ChatScreen = ({ navigation }: Props) => {
     }
   }
 
+  const setChoice = (payload) => {
+
+    var objIndex = items.findIndex((obj => obj.id == payload.id));
+
+    items[objIndex].method_type = 'Credit / Debit Card'
+    setItem(items[objIndex])
+    setChecked(payload.id)
+    setListItemsRefresh(!listItemsRefresh)
+  }
+
+  const setGcash = () => {
+    var gcash = {
+      method_type: 'E-Wallet',
+      type: 'Gcash'
+    }
+    setItem(gcash)
+    setChecked(null)
+    setListItemsRefresh(!listItemsRefresh)
+  }
+
+  useIsFocused();
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Appbar.Header dark={false} style={styles.header}>
@@ -129,8 +144,14 @@ const ChatScreen = ({ navigation }: Props) => {
                 <FlatList
                   data={items}
                   renderItem={({ item }) => (
-                    <View key={item.id} style={{borderBottomColor: 'white', borderBottomWidth: 1}}>
-                      <View style={styles.alignCenterRow}>
+                    <TouchableOpacity key={item.id} onPress={() => {setChoice(item)}} style={{marginBottom: 5, paddingVertical: 10, borderBottomColor: '#eeeeee',  borderBottomWidth: 2, width: '100%', flexDirection: 'row', alignItems:'center'}}>
+                      <View style={{width: '20%'}}>
+                        <RadioButton
+                          status={statusChecked === item.id ? 'checked' : 'unchecked'}
+                          onPress={() => {setChoice(item)}}
+                        />
+                      </View>
+                      <View style={{width: '60%'}}>
                         <View style={styles.alignCenterRow}>
                           <Image source={IMAGE.ICON_MASTERCARD} style={styles.image} />
                           <View>
@@ -138,7 +159,8 @@ const ChatScreen = ({ navigation }: Props) => {
                           </View>
                         </View>
                       </View>
-                    </View>
+                    </TouchableOpacity>
+
                   )}
                   keyExtractor={(item) => item.id}
                 />
@@ -165,7 +187,22 @@ const ChatScreen = ({ navigation }: Props) => {
               }
             >
               <List.Item style={{padding:0, margin: 0, paddingHorizontal: 25}} title={
-                <Text>No Item</Text>
+                <TouchableOpacity onPress={() => {setGcash()}} style={{marginBottom: 5, paddingVertical: 10, borderBottomColor: '#eeeeee',  borderBottomWidth: 2, width: '100%', flexDirection: 'row', alignItems:'center'}}>
+                  <View style={{width: '20%'}}>
+                    <RadioButton
+                      status={choosenItem.method_type === 'E-Wallet' ? 'checked' : 'unchecked'}
+                      onPress={() => {setGcash()}}
+                    />
+                  </View>
+                  <View style={{width: '60%'}}>
+                    <View style={styles.alignCenterRow}>
+                      <Image source={IMAGE.GCASH_LOGO} style={styles.gcash_image} />
+                      <View>
+                        <Text style={{fontWeight: 'bold'}}>GCash</Text>
+                      </View>
+                    </View>
+                  </View>
+                </TouchableOpacity>
               }/>
             </List.Accordion>
           </List.AccordionGroup>
@@ -173,22 +210,6 @@ const ChatScreen = ({ navigation }: Props) => {
         <Button style={styles.logoutBtn} mode="contained" onPress={_isConfirm}>
           Confirm
         </Button>
-
-        <AwesomeAlert
-          show={showAlert}
-          showProgress={false}
-          title="Are you sure?"
-          message="This won't be reverted!"
-          closeOnTouchOutside={true}
-          closeOnHardwareBackPress={false}
-          showCancelButton={true}
-          showConfirmButton={true}
-          cancelText="No, cancel"
-          confirmText="Yes, delete it"
-          confirmButtonColor="#DD6B55"
-          onCancelPressed={hideAlert}
-          onConfirmPressed={_deleteCard}
-        />
 
       </View>
 
@@ -207,6 +228,12 @@ const styles = StyleSheet.create({
   image: {
     width: 50,
     height: 50,
+    resizeMode: 'contain',
+    marginRight: 10
+  },
+  gcash_image: {
+    width: 30,
+    height: 30,
     resizeMode: 'contain',
     marginRight: 10
   },
