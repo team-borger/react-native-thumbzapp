@@ -19,6 +19,7 @@ const MyComponent = (props) => {
   return (
     <Banner
       visible={visible}
+      style={{position: 'absolute', zIndex: 2, left: 0, right: 0, top: 30}}
       actions={[
         {
           label: props.positive,

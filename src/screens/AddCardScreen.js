@@ -29,7 +29,7 @@ const AddCard = ({ navigation }: Props) => {
   const addCardSuccess = res => {
     setLoading(false)
     const { data } = res.data;
-    navigation.replace('PaymentMethodList')
+    navigation.replace('PaymentOptions')
   }
 
   const addCardError = err => {

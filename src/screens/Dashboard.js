@@ -46,16 +46,16 @@ const Dashboard = ({ navigation }: Props) => {
 
   const fetchError = err => {
     const { error, message } = err.response.data;
-    if (error) {
-      Alert.alert('Something went wrong. Please try again.', error,
-        [{ text: 'OK' },], { cancelable: false }
-      );
-    }
-    if (message) {
-      Alert.alert('Something went wrong. Please try again.', message,
-        [{ text: 'OK' },], { cancelable: false }
-      );
-    }
+    // if (error) {
+    //   Alert.alert('Something went wrong. Please try again.', error,
+    //     [{ text: 'OK' },], { cancelable: false }
+    //   );
+    // }
+    // if (message) {
+    //   Alert.alert('Something went wrong. Please try again.', message,
+    //     [{ text: 'OK' },], { cancelable: false }
+    //   );
+    // }
   }
 
   const nameStyle = (payload) => {

@@ -34,6 +34,7 @@ import CheckoutFoodScreen from './screens/CheckoutFoodScreen'
 import LoadProcessScreen from './screens/LoadProcessScreen'
 import LoadCheckoutScreen from './screens/LoadCheckoutScreen'
 import LoadPayedScreen from './screens/LoadPayedScreen'
+import PaymentSuccessFoodScreen from './screens/PaymentSuccessFoodScreen'
 
 
 const Stack = createNativeStackNavigator();
@@ -77,6 +78,7 @@ const App = () => {
           <Stack.Screen name="LoadProcessScreen" component={LoadProcessScreen} option={{title: 'LoadProcessScreen!!'}} />
           <Stack.Screen name="LoadCheckoutScreen" component={LoadCheckoutScreen} option={{title: 'LoadCheckoutScreen!!'}} />
           <Stack.Screen name="LoadPayedScreen" component={LoadPayedScreen} option={{title: 'LoadPayedScreen!!'}} />
+          <Stack.Screen name="PaymentSuccessFoodScreen" component={PaymentSuccessFoodScreen} option={{title: 'PaymentSuccessFoodScreen!!'}} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
