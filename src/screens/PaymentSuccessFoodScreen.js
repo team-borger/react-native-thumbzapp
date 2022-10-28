@@ -22,7 +22,7 @@ const Checkout = ({ navigation }: Props) => {
 
   const _getCheckout = async () => {
     try {
-      const value = await AsyncStorage.getItem('checkout')
+      const value = await AsyncStorage.getItem('checkoutFood')
       if (value !== null) {
         const ret = JSON.parse(value);
         setsubtotal(ret)
@@ -33,10 +33,11 @@ const Checkout = ({ navigation }: Props) => {
   }
 
   const setsubtotal = (payload) => {
+    console.log(payload)
     var totalValue = 0
     var totalItem = 0
     for (let item of payload) {
-      totalValue = totalValue + (item.quantity * item.products[0].price)
+      totalValue = totalValue + (item.quantity * item.foods[0].price)
       totalItem = totalItem + item.quantity
     }
     setTotal(totalValue)

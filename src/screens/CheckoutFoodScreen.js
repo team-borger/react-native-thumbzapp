@@ -72,8 +72,8 @@ const Checkout = ({ navigation }: Props) => {
   }
 
   const _onPlaceOrder = () => {
-    if (payMethod.id) {
-      navigation.navigate('PaymentSuccessScreen')
+    if (payMethod.method_type) {
+      navigation.navigate('PaymentSuccessFoodScreen')
     } else {
       showToast(`Please add payment method`)
     }
@@ -138,6 +138,7 @@ const Checkout = ({ navigation }: Props) => {
                   <Text>Payment Options</Text>
                 </View>
               </View>
+              <Text>{payMethod.method_type === 'E-Wallet' ? `E-Wallet - Gcash` : payMethod.method_type}</Text>
               <FontAwesome name='angle-right' size={20} color='black' />
             </View>
           </TouchableHighlight>

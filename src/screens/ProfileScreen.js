@@ -65,7 +65,7 @@ const Dashboard = ({ navigation }: Props) => {
           </View>
         </View>
         <View style={styles.profileInfo}>
-          <TouchableHighlight onPress={() => navigation.navigate('PaymentMethodList')}>
+          {/**<TouchableHighlight onPress={() => navigation.navigate('PaymentMethodList')}>
             <View
               style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: 20, alignItems: 'center'}}>
               <View style={{display: 'flex', flexDirection:'row', alignItems: 'center'}}>
@@ -82,7 +82,7 @@ const Dashboard = ({ navigation }: Props) => {
               borderBottomColor: 'white',
               borderBottomWidth: 2,
             }}
-          />
+          />**/}
         </View>
         <Button icon="logout" style={styles.logoutBtn} mode="contained" onPress={_onLogoutPressed}>
           Logout
