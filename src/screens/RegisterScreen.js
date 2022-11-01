@@ -62,7 +62,6 @@ const RegisterScreen = ({ navigation }: Props) => {
 
   const register = async () => {
     body.connectycube_id = Number(await AsyncStorage.getItem('connectycube_id'))
-    console.log('payload', body)
     registerAPI(body, registerSuccess, registerError);
   };
 

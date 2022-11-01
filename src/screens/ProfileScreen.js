@@ -37,7 +37,6 @@ const Dashboard = ({ navigation }: Props) => {
       if (skeks !== null) {
         const skek = JSON.parse(skeks);
         setLoginUser(skek)
-        console.log(skek)
       }
     } catch (error) {
       console.log('error async storage')
@@ -65,11 +64,19 @@ const Dashboard = ({ navigation }: Props) => {
           </View>
         </View>
         <View style={styles.profileInfo}>
-          {/**<TouchableHighlight onPress={() => navigation.navigate('PaymentMethodList')}>
+          <View
+            style={{
+              borderBottomColor: '#eeeeee',
+              borderBottomWidth: 4,
+            }}
+          />
+          <TouchableHighlight onPress={() => navigation.navigate('PaymentMethodList')} underlayColor="#fff">
             <View
               style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: 20, alignItems: 'center'}}>
               <View style={{display: 'flex', flexDirection:'row', alignItems: 'center'}}>
-                <FontAwesome name='credit-card' size={15} color='black' />
+                <View style={{width: 30}}>
+                  <FontAwesome name='credit-card' size={15} color='black' />
+                </View>
                 <View style={{marginLeft: 5}}>
                   <Text>Payment Methods</Text>
                 </View>
@@ -82,7 +89,27 @@ const Dashboard = ({ navigation }: Props) => {
               borderBottomColor: 'white',
               borderBottomWidth: 2,
             }}
-          />**/}
+          />
+          <TouchableHighlight onPress={() => navigation.navigate('MyAddressScreen')} underlayColor="#fff">
+            <View
+              style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: 20, alignItems: 'center'}}>
+              <View style={{display: 'flex', flexDirection:'row', alignItems: 'center'}}>
+                <View style={{width: 30}}>
+                  <FontAwesome name='map-marker' size={15} color='black' />
+                </View>
+                <View style={{marginLeft: 5}}>
+                  <Text>My Address</Text>
+                </View>
+              </View>
+              <FontAwesome name='angle-right' size={20} color='black' />
+            </View>
+          </TouchableHighlight>
+          <View
+            style={{
+              borderBottomColor: 'white',
+              borderBottomWidth: 2,
+            }}
+          />
         </View>
         <Button icon="logout" style={styles.logoutBtn} mode="contained" onPress={_onLogoutPressed}>
           Logout

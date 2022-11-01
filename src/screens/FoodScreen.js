@@ -58,7 +58,6 @@ const Shop = ({ navigation }: Props) => {
       take: 100,
       skip: 0
     }
-    console.log(body)
     setTimeout(() => {
       merchantFoodListAPI(body, fetchSuccess, fetchError)
     }, 1000)
