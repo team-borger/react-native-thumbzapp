@@ -54,7 +54,7 @@ const ChatScreen = ({ navigation }: Props) => {
 
   const updateAddress = (payload) => {
     AsyncStorage.setItem('choosenAddress', JSON.stringify(payload))
-    navigation.navigate('AddAddressScreen')
+    navigation.navigate('AddAddressCheckout')
   }
 
   useFocusEffect(
@@ -65,7 +65,7 @@ const ChatScreen = ({ navigation }: Props) => {
   );
 
   const _goBack = () => {
-    navigation.navigate('ProfileScreen');
+    navigation.navigate('CheckoutScreen');
   }
 
   return (
@@ -103,7 +103,7 @@ const ChatScreen = ({ navigation }: Props) => {
             keyExtractor={(item) => item.id}
           />
         </View>
-        <Button icon="plus-circle" style={styles.logoutBtn} mode="contained" onPress={() => navigation.navigate('AddAddressScreen')}>
+        <Button icon="plus-circle" style={styles.logoutBtn} mode="contained" onPress={() => navigation.navigate('AddAddressCheckout')}>
           Add New Address
         </Button>
 
