@@ -39,7 +39,7 @@ export const allAddressAPI = async (callback, err) => {
 
 export const userAddressAPI = async (body, callback, err) => {
     checkConnection(
-        backendAPI.get(`/user_address/self/${body.id}`)
+        backendAPI.get(`/user_address/self/${body}`)
             .then(callback)
             .catch(err),
         err
