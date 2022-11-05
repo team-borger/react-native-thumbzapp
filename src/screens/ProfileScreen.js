@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
-import { FlatList, View, Text, StyleSheet, ScrollView, TouchableHighlight, Alert } from 'react-native';
+import { FlatList, View, Text, StyleSheet, ScrollView, TouchableHighlight, Alert, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, List, Avatar, Searchbar, Appbar } from 'react-native-paper';
 import { Navigation } from '../types';
@@ -7,6 +7,7 @@ import NavbarBot from '../components/NavbarBot';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthService, CallService } from '../services';
+import { IMAGE } from '../constants/Image';
 
 type Props = {
   navigation: Navigation;
@@ -37,7 +38,6 @@ const Dashboard = ({ navigation }: Props) => {
       if (skeks !== null) {
         const skek = JSON.parse(skeks);
         setLoginUser(skek)
-        console.log(skek)
       }
     } catch (error) {
       console.log('error async storage')
@@ -65,11 +65,19 @@ const Dashboard = ({ navigation }: Props) => {
           </View>
         </View>
         <View style={styles.profileInfo}>
-          {/**<TouchableHighlight onPress={() => navigation.navigate('PaymentMethodList')}>
+          <View
+            style={{
+              borderBottomColor: '#eeeeee',
+              borderBottomWidth: 4,
+            }}
+          />
+          <TouchableHighlight onPress={() => navigation.navigate('PaymentMethodList')} underlayColor="#fff">
             <View
               style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: 20, alignItems: 'center'}}>
               <View style={{display: 'flex', flexDirection:'row', alignItems: 'center'}}>
-                <FontAwesome name='credit-card' size={15} color='black' />
+                <View style={{width: 30}}>
+                  <FontAwesome name='credit-card' size={15} color='black' />
+                </View>
                 <View style={{marginLeft: 5}}>
                   <Text>Payment Methods</Text>
                 </View>
@@ -82,7 +90,53 @@ const Dashboard = ({ navigation }: Props) => {
               borderBottomColor: 'white',
               borderBottomWidth: 2,
             }}
-          />**/}
+          />
+          <TouchableHighlight onPress={() => navigation.navigate('MyAddressScreen')} underlayColor="#fff">
+            <View
+              style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: 20, alignItems: 'center'}}>
+              <View style={{display: 'flex', flexDirection:'row', alignItems: 'center'}}>
+                <View style={{width: 30}}>
+                  <FontAwesome name='map-marker' size={15} color='black' />
+                </View>
+                <View style={{marginLeft: 5}}>
+                  <Text>My Address</Text>
+                </View>
+              </View>
+              <FontAwesome name='angle-right' size={20} color='black' />
+            </View>
+          </TouchableHighlight>
+          <View
+            style={{
+              borderBottomColor: 'white',
+              borderBottomWidth: 2,
+            }}
+          />
+          <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+            <TouchableHighlight style={{padding: 15, paddingTop: 20, flex: 1, alignItems: 'center'}} onPress={() => {}} underlayColor="#fff">
+              <View style={{alignItems: 'center'}}>
+                <Image source={IMAGE.TO_SHIP} style={styles.icon_image} />
+                <Text style={{fontSize: 10, marginTop: 10}}>To Ship</Text>
+              </View>
+            </TouchableHighlight>
+            <TouchableHighlight style={{padding: 15, paddingTop: 20, flex: 1, alignItems: 'center'}} onPress={() => {}} underlayColor="#fff">
+              <View style={{alignItems: 'center'}}>
+                <Image source={IMAGE.TO_RECEIVE} style={styles.icon_image} />
+                <Text style={{fontSize: 10, marginTop: 10}}>To Receive</Text>
+              </View>
+            </TouchableHighlight>
+            <TouchableHighlight style={{padding: 15, paddingTop: 20, flex: 1, alignItems: 'center'}} onPress={() => {}} underlayColor="#fff">
+              <View style={{alignItems: 'center'}}>
+                <Image source={IMAGE.COMPLETED} style={styles.icon_image} />
+                <Text style={{fontSize: 10, marginTop: 10}}>Completed</Text>
+              </View>
+            </TouchableHighlight>
+          </View>
+          <View
+            style={{
+              borderBottomColor: 'white',
+              borderBottomWidth: 2,
+            }}
+          />
         </View>
         <Button icon="logout" style={styles.logoutBtn} mode="contained" onPress={_onLogoutPressed}>
           Logout
@@ -149,7 +203,13 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     marginTop: 10
-  }
+  },
+  icon_image: {
+    width: 30,
+    height: 30,
+    resizeMode: 'contain',
+    marginRight: 10
+  },
 });
 
 export default memo(Dashboard);

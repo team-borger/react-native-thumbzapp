@@ -7,6 +7,10 @@ const IMAGE = {
     ICON_VISA: require('../assets/visa.png'),
     ICON_GCASH: require('../assets/gcash.png'),
     GCASH_LOGO: require('../assets/gcash_logo.png'),
+    COD: require('../assets/cod.png'),
+    TO_SHIP: require('../assets/toship.png'),
+    TO_RECEIVE: require('../assets/toreceive.png'),
+    COMPLETED: require('../assets/done.png'),
   }
 
   export { IMAGE };

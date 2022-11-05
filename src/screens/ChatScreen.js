@@ -86,7 +86,7 @@ const ChatScreen = ({ navigation }: Props) => {
   }
 
   const createSuccess = res => {
-    console.log('success: ', res.data)
+    // console.log('success: ', res.data)
   }
 
   const apiError = err => {

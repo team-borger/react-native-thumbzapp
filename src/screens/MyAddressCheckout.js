@@ -1,12 +1,13 @@
 import React, { memo, useState } from 'react';
-import { FlatList, View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import { FlatList, View, Text, StyleSheet, ScrollView, Image, TouchableHighlight } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, List, Avatar, Searchbar, Appbar, Card } from 'react-native-paper';
 import { Navigation } from '../types';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { IMAGE } from '../constants/Image';
 import { useFocusEffect } from '@react-navigation/native';
-import { getCardListAPI, deleteCardAPI } from '../services/payment';
+import { allAddressAPI } from '../services/address';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
 type Props = {
@@ -25,12 +26,6 @@ const ChatScreen = ({ navigation }: Props) => {
   const fetchSuccess = res => {
     setItems(res.data)
     setState(false)
-  }
-
-  const deleteSuccess = res => {
-    setState(false)
-    getCardListAPI(fetchSuccess,fetchError);
-    navigation.navigate('PaymentMethodList')
   }
 
   const fetchError = err => {
@@ -57,49 +52,59 @@ const ChatScreen = ({ navigation }: Props) => {
     deleteCardAPI(choosenItem, deleteSuccess, fetchError);
   }
 
+  const updateAddress = (payload) => {
+    AsyncStorage.setItem('choosenAddress', JSON.stringify(payload))
+    navigation.navigate('AddAddressCheckout')
+  }
+
   useFocusEffect(
     React.useCallback(() => {
-      getCardListAPI(fetchSuccess,fetchError);
+      AsyncStorage.setItem('choosenAddress', JSON.stringify({}))
+      allAddressAPI(fetchSuccess,fetchError);
     }, [navigation])
   );
 
   const _goBack = () => {
-    navigation.navigate('ProfileScreen');
+    navigation.navigate('CheckoutScreen');
   }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Appbar.Header dark={false} style={styles.header}>
         <Appbar.BackAction onPress={_goBack} />
-        <Appbar.Content title={<Text style={styles.setColorText}>Manage Methods</Text>}/>
+        <Appbar.Content title={<Text style={styles.setColorText}>My Address</Text>}/>
       </Appbar.Header>
 
       <View style={styles.contentContainer}>
-        <View style={{flex: 1, padding: 20}}>
+        <View style={{paddingHorizontal: 10, paddingVertical: 5 }}>
+          <Text style={{color: '#777777'}}>Address</Text>
+        </View>
+        <View style={{flex: 1, paddingTop: 2}}>
           <FlatList
             style={styles.scrollView}
             data={items}
             renderItem={({ item }) => (
-              <Card style={styles.customCard} key={item.id}>
-                <Card.Content>
-                  <View style={styles.alignCenterRow}>
+              <TouchableHighlight key={item.id} onPress={() => updateAddress(item)} underlayColor="white">
+                <Card style={styles.customCard}>
+                  <Card.Content>
                     <View style={styles.alignCenterRow}>
-                      <Image source={IMAGE.ICON_MASTERCARD} style={styles.image} />
-                      <View>
-                        <Text style={{fontWeight: 'bold'}}>{item.account_number}</Text>
-                        <Text style={{color: 'gray', fontSize: 12}}>Expires {item.exp_date}</Text>
+                      <View style={{width: '80%'}}>
+                        <Text style={{color: 'gray'}}>{item.name} | {item.phone}</Text>
+                        <Text>{item.address}</Text>
+                      </View>
+                      <View style={item.default === true ? {padding: 3, borderColor: 'red', borderWidth: 1, alignSelf: 'flex-start', marginTop: 5} : {}}>
+                        <Text style={{color: 'red', fontSize: 10}}>{item.default === true ? 'Default' : ''}</Text>
                       </View>
                     </View>
-                    <FontAwesome name='trash' size={20} color='gray' onPress={() => _deleteConfirm(item)} />
-                  </View>
-                </Card.Content>
-              </Card>
+                  </Card.Content>
+                </Card>
+              </TouchableHighlight>
             )}
             keyExtractor={(item) => item.id}
           />
         </View>
-        <Button icon="plus" style={styles.logoutBtn} mode="contained" onPress={() => navigation.navigate('AddCardListScreen')}>
-          Add Card
+        <Button icon="plus-circle" style={styles.logoutBtn} mode="contained" onPress={() => navigation.navigate('AddAddressCheckout')}>
+          Add New Address
         </Button>
 
         <AwesomeAlert
@@ -147,7 +152,7 @@ const styles = StyleSheet.create({
   customCard: {
     marginLeft: 0,
     marginRight: 0,
-    margin: 5
+    margin: 2
   },
   contentContainer: {
     flex: 1,
@@ -171,6 +176,6 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   header: {
-    backgroundColor: 'transparent',
+    backgroundColor: 'white',
   }
 });
