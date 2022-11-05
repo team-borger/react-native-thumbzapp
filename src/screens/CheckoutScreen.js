@@ -50,6 +50,10 @@ const Checkout = ({ navigation }: Props) => {
     setAddress(res.data)
   }
 
+  const addSuccess = res => {
+    console.log(res.data)
+  }
+
   const getError = err => {
     const { error, message } = err.response.data;
     setLoading(false)
@@ -106,7 +110,19 @@ const Checkout = ({ navigation }: Props) => {
 
   const _onPlaceOrder = () => {
     if (payMethod.method_type) {
-      navigation.navigate('PaymentSuccessScreen')
+      for (let i of Object.keys(items)) {
+        var payload = {
+          product_id: items[i].product_id,
+          user_id: loginuser.id,
+          quantity: items[i].quantity,
+          price_at_time_of_purchase: items[i].products[0].price,
+          payment_method: payMethod.method_type
+        }
+        placeOrderAPI(payload, addSuccess, getError)
+        if(((+i)+1) === items.length) {
+          navigation.navigate('PaymentSuccessScreen')
+        }
+      }
     } else {
       showToast(`Please add payment method`)
     }

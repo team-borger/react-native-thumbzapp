@@ -119,6 +119,16 @@ const ChatScreen = ({ navigation }: Props) => {
     setListItemsRefresh(!listItemsRefresh)
   }
 
+  const setCod = () => {
+    var cod = {
+      method_type: 'Cash on Delivery',
+      type: 'Cash on Delivery'
+    }
+    setItem(cod)
+    setChecked(null)
+    setListItemsRefresh(!listItemsRefresh)
+  }
+
   useIsFocused();
 
   return (
@@ -130,6 +140,22 @@ const ChatScreen = ({ navigation }: Props) => {
 
       <View style={styles.contentContainer}>
         <View style={{flex: 1, paddingHorizontal: 10}}>
+          <TouchableOpacity onPress={() => {setCod()}} style={{marginBottom: 5, paddingVertical: 10, borderBottomColor: '#eeeeee',  borderBottomWidth: 2, width: '100%', flexDirection: 'row', alignItems:'center', justifyContent: 'space-between'}}>
+            <View style={{paddingLeft: 15}}>
+              <View style={styles.alignCenterRow}>
+                <Image source={IMAGE.COD} style={styles.gcash_image} />
+                <View>
+                  <Text style={{fontWeight: 'bold'}}>Cash on Delivery</Text>
+                </View>
+              </View>
+            </View>
+            <View style={{paddingRight: 7}}>
+              <RadioButton
+                status={choosenItem.method_type === 'Cash on Delivery' ? 'checked' : 'unchecked'}
+                onPress={() => {setCod()}}
+              />
+            </View>
+          </TouchableOpacity>
           <List.AccordionGroup>
             <List.Accordion id="1"
               title={

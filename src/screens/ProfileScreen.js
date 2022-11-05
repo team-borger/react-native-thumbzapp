@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
-import { FlatList, View, Text, StyleSheet, ScrollView, TouchableHighlight, Alert } from 'react-native';
+import { FlatList, View, Text, StyleSheet, ScrollView, TouchableHighlight, Alert, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, List, Avatar, Searchbar, Appbar } from 'react-native-paper';
 import { Navigation } from '../types';
@@ -7,6 +7,7 @@ import NavbarBot from '../components/NavbarBot';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthService, CallService } from '../services';
+import { IMAGE } from '../constants/Image';
 
 type Props = {
   navigation: Navigation;
@@ -110,6 +111,32 @@ const Dashboard = ({ navigation }: Props) => {
               borderBottomWidth: 2,
             }}
           />
+          <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+            <TouchableHighlight style={{padding: 15, paddingTop: 20, flex: 1, alignItems: 'center'}} onPress={() => {}} underlayColor="#fff">
+              <View style={{alignItems: 'center'}}>
+                <Image source={IMAGE.TO_SHIP} style={styles.icon_image} />
+                <Text style={{fontSize: 10, marginTop: 10}}>To Ship</Text>
+              </View>
+            </TouchableHighlight>
+            <TouchableHighlight style={{padding: 15, paddingTop: 20, flex: 1, alignItems: 'center'}} onPress={() => {}} underlayColor="#fff">
+              <View style={{alignItems: 'center'}}>
+                <Image source={IMAGE.TO_RECEIVE} style={styles.icon_image} />
+                <Text style={{fontSize: 10, marginTop: 10}}>To Receive</Text>
+              </View>
+            </TouchableHighlight>
+            <TouchableHighlight style={{padding: 15, paddingTop: 20, flex: 1, alignItems: 'center'}} onPress={() => {}} underlayColor="#fff">
+              <View style={{alignItems: 'center'}}>
+                <Image source={IMAGE.COMPLETED} style={styles.icon_image} />
+                <Text style={{fontSize: 10, marginTop: 10}}>Completed</Text>
+              </View>
+            </TouchableHighlight>
+          </View>
+          <View
+            style={{
+              borderBottomColor: 'white',
+              borderBottomWidth: 2,
+            }}
+          />
         </View>
         <Button icon="logout" style={styles.logoutBtn} mode="contained" onPress={_onLogoutPressed}>
           Logout
@@ -176,7 +203,13 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     marginTop: 10
-  }
+  },
+  icon_image: {
+    width: 30,
+    height: 30,
+    resizeMode: 'contain',
+    marginRight: 10
+  },
 });
 
 export default memo(Dashboard);
