@@ -1,13 +1,14 @@
 import React, { memo, useState, useEffect } from 'react';
 import { FlatList, View, Text, StyleSheet, ScrollView, TouchableHighlight, Alert, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button, List, Avatar, Searchbar, Appbar } from 'react-native-paper';
+import { Button, List, Avatar, Searchbar, Appbar, Badge } from 'react-native-paper';
 import { Navigation } from '../types';
 import NavbarBot from '../components/NavbarBot';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthService, CallService } from '../services';
 import { IMAGE } from '../constants/Image';
+import { userOrdersAPI } from '../services/products';
 
 type Props = {
   navigation: Navigation;
@@ -15,6 +16,9 @@ type Props = {
 
 const Dashboard = ({ navigation }: Props) => {
   const [loginUser, setLoginUser] = useState({});
+  const [toShip, setToShip] = useState(0);
+  const [toReceive, setToReceive] = useState(0);
+  const [completed, setCompleted] = useState(0);
 
   useEffect(() => {
     getLoginUser()
@@ -32,36 +36,56 @@ const Dashboard = ({ navigation }: Props) => {
     }
   }
 
+  const getSuccess = res => {
+    var items = res.data
+    const ship = items.filter((obj) => obj.status.status_option.status === 'Pending' || obj.status.status_option.status === 'Processing' || obj.status.status_option.status === 'Packed').length
+    const receive = items.filter((obj) => obj.status.status_option.status === 'Shipped').length
+    const complete = items.filter((obj) => obj.status.status_option.status === 'Delivered').length
+    setToShip(ship)
+    setToReceive(receive)
+    setCompleted(complete)
+  }
+
+  const getError = err => {
+    const { error, message } = err.response.data;
+    if (error) {
+      Alert.alert('Something went wrong. Please try again.', error,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+    if (message) {
+      Alert.alert('Something went wrong. Please try again.', message,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+  }
+
   const getLoginUser = async () => {
     try {
       const skeks = await AsyncStorage.getItem('user')
       if (skeks !== null) {
         const skek = JSON.parse(skeks);
         setLoginUser(skek)
+        userOrdersAPI(skek.id, getSuccess, getError)
       }
     } catch (error) {
       console.log('error async storage')
     }
   }
 
+  const goToOrders = async (payload) => {
+    await AsyncStorage.setItem('ordersStatus', payload)
+    navigation.replace('OrdersScreen')
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-
-      <Appbar.Header dark={false} style={styles.header}>
-        <Appbar.Content style={styles.marginText} title={<Text style={styles.setColorText}> </Text>}/>
-      </Appbar.Header>
 
       <View style={styles.contentContainer}>
         <View style={styles.whiteBg}>
           <Avatar.Icon size={40} icon="account" color="white" style={styles.avatar} />
           <View style={{marginLeft: 10}}>
             <Text style={{fontSize: 18, fontWeight: 'bold'}}>{loginUser.first_name} {loginUser.last_name}</Text>
-            <View style={styles.skeks}>
-              <FontAwesome name='circle' size={10} color='green' />
-              <View style={{marginLeft: 2}}>
-                <Text style={{fontSize: 12, fontWeight: 'bold'}}>Online</Text>
-              </View>
-            </View>
           </View>
         </View>
         <View style={styles.profileInfo}>
@@ -112,22 +136,31 @@ const Dashboard = ({ navigation }: Props) => {
             }}
           />
           <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
-            <TouchableHighlight style={{padding: 15, paddingTop: 20, flex: 1, alignItems: 'center'}} onPress={() => {}} underlayColor="#fff">
+            <TouchableHighlight style={{padding: 15, paddingTop: 20, flex: 1, alignItems: 'center'}} onPress={() => goToOrders('ship')} underlayColor="#fff">
               <View style={{alignItems: 'center'}}>
                 <Image source={IMAGE.TO_SHIP} style={styles.icon_image} />
                 <Text style={{fontSize: 10, marginTop: 10}}>To Ship</Text>
+                <View style={{ position: 'absolute', top: 0, right: -5 }}>
+                  <Badge style={toShip === 0 ? {display:'none'} : {} }>{toShip}</Badge>
+                </View>
               </View>
             </TouchableHighlight>
-            <TouchableHighlight style={{padding: 15, paddingTop: 20, flex: 1, alignItems: 'center'}} onPress={() => {}} underlayColor="#fff">
+            <TouchableHighlight style={{padding: 15, paddingTop: 20, flex: 1, alignItems: 'center'}} onPress={() => goToOrders('receive')} underlayColor="#fff">
               <View style={{alignItems: 'center'}}>
                 <Image source={IMAGE.TO_RECEIVE} style={styles.icon_image} />
                 <Text style={{fontSize: 10, marginTop: 10}}>To Receive</Text>
+                <View style={{ position: 'absolute', top: 0, right: -5 }}>
+                  <Badge style={toReceive === 0 ? {display:'none'} : {} }>{toReceive}</Badge>
+                </View>
               </View>
             </TouchableHighlight>
-            <TouchableHighlight style={{padding: 15, paddingTop: 20, flex: 1, alignItems: 'center'}} onPress={() => {}} underlayColor="#fff">
+            <TouchableHighlight style={{padding: 15, paddingTop: 20, flex: 1, alignItems: 'center'}} onPress={() => goToOrders('complete')} underlayColor="#fff">
               <View style={{alignItems: 'center'}}>
                 <Image source={IMAGE.COMPLETED} style={styles.icon_image} />
                 <Text style={{fontSize: 10, marginTop: 10}}>Completed</Text>
+                <View style={{ position: 'absolute', top: 0, right: -5 }}>
+                  <Badge style={completed === 0 ? {display:'none'} : {} }>{completed}</Badge>
+                </View>
               </View>
             </TouchableHighlight>
           </View>
@@ -164,7 +197,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'white',
-    paddingTop: 0,
     padding: 20
   },
   container: {
