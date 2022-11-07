@@ -33,3 +33,4 @@ export { default as MyAddressScreen } from './MyAddressScreen';
 export { default as AddAddressScreen } from './AddAddressScreen';
 export { default as MyAddressCheckout } from './MyAddressCheckout';
 export { default as AddAddressCheckout } from './AddAddressCheckout';
+export { default as OrdersScreen } from './OrdersScreen';

@@ -157,7 +157,7 @@ const FoodInfo = ({ navigation }: Props) => {
           </TouchableHighlight>
           <View>
             <TouchableHighlight onPress={_goToCart} underlayColor="#eeeeee" style={{ position: 'absolute', top: -30, right: -5 }}>
-              <Badge>{ count }</Badge>
+              <Badge style={count === 0 ? {display:'none'} : {} }>{ count }</Badge>
             </TouchableHighlight>
           </View>
         </View>

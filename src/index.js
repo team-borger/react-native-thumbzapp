@@ -40,6 +40,7 @@ import MyAddressScreen from './screens/MyAddressScreen'
 import AddAddressScreen from './screens/AddAddressScreen'
 import MyAddressCheckout from './screens/MyAddressCheckout'
 import AddAddressCheckout from './screens/AddAddressCheckout'
+import OrdersScreen from './screens/OrdersScreen'
 
 
 const Stack = createNativeStackNavigator();
@@ -89,6 +90,7 @@ const App = () => {
           <Stack.Screen name="AddAddressScreen" component={AddAddressScreen} option={{title: 'AddAddressScreen!!'}} />
           <Stack.Screen name="MyAddressCheckout" component={MyAddressCheckout} option={{title: 'MyAddressCheckout!!'}} />
           <Stack.Screen name="AddAddressCheckout" component={AddAddressCheckout} option={{title: 'AddAddressCheckout!!'}} />
+          <Stack.Screen name="OrdersScreen" component={OrdersScreen} option={{title: 'OrdersScreen!!'}} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

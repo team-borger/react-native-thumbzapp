@@ -1,7 +1,7 @@
 import React, { memo, useState, useEffect } from 'react';
 import { FlatList, View, Text, StyleSheet, ScrollView, TouchableHighlight, Alert, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button, List, Avatar, Searchbar, Appbar } from 'react-native-paper';
+import { Button, List, Avatar, Searchbar, Appbar, Badge } from 'react-native-paper';
 import { Navigation } from '../types';
 import NavbarBot from '../components/NavbarBot';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -73,6 +73,11 @@ const Dashboard = ({ navigation }: Props) => {
     }
   }
 
+  const goToOrders = async (payload) => {
+    await AsyncStorage.setItem('ordersStatus', payload)
+    navigation.replace('OrdersScreen')
+  }
+
   return (
     <SafeAreaView style={styles.container}>
 
@@ -81,12 +86,6 @@ const Dashboard = ({ navigation }: Props) => {
           <Avatar.Icon size={40} icon="account" color="white" style={styles.avatar} />
           <View style={{marginLeft: 10}}>
             <Text style={{fontSize: 18, fontWeight: 'bold'}}>{loginUser.first_name} {loginUser.last_name}</Text>
-            <View style={styles.skeks}>
-              <FontAwesome name='circle' size={10} color='green' />
-              <View style={{marginLeft: 2}}>
-                <Text style={{fontSize: 12, fontWeight: 'bold'}}>Online</Text>
-              </View>
-            </View>
           </View>
         </View>
         <View style={styles.profileInfo}>
@@ -137,22 +136,31 @@ const Dashboard = ({ navigation }: Props) => {
             }}
           />
           <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
-            <TouchableHighlight style={{padding: 15, paddingTop: 20, flex: 1, alignItems: 'center'}} onPress={() => {}} underlayColor="#fff">
+            <TouchableHighlight style={{padding: 15, paddingTop: 20, flex: 1, alignItems: 'center'}} onPress={() => goToOrders('ship')} underlayColor="#fff">
               <View style={{alignItems: 'center'}}>
                 <Image source={IMAGE.TO_SHIP} style={styles.icon_image} />
                 <Text style={{fontSize: 10, marginTop: 10}}>To Ship</Text>
+                <View style={{ position: 'absolute', top: 0, right: -5 }}>
+                  <Badge style={toShip === 0 ? {display:'none'} : {} }>{toShip}</Badge>
+                </View>
               </View>
             </TouchableHighlight>
-            <TouchableHighlight style={{padding: 15, paddingTop: 20, flex: 1, alignItems: 'center'}} onPress={() => {}} underlayColor="#fff">
+            <TouchableHighlight style={{padding: 15, paddingTop: 20, flex: 1, alignItems: 'center'}} onPress={() => goToOrders('receive')} underlayColor="#fff">
               <View style={{alignItems: 'center'}}>
                 <Image source={IMAGE.TO_RECEIVE} style={styles.icon_image} />
                 <Text style={{fontSize: 10, marginTop: 10}}>To Receive</Text>
+                <View style={{ position: 'absolute', top: 0, right: -5 }}>
+                  <Badge style={toReceive === 0 ? {display:'none'} : {} }>{toReceive}</Badge>
+                </View>
               </View>
             </TouchableHighlight>
-            <TouchableHighlight style={{padding: 15, paddingTop: 20, flex: 1, alignItems: 'center'}} onPress={() => {}} underlayColor="#fff">
+            <TouchableHighlight style={{padding: 15, paddingTop: 20, flex: 1, alignItems: 'center'}} onPress={() => goToOrders('complete')} underlayColor="#fff">
               <View style={{alignItems: 'center'}}>
                 <Image source={IMAGE.COMPLETED} style={styles.icon_image} />
                 <Text style={{fontSize: 10, marginTop: 10}}>Completed</Text>
+                <View style={{ position: 'absolute', top: 0, right: -5 }}>
+                  <Badge style={completed === 0 ? {display:'none'} : {} }>{completed}</Badge>
+                </View>
               </View>
             </TouchableHighlight>
           </View>
