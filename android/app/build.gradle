@@ -231,6 +231,12 @@ android {
         }
     }
     signingConfigs {
+        release {
+          storeFile file('thumbzupp-release-key.jks')
+          storePassword '123456'
+          keyAlias 'my-alias'
+          keyPassword '123456'
+        }
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'

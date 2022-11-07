@@ -5,8 +5,10 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "build": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && npm run assemble",
-    "assemble": "cd android && ./gradlew assembleDebug",
+    "assemble-debug": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd android && ./gradlew assembleDebug",
+    "assemble-release": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd android && npm run clean && npm run remove-dup && ./gradlew assembleRelease",
+    "clean": "./gradlew clean",
+    "remove-dup": "rm -rf ./app/src/main/res/drawable-* && rm -rf ./app/src/main/res/raw",
     "gen-icon": "iconset create",
     "debug": "adb shell input keyevent 82"
   },
