@@ -8,6 +8,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthService, CallService } from '../services';
 import { IMAGE } from '../constants/Image';
+import { userOrdersAPI } from '../services/products';
 
 type Props = {
   navigation: Navigation;
@@ -15,6 +16,9 @@ type Props = {
 
 const Dashboard = ({ navigation }: Props) => {
   const [loginUser, setLoginUser] = useState({});
+  const [toShip, setToShip] = useState(0);
+  const [toReceive, setToReceive] = useState(0);
+  const [completed, setCompleted] = useState(0);
 
   useEffect(() => {
     getLoginUser()
@@ -32,12 +36,37 @@ const Dashboard = ({ navigation }: Props) => {
     }
   }
 
+  const getSuccess = res => {
+    var items = res.data
+    const ship = items.filter((obj) => obj.status.status_option.status === 'Pending' || obj.status.status_option.status === 'Processing' || obj.status.status_option.status === 'Packed').length
+    const receive = items.filter((obj) => obj.status.status_option.status === 'Shipped').length
+    const complete = items.filter((obj) => obj.status.status_option.status === 'Delivered').length
+    setToShip(ship)
+    setToReceive(receive)
+    setCompleted(complete)
+  }
+
+  const getError = err => {
+    const { error, message } = err.response.data;
+    if (error) {
+      Alert.alert('Something went wrong. Please try again.', error,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+    if (message) {
+      Alert.alert('Something went wrong. Please try again.', message,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+  }
+
   const getLoginUser = async () => {
     try {
       const skeks = await AsyncStorage.getItem('user')
       if (skeks !== null) {
         const skek = JSON.parse(skeks);
         setLoginUser(skek)
+        userOrdersAPI(skek.id, getSuccess, getError)
       }
     } catch (error) {
       console.log('error async storage')
@@ -46,10 +75,6 @@ const Dashboard = ({ navigation }: Props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-
-      <Appbar.Header dark={false} style={styles.header}>
-        <Appbar.Content style={styles.marginText} title={<Text style={styles.setColorText}> </Text>}/>
-      </Appbar.Header>
 
       <View style={styles.contentContainer}>
         <View style={styles.whiteBg}>
@@ -164,7 +189,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'white',
-    paddingTop: 0,
     padding: 20
   },
   container: {

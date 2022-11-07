@@ -57,7 +57,7 @@ const Cart = ({ navigation }: Props) => {
   const totalSelected = () => {
     var totalValue = 0
     for (let item of selected) {
-      totalValue = totalValue + (item.quantity * item.products[0].price)
+      totalValue = totalValue + (item.quantity * item.product.price)
     }
     return totalValue
   }
@@ -157,18 +157,18 @@ const Cart = ({ navigation }: Props) => {
                 </View>
                 <View style={{width: '65%'}}>
                   <View style={styles.alignCenterRow}>
-                    <Image source={{ uri: `${environment.APP_URL}/storage/uploads/products/${item.products[0].id}/${item.products[0].images[0].photo}` }} style={styles.image} />
+                    <Image source={{ uri: `${environment.APP_URL}/storage/uploads/products/${item.product.id}/${item.product.images[0].photo}` }} style={styles.image} />
                     <View style={{flex: 1}}>
-                      <Text style={{fontWeight: 'bold'}}>{item.products[0].name}</Text>
+                      <Text style={{fontWeight: 'bold'}}>{item.product.name}</Text>
                       <View style={{display: 'flex', flexDirection: 'row'}}>
-                        <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {item.products[0].price}</Text>
+                        <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {item.product.price}</Text>
                         <Text style={{color: 'gray', fontSize: 12}}> X {item.quantity}</Text>
                       </View>
                     </View>
                   </View>
                 </View>
                 <View style={{paddingHorizontal: 2, paddingVertical: 2, width: '25%',}}>
-                  <Text style={{color: '#880ED4', fontSize: 15, fontWeight: 'bold', textAlign: 'center'}}>{'\u20B1'} {item.quantity * item.products[0].price}</Text>
+                  <Text style={{color: '#880ED4', fontSize: 15, fontWeight: 'bold', textAlign: 'center'}}>{'\u20B1'} {item.quantity * item.product.price}</Text>
                 </View>
               </TouchableOpacity>
             )}

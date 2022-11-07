@@ -97,7 +97,7 @@ const Checkout = ({ navigation }: Props) => {
     var totalValue = 0
     var totalItem = 0
     for (let item of payload) {
-      totalValue = totalValue + (item.quantity * item.products[0].price)
+      totalValue = totalValue + (item.quantity * item.product.price)
       totalItem = totalItem + item.quantity
     }
     setTotal(totalValue)
@@ -112,10 +112,8 @@ const Checkout = ({ navigation }: Props) => {
     if (payMethod.method_type) {
       for (let i of Object.keys(items)) {
         var payload = {
-          product_id: items[i].product_id,
-          user_id: loginuser.id,
-          quantity: items[i].quantity,
-          price_at_time_of_purchase: items[i].products[0].price,
+          cart_id: items[i].id,
+          price_at_time_of_purchase: items[i].product.price,
           payment_method: payMethod.method_type
         }
         placeOrderAPI(payload, addSuccess, getError)
@@ -169,10 +167,10 @@ const Checkout = ({ navigation }: Props) => {
               <View key={item.id} style={{marginBottom: 5, paddingHorizontal: 20, paddingVertical: 10, borderBottomColor: '#eeeeee',  borderBottomWidth: 2,}}>
                 <View style={styles.alignCenterRow}>
                   <View style={styles.alignCenterRow}>
-                    <Image source={{ uri: `${environment.APP_URL}/storage/uploads/products/${item.products[0].id}/${item.products[0].images[0].photo}` }} style={styles.image} />
+                    <Image source={{ uri: `${environment.APP_URL}/storage/uploads/products/${item.product.id}/${item.product.images[0].photo}` }} style={styles.image} />
                     <View>
-                      <Text style={{fontWeight: 'bold'}}>{item.products[0].name}</Text>
-                      <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {item.products[0].price}</Text>
+                      <Text style={{fontWeight: 'bold'}}>{item.product.name}</Text>
+                      <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {item.product.price}</Text>
                     </View>
                   </View>
                   <View>
