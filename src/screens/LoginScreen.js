@@ -1,9 +1,10 @@
 import React, { memo, useState, useEffect } from 'react';
 import { TouchableOpacity, StyleSheet, Text, View, Alert } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import Background from '../components/Background';
 import Logo from '../components/Logo';
 import Button from '../components/Button';
-import TextInput from '../components/TextInput';
+import CustomTextInput from '../components/TextInput';
 import Banner from '../components/Banner';
 import { theme } from '../core/theme';
 import { emailValidator, passwordValidator } from '../core/utils';
@@ -16,6 +17,7 @@ import { AuthService, CallService } from '../services';
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState({ value: '', error: '' });
   const [password, setPassword] = useState({ value: '', error: '' });
+  const [passwordVisible, setPasswordVisible] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error_, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -117,7 +119,7 @@ const LoginScreen = ({ navigation }) => {
 
         <Logo />
 
-        <TextInput
+        <CustomTextInput
           placeholder="Email"
           returnKeyType="next"
           value={email.value}
@@ -130,14 +132,18 @@ const LoginScreen = ({ navigation }) => {
           keyboardType="email-address"
         />
 
-        <TextInput
+        <CustomTextInput
           placeholder="Password"
           returnKeyType="done"
           value={password.value}
           onChangeText={text => setPassword({ value: text, error: '' })}
           error={!!password.error}
           errorText={password.error}
-          secureTextEntry
+          secureTextEntry={passwordVisible}
+          right={
+            <TextInput.Icon name={passwordVisible ? "eye" : "eye-off"}
+            onPress={() => setPasswordVisible(!passwordVisible)} />
+          }
         />
 
         <View style={{ paddingLeft: 20, paddingRight: 20, width: '100%' }}>

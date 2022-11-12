@@ -1,12 +1,13 @@
 import React, { memo, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert, ScrollView } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar } from 'react-native-paper';
 import Background from '../components/Background';
 import Logo from '../components/Logo';
 import Header from '../components/Header';
 import Button from '../components/Button';
-import TextInput from '../components/TextInput';
+import CustomTextInput from '../components/TextInput';
 import BackButton from '../components/BackButton';
 import { AuthService } from '../services';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -44,6 +45,8 @@ const RegisterScreen = ({ navigation }: Props) => {
   const [confirm_password, setConfirmPassword] = useState({ value: '', error: '' });
   const [loading, setLoading] = useState(false);
   let body = null;
+
+  const [passwordVisible, setPasswordVisible] = useState(true);
 
   const emailUnique = res => {
     if(!Boolean(res.data)) {
@@ -164,7 +167,7 @@ const RegisterScreen = ({ navigation }: Props) => {
           <View style={{flex: 1}}>
             <ScrollView style={styles.scrollView}>
 
-              <TextInput
+              <CustomTextInput
                 placeholder="First name"
                 returnKeyType="next"
                 value={first_name.value}
@@ -174,7 +177,7 @@ const RegisterScreen = ({ navigation }: Props) => {
                 autoCapitalize="none"
               />
 
-              <TextInput
+              <CustomTextInput
                 placeholder="Middle name"
                 returnKeyType="next"
                 value={middle_name.value}
@@ -183,7 +186,7 @@ const RegisterScreen = ({ navigation }: Props) => {
                 errorText={middle_name.error}
               />
 
-              <TextInput
+              <CustomTextInput
                 placeholder="Last name"
                 returnKeyType="next"
                 value={last_name.value}
@@ -238,7 +241,7 @@ const RegisterScreen = ({ navigation }: Props) => {
                 />
               </View>
 
-              <TextInput
+              <CustomTextInput
                 placeholder="Email"
                 returnKeyType="next"
                 value={email.value}
@@ -251,24 +254,32 @@ const RegisterScreen = ({ navigation }: Props) => {
                 keyboardType="email-address"
               />
 
-              <TextInput
+              <CustomTextInput
                 placeholder="Password"
                 returnKeyType="done"
                 value={password.value}
                 onChangeText={text => setPassword({ value: text, error: '' })}
                 error={!!password.error}
                 errorText={password.error}
-                secureTextEntry
+                secureTextEntry={passwordVisible}
+                right={
+                  <TextInput.Icon name={passwordVisible ? "eye" : "eye-off"}
+                  onPress={() => setPasswordVisible(!passwordVisible)} />
+                }
               />
 
-              <TextInput
+              <CustomTextInput
                 placeholder="Confirm password"
                 returnKeyType="done"
                 value={confirm_password.value}
                 onChangeText={text => setConfirmPassword({ value: text, error: '' })}
                 error={!!confirm_password.error}
                 errorText={confirm_password.error}
-                secureTextEntry
+                secureTextEntry={passwordVisible}
+                right={
+                  <TextInput.Icon name={passwordVisible ? "eye" : "eye-off"}
+                  onPress={() => setPasswordVisible(!passwordVisible)} />
+                }
               />
               <View style={{ paddingLeft: 20, paddingRight: 20 }}>
                 <Button mode="contained" onPress={_onSignUpPressed} style={styles.button}>
