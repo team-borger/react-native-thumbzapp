@@ -11,6 +11,7 @@ const IMAGE = {
     TO_SHIP: require('../assets/toship.png'),
     TO_RECEIVE: require('../assets/toreceive.png'),
     COMPLETED: require('../assets/done.png'),
+    MO_PRODUCT: require('../assets/tag.png'),
   }
 
   export { IMAGE };
