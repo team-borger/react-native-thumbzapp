@@ -37,6 +37,7 @@
     "react-native-image-base64": "^0.1.4",
     "react-native-image-slider-box": "^2.0.1",
     "react-native-incall-manager": "^3.3.0",
+    "react-native-loading-spinner-overlay": "^3.0.1",
     "react-native-mask-text": "^0.7.0",
     "react-native-numeric-input": "^1.9.1",
     "react-native-paper": "^3.12.0",
