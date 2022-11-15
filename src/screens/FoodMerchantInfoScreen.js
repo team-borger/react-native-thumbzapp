@@ -241,7 +241,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   header: {
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    marginTop: 0
   }
 });
 

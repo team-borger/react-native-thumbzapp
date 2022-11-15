@@ -147,7 +147,8 @@ const styles = StyleSheet.create({
     color: '#880ED4'
   },
   header: {
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    marginTop: 0
   }
 });
 

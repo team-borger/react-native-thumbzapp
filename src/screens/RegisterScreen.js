@@ -342,7 +342,8 @@ const styles = StyleSheet.create({
   },
   header: {
     height: 5,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    marginTop: 0
   },
   label: {
     color: theme.colors.secondary,

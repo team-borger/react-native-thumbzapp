@@ -297,5 +297,6 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: 'transparent',
+    marginTop: 0
   }
 });

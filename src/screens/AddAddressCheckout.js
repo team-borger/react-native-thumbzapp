@@ -170,6 +170,7 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   header: {
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    marginTop: 0
   }
 });
