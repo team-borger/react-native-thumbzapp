@@ -24,7 +24,7 @@ import {
   phoneValidator,
 } from '../core/utils';
 import { COUNTRIES } from '../constants/Country';
-import { registerAPI, checkEmailAPI } from '../services/auth';
+import { registerAPI, checkEmailAPI, sendVerifyAPI } from '../services/auth';
 import SelectDropdown from 'react-native-select-dropdown'
 import { MaskedTextInput } from "react-native-mask-text";
 import ImgToBase64 from 'react-native-image-base64';
@@ -74,9 +74,13 @@ const RegisterScreen = ({ navigation }: Props) => {
   };
 
   const registerSuccess = res => {
-    setLoading(false)
     const { data } = res.data;
-    navigation.replace('LoginScreen')
+    sendVerifyAPI(res.data, sendSuccess, registerError)
+  }
+
+  const sendSuccess = res => {
+    setLoading(false)
+    navigation.replace('VerifyEmailScreen')
   }
 
   const registerError = err => {
@@ -131,7 +135,8 @@ const RegisterScreen = ({ navigation }: Props) => {
         confirm_password: confirm_password.value,
         country: country.value,
         role_id: 3,
-        profile_image: null
+        profile_image: null,
+        verified: 0
       };
       // body = {
       //   first_name: 'Alan Benedict',

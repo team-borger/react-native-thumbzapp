@@ -35,3 +35,5 @@ export { default as MyAddressCheckout } from './MyAddressCheckout';
 export { default as AddAddressCheckout } from './AddAddressCheckout';
 export { default as OrdersScreen } from './OrdersScreen';
 export { default as PaymentOptionLoad } from './PaymentOptionLoad';
+export { default as VerifyEmailScreen } from './VerifyEmailScreen';
+export { default as ForgotPassEmail } from './ForgotPassEmail';
