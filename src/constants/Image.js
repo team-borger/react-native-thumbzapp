@@ -12,6 +12,7 @@ const IMAGE = {
     TO_RECEIVE: require('../assets/toreceive.png'),
     COMPLETED: require('../assets/done.png'),
     MO_PRODUCT: require('../assets/tag.png'),
+    EMAIL_VERIFY: require('../assets/read.png'),
   }
 
   export { IMAGE };
