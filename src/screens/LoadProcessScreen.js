@@ -97,6 +97,7 @@ const LoadProcess = ({ navigation }: Props) => {
 
   const loadCheckout = () => {
     AsyncStorage.setItem('loadCheckout', JSON.stringify(loadChoice))
+    AsyncStorage.setItem('paymentMethodLoad', JSON.stringify({}))
     navigation.replace('LoadCheckoutScreen')
   }
 
