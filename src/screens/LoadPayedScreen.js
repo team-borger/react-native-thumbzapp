@@ -22,6 +22,7 @@ const LoadPayed = ({ navigation }: Props) => {
   const [loginuser, setUser] = useState({})
   const [loadInfo, setLoadInfo] = useState({})
   const [loading, setLoading] = useState(false)
+  const [payMethod, setPayment] = useState({})
 
   const _goBack = () => {
     navigation.navigate('LoadProcessScreen');
@@ -41,9 +42,14 @@ const LoadPayed = ({ navigation }: Props) => {
   const _geUserInfo = async () => {
     try {
       const value = await AsyncStorage.getItem('user')
+      const payment = await AsyncStorage.getItem('paymentMethodLoad')
       if (value !== null) {
         const ret = JSON.parse(value);
         setUser(ret)
+      }
+      if (payment !== null) {
+        const pay = JSON.parse(payment);
+        setPayment(pay)
       }
     } catch (error) {
       console.log('error async storage')
@@ -89,7 +95,7 @@ const LoadPayed = ({ navigation }: Props) => {
             </View>
             <View style={{flexDirection: 'row', justifyContent:'space-between'}}>
               <Text>Payment Method</Text>
-              <Text style={{fontWeight: 'bold'}}>ThumbzUpp</Text>
+              <Text style={{fontWeight: 'bold'}}>{payMethod.method_type === 'E-Wallet' ? `E-Wallet - Gcash` : payMethod.method_type}</Text>
             </View>
           </View>
           <View style={{paddingHorizontal: '15%', paddingVertical: 20}}>
