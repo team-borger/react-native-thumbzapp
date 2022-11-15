@@ -155,7 +155,8 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   header: {
-    backgroundColor: '#880ED4'
+    backgroundColor: '#880ED4',
+    marginTop: 0
   },
   headerText : {
     color: 'white',

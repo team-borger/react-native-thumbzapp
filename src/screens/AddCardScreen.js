@@ -187,6 +187,7 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   header: {
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    marginTop: 0
   }
 });
