@@ -98,7 +98,7 @@ const ChatScreen = ({ navigation }: Props) => {
             keyExtractor={(item) => item.id}
           />
         </View>
-        <Button icon="plus" style={styles.logoutBtn} mode="contained" onPress={() => navigation.navigate('AddCardScreen')}>
+        <Button icon="plus" style={styles.logoutBtn} mode="contained" onPress={() => navigation.navigate('AddCardListScreen')}>
           Add Card
         </Button>
 
@@ -172,5 +172,6 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: 'transparent',
+    marginTop: 0
   }
 });

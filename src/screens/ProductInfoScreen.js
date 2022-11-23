@@ -14,6 +14,7 @@ import BottomSheet from "react-native-easy-bottomsheet";
 import { addCartAPI, cartAllAPI } from '../services/products';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import environment from '../../environment';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 type Props = {
   navigation: Navigation;
@@ -26,6 +27,7 @@ const ProductInfo = ({ navigation }: Props) => {
   const [quantity, setQuantity] = useState(0);
   const [loginuser, setUser] = useState({});
   const [count, setCount] = useState(0);
+  const [showAlert, setState] = useState(false)
 
   const showToast = text => {
     const commonToast = Platform.OS === 'android' ? ToastAndroid : Toast;
@@ -39,6 +41,10 @@ const ProductInfo = ({ navigation }: Props) => {
       _geUserInfo()
     }, [navigation])
   );
+
+  const hideAlert = () => {
+    setState(false);
+  };
 
   const _getCartInfo = (payload) => {
     let body = payload.id
@@ -113,6 +119,7 @@ const ProductInfo = ({ navigation }: Props) => {
   const addSuccess = res => {
     cartAllAPI(fetchSuccess, fetchError)
     setVisible(false);
+    setState(true);
   }
 
   const addError = err => {
@@ -157,7 +164,7 @@ const ProductInfo = ({ navigation }: Props) => {
           </TouchableHighlight>
           <View>
             <TouchableHighlight onPress={_goToCart} underlayColor="#eeeeee" style={{ position: 'absolute', top: -30, right: -5 }}>
-              <Badge>{ count }</Badge>
+              <Badge  style={count === 0 ? {display:'none'} : {} }>{ count }</Badge>
             </TouchableHighlight>
           </View>
         </View>
@@ -221,6 +228,20 @@ const ProductInfo = ({ navigation }: Props) => {
         Add to Cart
       </Button>
 
+      <AwesomeAlert
+        show={showAlert}
+        showProgress={false}
+        title=""
+        message="Added to Cart Successfully!"
+        closeOnTouchOutside={true}
+        closeOnHardwareBackPress={true}
+        showCancelButton={false}
+        showConfirmButton={true}
+        confirmText="OK"
+        confirmButtonColor="#880ED4"
+        onConfirmPressed={hideAlert}
+      />
+
     </SafeAreaView>
   );
 };
@@ -280,7 +301,8 @@ const styles = StyleSheet.create({
     color: '#880ED4'
   },
   header: {
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    marginTop: 0
   }
 });
 

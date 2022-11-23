@@ -86,7 +86,7 @@ const ChatScreen = ({ navigation }: Props) => {
   }
 
   const createSuccess = res => {
-    console.log('success: ', res.data)
+    // console.log('success: ', res.data)
   }
 
   const apiError = err => {
@@ -209,6 +209,7 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   header: {
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    marginTop: 0
   }
 });

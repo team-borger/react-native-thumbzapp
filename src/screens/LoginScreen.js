@@ -1,9 +1,10 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { TouchableOpacity, StyleSheet, Text, View, Alert } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import Background from '../components/Background';
 import Logo from '../components/Logo';
 import Button from '../components/Button';
-import TextInput from '../components/TextInput';
+import CustomTextInput from '../components/TextInput';
 import Banner from '../components/Banner';
 import { theme } from '../core/theme';
 import { emailValidator, passwordValidator } from '../core/utils';
@@ -16,12 +17,30 @@ import { AuthService, CallService } from '../services';
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState({ value: '', error: '' });
   const [password, setPassword] = useState({ value: '', error: '' });
+  const [passwordVisible, setPasswordVisible] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error_, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  // AsyncStorage.setItem('eskek', 'zz')
-  // console.log(AsyncStorage.setItem('eskek'))
-  // console.log(AsyncStorage.getAllKeys())
+  useEffect(() => {
+    if (error_ == true) {
+
+      setTimeout(() => {
+        setError(false)
+      }, 3000)
+      setError(true)
+    }
+  }, [error_]);
+
+  const firstRendered = async () => {
+    const token = await AsyncStorage.getItem('Token')
+    if( token !== null ) {
+      navigation.replace('HomeScreen')
+    }
+  }
+
+  firstRendered()
+
 
   _storeUserData = async (payload) => {
     await AsyncStorage.setItem('Token', payload.user.token)
@@ -38,11 +57,15 @@ const LoginScreen = ({ navigation }) => {
     const { error, message } = err.response.data;
     setLoading(false)
     if (error) {
+      setError(true)
+      setErrorMessage(error)
       Alert.alert('Login Error', error,
         [{ text: 'OK' },], { cancelable: false }
       );
     }
     if (message) {
+      setError(true)
+      setErrorMessage(message)
       Alert.alert('Login Error', message,
         [{ text: 'OK' },], { cancelable: false }
       );
@@ -69,26 +92,34 @@ const LoginScreen = ({ navigation }) => {
           loginAPI(body,loginSuccess,loginError);
         })
         .catch(error => {
-          console.error(error);
+          setError(true)
+          setErrorMessage(error.info.errors[0])
+          console.error(error.info.errors[0]);
           setLoading(false)
         })
     }
   };
 
-  return (
-    <SafeAreaView style={styles.container}>
+  const showBanner = () => {
+    return (
       <Banner
-        visible={error}
+        visible={true}
         positive="close"
-        message="Incorrect credentials."
+        message={errorMessage}
         icon="https://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-error-icon.png"
       />
+    )
+  }
+
+  return (
+    <SafeAreaView style={styles.container}>
+      { error_ && showBanner() }
 
       <Background>
 
         <Logo />
 
-        <TextInput
+        <CustomTextInput
           placeholder="Email"
           returnKeyType="next"
           value={email.value}
@@ -101,14 +132,18 @@ const LoginScreen = ({ navigation }) => {
           keyboardType="email-address"
         />
 
-        <TextInput
+        <CustomTextInput
           placeholder="Password"
           returnKeyType="done"
           value={password.value}
           onChangeText={text => setPassword({ value: text, error: '' })}
           error={!!password.error}
           errorText={password.error}
-          secureTextEntry
+          secureTextEntry={passwordVisible}
+          right={
+            <TextInput.Icon name={passwordVisible ? "eye" : "eye-off"}
+            onPress={() => setPasswordVisible(!passwordVisible)} />
+          }
         />
 
         <View style={{ paddingLeft: 20, paddingRight: 20, width: '100%' }}>

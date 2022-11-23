@@ -36,3 +36,21 @@ export const cartAllAPI = async (body, callback, err) => {
         err
     )
 }
+
+export const placeOrderAPI = async (body, callback, err) => {
+    checkConnection(
+        backendAPI.post(`/product_order/create`, body)
+            .then(callback)
+            .catch(err),
+        err
+    )
+}
+
+export const userOrdersAPI = async (body, callback, err) => {
+    checkConnection(
+        backendAPI.get(`/product_order/user/${body}`)
+            .then(callback)
+            .catch(err),
+        err
+    )
+}

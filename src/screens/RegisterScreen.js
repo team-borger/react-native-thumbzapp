@@ -1,12 +1,13 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert, ScrollView } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar } from 'react-native-paper';
 import Background from '../components/Background';
 import Logo from '../components/Logo';
 import Header from '../components/Header';
 import Button from '../components/Button';
-import TextInput from '../components/TextInput';
+import CustomTextInput from '../components/TextInput';
 import BackButton from '../components/BackButton';
 import { AuthService } from '../services';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -23,7 +24,7 @@ import {
   phoneValidator,
 } from '../core/utils';
 import { COUNTRIES } from '../constants/Country';
-import { registerAPI, checkEmailAPI } from '../services/auth';
+import { registerAPI, checkEmailAPI, sendVerifyAPI } from '../services/auth';
 import SelectDropdown from 'react-native-select-dropdown'
 import { MaskedTextInput } from "react-native-mask-text";
 import ImgToBase64 from 'react-native-image-base64';
@@ -45,6 +46,8 @@ const RegisterScreen = ({ navigation }: Props) => {
   const [loading, setLoading] = useState(false);
   let body = null;
 
+  const [passwordVisible, setPasswordVisible] = useState(true);
+
   const emailUnique = res => {
     if(!Boolean(res.data)) {
       const CONNECTY_SIGNUP_PARAMS = {
@@ -62,19 +65,22 @@ const RegisterScreen = ({ navigation }: Props) => {
 
   const register = async () => {
     body.connectycube_id = Number(await AsyncStorage.getItem('connectycube_id'))
-    console.log('payload', body)
-    registerAPI(body,registerSuccess,registerError);
+    registerAPI(body, registerSuccess, registerError);
   };
 
   const emailExists = err => {
-    console.error('emailExists', err.data)
+    console.error('emailExists', err)
     setLoading(false)
   };
 
   const registerSuccess = res => {
-    setLoading(false)
     const { data } = res.data;
-    navigation.replace('LoginScreen')
+    sendVerifyAPI(res.data, sendSuccess, registerError)
+  }
+
+  const sendSuccess = res => {
+    setLoading(false)
+    navigation.replace('VerifyEmailScreen')
   }
 
   const registerError = err => {
@@ -93,9 +99,14 @@ const RegisterScreen = ({ navigation }: Props) => {
   }
 
   const _onSignUpPressed = () => {
-    // ImgToBase64.getBase64String('file://')
-    // .then(base64String => console.log(base64String))
-    // .catch(err => console.log(err));
+    // const firstNameError = firstNameValidator('Alan Benedict');
+    // const lastNameError = lastNameValidator('Golpz');
+    // const countryError = countryValidator('PHILIPPINES');
+    // const phoneError = phoneValidator('54545454676');
+    // const emailError = emailValidator('test@gmail.com');
+    // const passwordError = passwordValidator('password');
+    // const confirmPasswordError = confirmPasswordValidator('password', 'password');
+
     const firstNameError = firstNameValidator(first_name.value);
     const lastNameError = lastNameValidator(last_name.value);
     const countryError = countryValidator(country.value);
@@ -124,10 +135,22 @@ const RegisterScreen = ({ navigation }: Props) => {
         confirm_password: confirm_password.value,
         country: country.value,
         role_id: 3,
-        profile_image: null
+        profile_image: null,
+        verified: 0
       };
-      console.log(body)
-      console.log(body)
+      // body = {
+      //   first_name: 'Alan Benedict',
+      //   middle_name: 'Brandino',
+      //   last_name: 'Golpeo',
+      //   phone: '09123123123',
+      //   email: 'ben@ttest.com',
+      //   password: '12345678',
+      //   confirm_password: '12345678',
+      //   country: 'PHILIPPINES',
+      //   role_id: 3,
+      //   profile_image: null
+      // };
+      // console.log(body)
       setLoading(true)
       checkEmailAPI(body, emailUnique, emailExists)
       // ImgToBase64.getBase64String(IMAGE.LOGO)
@@ -149,7 +172,7 @@ const RegisterScreen = ({ navigation }: Props) => {
           <View style={{flex: 1}}>
             <ScrollView style={styles.scrollView}>
 
-              <TextInput
+              <CustomTextInput
                 placeholder="First name"
                 returnKeyType="next"
                 value={first_name.value}
@@ -159,7 +182,7 @@ const RegisterScreen = ({ navigation }: Props) => {
                 autoCapitalize="none"
               />
 
-              <TextInput
+              <CustomTextInput
                 placeholder="Middle name"
                 returnKeyType="next"
                 value={middle_name.value}
@@ -168,7 +191,7 @@ const RegisterScreen = ({ navigation }: Props) => {
                 errorText={middle_name.error}
               />
 
-              <TextInput
+              <CustomTextInput
                 placeholder="Last name"
                 returnKeyType="next"
                 value={last_name.value}
@@ -223,7 +246,7 @@ const RegisterScreen = ({ navigation }: Props) => {
                 />
               </View>
 
-              <TextInput
+              <CustomTextInput
                 placeholder="Email"
                 returnKeyType="next"
                 value={email.value}
@@ -236,24 +259,32 @@ const RegisterScreen = ({ navigation }: Props) => {
                 keyboardType="email-address"
               />
 
-              <TextInput
+              <CustomTextInput
                 placeholder="Password"
                 returnKeyType="done"
                 value={password.value}
                 onChangeText={text => setPassword({ value: text, error: '' })}
                 error={!!password.error}
                 errorText={password.error}
-                secureTextEntry
+                secureTextEntry={passwordVisible}
+                right={
+                  <TextInput.Icon name={passwordVisible ? "eye" : "eye-off"}
+                  onPress={() => setPasswordVisible(!passwordVisible)} />
+                }
               />
 
-              <TextInput
+              <CustomTextInput
                 placeholder="Confirm password"
                 returnKeyType="done"
                 value={confirm_password.value}
                 onChangeText={text => setConfirmPassword({ value: text, error: '' })}
                 error={!!confirm_password.error}
                 errorText={confirm_password.error}
-                secureTextEntry
+                secureTextEntry={passwordVisible}
+                right={
+                  <TextInput.Icon name={passwordVisible ? "eye" : "eye-off"}
+                  onPress={() => setPasswordVisible(!passwordVisible)} />
+                }
               />
               <View style={{ paddingLeft: 20, paddingRight: 20 }}>
                 <Button mode="contained" onPress={_onSignUpPressed} style={styles.button}>
@@ -316,7 +347,8 @@ const styles = StyleSheet.create({
   },
   header: {
     height: 5,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    marginTop: 0
   },
   label: {
     color: theme.colors.secondary,

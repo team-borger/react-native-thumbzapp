@@ -131,7 +131,7 @@ const Shop = ({ navigation }: Props) => {
               </View>
 
               <View style={{ position: 'absolute', top: -5, right: 0 }}>
-                <Badge>{ count }</Badge>
+                <Badge style={count === 0 ? {display:'none'} : {} }>{ count }</Badge>
               </View>
             </Card.Content>
           </Card>
@@ -147,7 +147,7 @@ const Shop = ({ navigation }: Props) => {
               </View>
 
               <View style={{ position: 'absolute', top: -5, right: 0 }}>
-                <Badge>{ countFood }</Badge>
+                <Badge style={countFood === 0 ? {display:'none'} : {} }>{ countFood }</Badge>
               </View>
             </Card.Content>
           </Card>
@@ -298,7 +298,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   header: {
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    marginTop: 0
   }
 });
 

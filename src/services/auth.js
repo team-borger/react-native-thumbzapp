@@ -28,3 +28,21 @@ export const checkEmailAPI = async (body, callback, err) => {
         err
     )
 }
+
+export const sendVerifyAPI = async (body, callback, err) => {
+    checkConnection(
+        backendAPI.post(`/verify/${body.id}`, body)
+            .then(callback)
+            .catch(err),
+        err
+    )
+}
+
+export const forgotPassAPI = async (body, callback, err) => {
+    checkConnection(
+        backendAPI.post(`/forgot/password`, body)
+            .then(callback)
+            .catch(err),
+        err
+    )
+}

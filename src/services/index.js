@@ -10,7 +10,7 @@ export const AuthService = new Auth();
 export const CallService = new Call();
 
 const backendAPI = axios.create({
-    baseURL: BASE_URL,
+    baseURL: `${BASE_URL}`,
 });
 
 backendAPI.interceptors.request.use(

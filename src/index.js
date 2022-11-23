@@ -14,6 +14,7 @@ import ChatScreen from './screens/ChatScreen'
 import CallScreen from './screens/CallScreen'
 import ProfileScreen from './screens/ProfileScreen'
 import AddCardScreen from './screens/AddCardScreen'
+import AddCardListScreen from './screens/AddCardListScreen'
 import PaymentMethodList from './screens/PaymentMethodList'
 import SearchContactScreen from './screens/SearchContactScreen'
 import CartScreen from './screens/CartScreen'
@@ -31,6 +32,18 @@ import FoodMerchantInfoScreen from './screens/FoodMerchantInfoScreen'
 import CartFoodScreen from './screens/CartFoodScreen'
 import FoodInfoScreen from './screens/FoodInfoScreen'
 import CheckoutFoodScreen from './screens/CheckoutFoodScreen'
+import LoadProcessScreen from './screens/LoadProcessScreen'
+import LoadCheckoutScreen from './screens/LoadCheckoutScreen'
+import LoadPayedScreen from './screens/LoadPayedScreen'
+import PaymentSuccessFoodScreen from './screens/PaymentSuccessFoodScreen'
+import MyAddressScreen from './screens/MyAddressScreen'
+import AddAddressScreen from './screens/AddAddressScreen'
+import MyAddressCheckout from './screens/MyAddressCheckout'
+import AddAddressCheckout from './screens/AddAddressCheckout'
+import OrdersScreen from './screens/OrdersScreen'
+import PaymentOptionLoad from './screens/PaymentOptionLoad'
+import VerifyEmailScreen from './screens/VerifyEmailScreen'
+import ForgotPassEmail from './screens/ForgotPassEmail'
 
 
 const Stack = createNativeStackNavigator();
@@ -54,6 +67,7 @@ const App = () => {
           <Stack.Screen name="CallScreen" component={CallScreen} option={{title: 'CallScreen!!'}} />
           <Stack.Screen name="ProfileScreen" component={ProfileScreen} option={{title: 'ProfileScreen!!'}} />
           <Stack.Screen name="AddCardScreen" component={AddCardScreen} option={{title: 'AddCardScreen!!'}} />
+          <Stack.Screen name="AddCardListScreen" component={AddCardListScreen} option={{title: 'AddCardListScreen!!'}} />
           <Stack.Screen name="PaymentMethodList" component={PaymentMethodList} option={{title: 'PaymentMethodList!!'}} />
           <Stack.Screen name="SearchContactScreen" component={SearchContactScreen} option={{title: 'SearchContactScreen!!'}} />
           <Stack.Screen name="CartScreen" component={CartScreen} option={{title: 'CartScreen!!'}} />
@@ -71,6 +85,18 @@ const App = () => {
           <Stack.Screen name="CartFoodScreen" component={CartFoodScreen} option={{title: 'CartFoodScreen!!'}} />
           <Stack.Screen name="FoodInfoScreen" component={FoodInfoScreen} option={{title: 'FoodInfoScreen!!'}} />
           <Stack.Screen name="CheckoutFoodScreen" component={CheckoutFoodScreen} option={{title: 'CheckoutFoodScreen!!'}} />
+          <Stack.Screen name="LoadProcessScreen" component={LoadProcessScreen} option={{title: 'LoadProcessScreen!!'}} />
+          <Stack.Screen name="LoadCheckoutScreen" component={LoadCheckoutScreen} option={{title: 'LoadCheckoutScreen!!'}} />
+          <Stack.Screen name="LoadPayedScreen" component={LoadPayedScreen} option={{title: 'LoadPayedScreen!!'}} />
+          <Stack.Screen name="PaymentSuccessFoodScreen" component={PaymentSuccessFoodScreen} option={{title: 'PaymentSuccessFoodScreen!!'}} />
+          <Stack.Screen name="MyAddressScreen" component={MyAddressScreen} option={{title: 'MyAddressScreen!!'}} />
+          <Stack.Screen name="AddAddressScreen" component={AddAddressScreen} option={{title: 'AddAddressScreen!!'}} />
+          <Stack.Screen name="MyAddressCheckout" component={MyAddressCheckout} option={{title: 'MyAddressCheckout!!'}} />
+          <Stack.Screen name="AddAddressCheckout" component={AddAddressCheckout} option={{title: 'AddAddressCheckout!!'}} />
+          <Stack.Screen name="OrdersScreen" component={OrdersScreen} option={{title: 'OrdersScreen!!'}} />
+          <Stack.Screen name="PaymentOptionLoad" component={PaymentOptionLoad} option={{title: 'PaymentOptionLoad!!'}} />
+          <Stack.Screen name="VerifyEmailScreen" component={VerifyEmailScreen} option={{title: 'VerifyEmailScreen!!'}} />
+          <Stack.Screen name="ForgotPassEmail" component={ForgotPassEmail} option={{title: 'ForgotPassEmail!!'}} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

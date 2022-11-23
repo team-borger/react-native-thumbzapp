@@ -73,7 +73,6 @@ const AddPayment = ({ navigation }: Props) => {
         exp_month: expMonth,
         exp_year: expYear,
       };
-      console.log(body)
       setLoading(true)
       addCardsAPI(body,addCardSuccess,addCardError);
     }
@@ -190,6 +189,7 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   header: {
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    marginTop: 0
   }
 });
