@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-import { Text, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity, View, Alert } from 'react-native';
 import { emailValidator } from '../core/utils';
 import Background from '../components/Background';
 import BackButton from '../components/BackButton';
@@ -9,6 +9,7 @@ import TextInput from '../components/TextInput';
 import { theme } from '../core/theme';
 import Button from '../components/Button';
 import { Navigation } from '../types';
+import { forgotPassAPI } from '../services/auth';
 
 type Props = {
   navigation: Navigation;
@@ -16,6 +17,7 @@ type Props = {
 
 const ForgotPasswordScreen = ({ navigation }: Props) => {
   const [email, setEmail] = useState({ value: '', error: '' });
+  const [loading, setLoading] = useState(false);
 
   const _onSendPressed = () => {
     const emailError = emailValidator(email.value);
@@ -23,10 +25,34 @@ const ForgotPasswordScreen = ({ navigation }: Props) => {
     if (emailError) {
       setEmail({ ...email, error: emailError });
       return;
+    } else {
+      body = {
+        email: email.value
+      }
+      setLoading(true)
+      forgotPassAPI(body, sendSuccess, sendError)
     }
+  }
 
-    navigation.navigate('LoginScreen');
-  };
+  const sendSuccess = res => {
+    setLoading(false)
+    navigation.replace('ForgotPassEmail')
+  }
+
+  const sendError = err => {
+    const { error, message } = err.response.data;
+    setLoading(false)
+    if (error) {
+      Alert.alert('Registration Error', error,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+    if (message) {
+      Alert.alert('Registration Error', message,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+  }
 
   return (
     <Background>
@@ -36,7 +62,7 @@ const ForgotPasswordScreen = ({ navigation }: Props) => {
       <Header>Reset Password</Header>
 
       <TextInput
-        label="E-mail address"
+        placeholder="E-mail address"
         returnKeyType="done"
         value={email.value}
         onChangeText={text => setEmail({ value: text, error: '' })}
@@ -50,7 +76,7 @@ const ForgotPasswordScreen = ({ navigation }: Props) => {
 
       <View style={{ paddingLeft: 20, paddingRight: 20, width: '100%' }}>
         <Button mode="contained" onPress={_onSendPressed} style={styles.button}>
-          Send Reset Instructions
+          {loading ? 'Loading...' : 'Send Reset Instructions'}
         </Button>
       </View>
 

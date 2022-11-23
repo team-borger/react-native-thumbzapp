@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableHighlight } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar, Button, ToggleButton } from 'react-native-paper';
 import { Navigation } from '../types';
@@ -20,6 +20,7 @@ const LoadCheckout = ({ navigation }: Props) => {
   const [loginuser, setUser] = useState({})
   const [loadInfo, setLoadInfo] = useState({})
   const [loading, setLoading] = useState(false)
+  const [payMethod, setPayment] = useState({})
 
   const _goBack = () => {
     navigation.navigate('LoadProcessScreen');
@@ -51,13 +52,22 @@ const LoadCheckout = ({ navigation }: Props) => {
   const _geLoadInfo = async () => {
     try {
       const value = await AsyncStorage.getItem('loadCheckout')
+      const payment = await AsyncStorage.getItem('paymentMethodLoad')
       if (value !== null) {
         const ret = JSON.parse(value);
         setLoadInfo(ret)
       }
+      if (payment !== null) {
+        const pay = JSON.parse(payment);
+        setPayment(pay)
+      }
     } catch (error) {
       console.log('error async storage')
     }
+  }
+
+  const _goPay = () => {
+    navigation.navigate('PaymentOptionLoad')
   }
 
   return (
@@ -80,13 +90,36 @@ const LoadCheckout = ({ navigation }: Props) => {
             <Text>Total Amount</Text>
             <Text style={{fontWeight: 'bold'}}>PHP {loadInfo.amount}</Text>
           </View>
-          <View style={{paddingHorizontal: '15%', paddingVertical: 20}}>
-            <Text style={{textAlign: 'center', color: '#777777', fontSize: 13}}>Please review to ensure that the details are correct before you proceed.</Text>
+
+          <View style={styles.skeks}>
+            <TouchableHighlight onPress={_goPay} underlayColor="#eeeeee">
+              <View
+                style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: 20, alignItems: 'center'}}>
+                <View style={{display: 'flex', flexDirection:'row', alignItems: 'center'}}>
+                  <FontAwesome name='credit-card' size={15} color='black' />
+                  <View style={{marginLeft: 5}}>
+                    <Text>Payment Options</Text>
+                  </View>
+                </View>
+                <Text>{payMethod.method_type === 'E-Wallet' ? `E-Wallet - Gcash` : payMethod.method_type}</Text>
+                <FontAwesome name='angle-right' size={20} color='black' />
+              </View>
+            </TouchableHighlight>
+            <View style={{marginLeft: 50, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+              <Image source={payMethod.account_number ? IMAGE.ICON_MASTERCARD : ''} style={styles.image} />
+              <Text style={{color: '#880ED4'}}>{payMethod.account_number}</Text>
+            </View>
           </View>
-          <View style={{ paddingLeft: 20, paddingRight: 20 }}>
-            <Button mode="contained" style={styles.btn} onPress={() => {loadPay()}}>
-              {loading ? 'Paying...' : `PAY PHP ${loadInfo.amount}.00`}
-            </Button>
+
+          <View style={payMethod.method_type ? {} : {display: 'none'}}>
+            <View style={{paddingHorizontal: '15%', paddingVertical: 20}}>
+              <Text style={{textAlign: 'center', color: '#777777', fontSize: 13}}>Please review to ensure that the details are correct before you proceed.</Text>
+            </View>
+            <View style={{ paddingLeft: 20, paddingRight: 20 }}>
+              <Button mode="contained" style={styles.btn} onPress={() => {loadPay()}}>
+                {loading ? 'Paying...' : `PAY PHP ${loadInfo.amount}.00`}
+              </Button>
+            </View>
           </View>
         </View>
       </View>

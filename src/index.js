@@ -41,6 +41,9 @@ import AddAddressScreen from './screens/AddAddressScreen'
 import MyAddressCheckout from './screens/MyAddressCheckout'
 import AddAddressCheckout from './screens/AddAddressCheckout'
 import OrdersScreen from './screens/OrdersScreen'
+import PaymentOptionLoad from './screens/PaymentOptionLoad'
+import VerifyEmailScreen from './screens/VerifyEmailScreen'
+import ForgotPassEmail from './screens/ForgotPassEmail'
 
 
 const Stack = createNativeStackNavigator();
@@ -91,6 +94,9 @@ const App = () => {
           <Stack.Screen name="MyAddressCheckout" component={MyAddressCheckout} option={{title: 'MyAddressCheckout!!'}} />
           <Stack.Screen name="AddAddressCheckout" component={AddAddressCheckout} option={{title: 'AddAddressCheckout!!'}} />
           <Stack.Screen name="OrdersScreen" component={OrdersScreen} option={{title: 'OrdersScreen!!'}} />
+          <Stack.Screen name="PaymentOptionLoad" component={PaymentOptionLoad} option={{title: 'PaymentOptionLoad!!'}} />
+          <Stack.Screen name="VerifyEmailScreen" component={VerifyEmailScreen} option={{title: 'VerifyEmailScreen!!'}} />
+          <Stack.Screen name="ForgotPassEmail" component={ForgotPassEmail} option={{title: 'ForgotPassEmail!!'}} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
