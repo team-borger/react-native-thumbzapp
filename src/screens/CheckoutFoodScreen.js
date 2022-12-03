@@ -11,6 +11,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import environment from '../../environment';
+import { userAddressAPI } from '../services/address';
+import { placeFoodOrderAPI } from '../services/food';
 
 type Props = {
   navigation: Navigation;
@@ -21,12 +23,37 @@ const Checkout = ({ navigation }: Props) => {
   const [items, setItems] = useState([])
   const [totalItem, setTotalItem] = useState([])
   const [payMethod, setPayment] = useState({})
+  const [loginuser, setUser] = useState({})
+  const [userAddress, setAddress] = useState({})
 
   const showToast = text => {
     const commonToast = Platform.OS === 'android' ? ToastAndroid : Toast;
 
     commonToast.showWithGravity(text, Toast.LONG, Toast.TOP);
   };
+
+  const _getUserAddress = (payload) => {
+    userAddressAPI(payload.id, getSuccess, getError)
+  }
+
+  const getSuccess = res => {
+    setAddress(res.data)
+  }
+
+  const getError = err => {
+    const { error, message } = err.response.data;
+    setLoading(false)
+    if (error) {
+      Alert.alert('Add Address Error', error,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+    if (message) {
+      Alert.alert('Add Address Error', message,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+  }
 
   useEffect(() => {
     _getCheckout()
@@ -42,6 +69,7 @@ const Checkout = ({ navigation }: Props) => {
     try {
       const value = await AsyncStorage.getItem('checkoutFood')
       const payment = await AsyncStorage.getItem('paymentMethod')
+      const user = await AsyncStorage.getItem('user')
       if (value !== null) {
         const ret = JSON.parse(value);
         setItems(ret)
@@ -51,8 +79,13 @@ const Checkout = ({ navigation }: Props) => {
         const pay = JSON.parse(payment);
         setPayment(pay)
       }
+      if (user !== null) {
+        const userinfo = JSON.parse(user);
+        setUser(userinfo)
+        _getUserAddress(userinfo)
+      }
     } catch (error) {
-      console.log('error async storage')
+      console.log('error async storage', error)
     }
   }
 
@@ -60,7 +93,7 @@ const Checkout = ({ navigation }: Props) => {
     var totalValue = 0
     var totalItem = 0
     for (let item of payload) {
-      totalValue = totalValue + (item.quantity * item.foods[0].price)
+      totalValue = totalValue + (item.quantity * item.food.price)
       totalItem = totalItem + item.quantity
     }
     setTotal(totalValue)
@@ -71,9 +104,23 @@ const Checkout = ({ navigation }: Props) => {
     navigation.navigate('CartFoodScreen');
   }
 
+  const addSuccess = res => {
+    console.log(res.data)
+  }
+
   const _onPlaceOrder = () => {
     if (payMethod.method_type) {
-      navigation.navigate('PaymentSuccessFoodScreen')
+      for (let i of Object.keys(items)) {
+        var payload = {
+          cart_food_id: items[i].id,
+          price_at_time_of_purchase: items[i].food.price,
+          payment_method: payMethod.method_type
+        }
+        placeFoodOrderAPI(payload, addSuccess, getError)
+        if(((+i)+1) === items.length) {
+          navigation.navigate('PaymentSuccessFoodScreen')
+        }
+      }
     } else {
       showToast(`Please add payment method`)
     }
@@ -93,6 +140,26 @@ const Checkout = ({ navigation }: Props) => {
       </Appbar.Header>
 
       <View style={styles.contentContainer}>
+        <View
+          style={{
+            borderBottomColor: '#eeeeee',
+            borderBottomWidth: 4,
+          }}
+        />
+        <TouchableHighlight onPress={() => navigation.navigate('MyAddressCheckout')}  underlayColor="white" style={{borderColor: '#880ED4',  borderWidth: 1, margin: 10, padding: 10, borderRadius: 10}}>
+          <View style={{ flexDirection: 'row'}}>
+            <View style={{width: '80%'}}>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={{fontWeight: 'bold'}}>{userAddress.name}</Text>
+                <Text style={{marginLeft: 10, color: '#777777'}}>{userAddress.phone}</Text>
+              </View>
+              <Text style={{color: '#555555'}}>{userAddress.address}</Text>
+            </View>
+            <View style={{width: '20%', justifyContent: 'center', alignItems: 'flex-end'}}>
+              <FontAwesome name='chevron-right' size={15} color='gray' />
+            </View>
+          </View>
+        </TouchableHighlight>
         <View style={styles.skeks}>
           <FlatList
             data={items}
@@ -100,10 +167,10 @@ const Checkout = ({ navigation }: Props) => {
               <View key={item.id} style={{marginBottom: 5, paddingHorizontal: 20, paddingVertical: 10, borderTopColor: '#eeeeee',  borderTopWidth: 2,}}>
                 <View style={styles.alignCenterRow}>
                   <View style={styles.alignCenterRow}>
-                    <Image source={{ uri: `${environment.APP_URL}/storage/uploads/foods/${item.foods[0].id}/${item.foods[0].images[0].photo}` }} style={styles.image} />
+                    <Image source={{ uri: `${environment.APP_URL}/storage/uploads/foods/${item.food.id}/${item.food.images[0].photo}` }} style={styles.image} />
                     <View>
-                      <Text style={{fontWeight: 'bold'}}>{item.foods[0].name}</Text>
-                      <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {item.foods[0].price}</Text>
+                      <Text style={{fontWeight: 'bold'}}>{item.food.name}</Text>
+                      <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {item.food.price}</Text>
                     </View>
                   </View>
                   <View>
