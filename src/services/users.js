@@ -37,3 +37,12 @@ export const merchantFoodListAPI = async (body, callback, err) => {
         err
     )
 }
+
+export const bookAPI = async (body, callback, err) => {
+    checkConnection(
+        backendAPI.post(`/book/ticket`, body)
+            .then(callback)
+            .catch(err),
+        err
+    )
+}

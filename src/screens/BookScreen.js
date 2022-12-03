@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableHighlight, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableHighlight, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, RadioButton, TextInput, Card } from 'react-native-paper';
 import { Navigation } from '../types';
@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { theme } from '../core/theme';
 import moment from 'moment';
+import { bookAPI } from '../services/users';
 
 type Props = {
   navigation: Navigation;
@@ -32,6 +33,10 @@ const BookScreen = ({ navigation }: Props) => {
   const [children, setChildren ] = React.useState(0);
   const [toddlers, setToddlers ] = React.useState(0);
   const [infant, setInfant ] = React.useState(0);
+  const [tour_accommodation, setTourAccommodation ] = React.useState('');
+  const [msg, setMsg ] = React.useState('');
+  const [loginuser, setUser] = useState({});
+  const [loading, setLoading] = useState(false)
 
   const _goBack = () => {
     navigation.navigate('HomeScreen')
@@ -39,6 +44,10 @@ const BookScreen = ({ navigation }: Props) => {
 
   const skeks = () => {
     setShowDeparture(true)
+  }
+
+  const skeks2 = () => {
+    setShowReturn(true)
   }
 
   const setFrom = (event, selectedDate) => {
@@ -51,9 +60,65 @@ const BookScreen = ({ navigation }: Props) => {
     setShowReturn(false)
   };
 
+  const saveSuccess = res => {
+    setLoading(false)
+    navigation.navigate('BookSuccess')
+  }
+
+  const saveError = err => {
+    setLoading(false)
+    const { error, message } = err.response.data;
+    if (error) {
+      Alert.alert('Something went wrong. Please try again.', error,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+    if (message) {
+      Alert.alert('Something went wrong. Please try again.', message,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+  }
+
+  const saveBook = () => {
+    setLoading(true)
+    let payload = {
+      id: loginuser.id,
+      type: type,
+      from: from,
+      to: to,
+      trip: trip,
+      departure: departure,
+      return: returnDate,
+      class: choosenClass,
+      adult: adult,
+      student: student,
+      senior: senior,
+      youth: youth,
+      children: children,
+      toddlers: toddlers,
+      infant: infant,
+      tour_accommodation: tour_accommodation,
+      msg: msg,
+    }
+    bookAPI(payload, saveSuccess, saveError)
+  }
+
+  const _geUserInfo = async () => {
+    try {
+      const value = await AsyncStorage.getItem('user')
+      if (value !== null) {
+        const ret = JSON.parse(value);
+        setUser(ret)
+      }
+    } catch (error) {
+      console.log('error async storage')
+    }
+  }
+
   useFocusEffect(
     React.useCallback(() => {
-      console.log(departure)
+      _geUserInfo()
     }, [navigation])
   );
 
@@ -88,6 +153,37 @@ const BookScreen = ({ navigation }: Props) => {
                 </View>
               </View>
             </RadioButton.Group>
+          </View>
+          <View style={{marginTop: 10, marginBottom: 5}}>
+            <Text style={{fontWeight: 'bold', fontSize: 15}}>Tour Accommodation</Text>
+          </View>
+          <View>
+            <RadioButton.Group onValueChange={newValue => setTourAccommodation(newValue)} value={tour_accommodation}>
+              <View style={{flexDirection: 'row', display: 'flex'}}>
+                <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginRight: 30}}>
+                  <RadioButton value="Yes" />
+                  <Text>Yes</Text>
+                </View>
+                <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginRight: 30}}>
+                  <RadioButton value="No" />
+                  <Text>No</Text>
+                </View>
+              </View>
+            </RadioButton.Group>
+            <View style={{marginVertical: 7, marginHorizontal: 7}}>
+              <Text>Message</Text>
+              <TextInput
+                style={{backgroundColor: theme.colors.surface, fontSize: 14,}}
+                multiline={true}
+                numberOfLines={3}
+                onChangeText={text => setMsg(text)}
+                value={msg}
+                theme={{ roundness: 5 }}
+                selectionColor={theme.colors.primary}
+                underlineColor="transparent"
+                mode="outlined"
+              />
+            </View>
           </View>
           <View style={{marginTop: 10, marginBottom: 5}}>
             <Text style={{fontWeight: 'bold', fontSize: 15}}>Destination</Text>
@@ -143,7 +239,7 @@ const BookScreen = ({ navigation }: Props) => {
             </View>
             <View style={trip === 'Round-trip' ? {marginVertical: 7} : {display: 'none'}}>
               <Text>Return</Text>
-              <Card onPress={skeks}>
+              <Card onPress={skeks2}>
                 <Card.Content style={{display: 'flex', flexDirection: 'row'}}>
                   <Text style={{fontWeight: 'bold', color: 'gray'}}>{moment(returnDate).format('MMMM DD, YYYY')}</Text>
                 </Card.Content>
@@ -206,8 +302,9 @@ const BookScreen = ({ navigation }: Props) => {
                   selectionColor={theme.colors.primary}
                   underlineColor="transparent"
                   mode="outlined"
-                  value={from}
-                  onChangeText={text => setFromText(text)}
+                  keyboardType='numeric'
+                  value={adult}
+                  onChangeText={text => setAdult(text)}
                 />
               </View>
               <View style={{marginVertical: 7,flexBasis: '50%', paddingHorizontal: 5}}>
@@ -218,8 +315,9 @@ const BookScreen = ({ navigation }: Props) => {
                   selectionColor={theme.colors.primary}
                   underlineColor="transparent"
                   mode="outlined"
-                  value={to}
-                  onChangeText={text => setToText(text)}
+                  keyboardType='numeric'
+                  value={student}
+                  onChangeText={text => setStudent(text)}
                 />
               </View>
               <View style={{marginVertical: 7,flexBasis: '50%', paddingHorizontal: 5}}>
@@ -230,8 +328,9 @@ const BookScreen = ({ navigation }: Props) => {
                   selectionColor={theme.colors.primary}
                   underlineColor="transparent"
                   mode="outlined"
-                  value={from}
-                  onChangeText={text => setFromText(text)}
+                  keyboardType='numeric'
+                  value={senior}
+                  onChangeText={text => setSenior(text)}
                 />
               </View>
               <View style={{marginVertical: 7,flexBasis: '50%', paddingHorizontal: 5}}>
@@ -242,8 +341,9 @@ const BookScreen = ({ navigation }: Props) => {
                   selectionColor={theme.colors.primary}
                   underlineColor="transparent"
                   mode="outlined"
-                  value={to}
-                  onChangeText={text => setToText(text)}
+                  keyboardType='numeric'
+                  value={youth}
+                  onChangeText={text => setYouth(text)}
                 />
               </View>
               <View style={{marginVertical: 7,flexBasis: '40%', paddingHorizontal: 5}}>
@@ -254,8 +354,9 @@ const BookScreen = ({ navigation }: Props) => {
                   selectionColor={theme.colors.primary}
                   underlineColor="transparent"
                   mode="outlined"
-                  value={to}
-                  onChangeText={text => setToText(text)}
+                  keyboardType='numeric'
+                  value={children}
+                  onChangeText={text => setChildren(text)}
                 />
               </View>
               <View style={{marginVertical: 7,flexBasis: '60%', paddingHorizontal: 5}}>
@@ -266,8 +367,9 @@ const BookScreen = ({ navigation }: Props) => {
                   selectionColor={theme.colors.primary}
                   underlineColor="transparent"
                   mode="outlined"
-                  value={to}
-                  onChangeText={text => setToText(text)}
+                  keyboardType='numeric'
+                  value={infant}
+                  onChangeText={text => setInfant(text)}
                 />
               </View>
               <View style={{marginVertical: 7,flexBasis: '100%', paddingHorizontal: 5}}>
@@ -278,12 +380,16 @@ const BookScreen = ({ navigation }: Props) => {
                   selectionColor={theme.colors.primary}
                   underlineColor="transparent"
                   mode="outlined"
-                  value={from}
-                  onChangeText={text => setFromText(text)}
+                  keyboardType='numeric'
+                  value={toddlers}
+                  onChangeText={text => setToddlers(text)}
                 />
               </View>
             </View>
           </View>
+          <Button style={styles.logoutBtn} mode="contained" onPress={saveBook}>
+            {loading ? 'Saving...' : `Save`}
+          </Button>
         </ScrollView>
       </View>
 
@@ -302,7 +408,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#880ED4',
     padding: 5,
     marginTop: 10,
-    marginHorizontal: 10
+    marginHorizontal: 10,
+    marginBottom: 20
   },
   input: {
     backgroundColor: theme.colors.surface,
@@ -318,7 +425,7 @@ const styles = StyleSheet.create({
   contentContainer: {
       flex: 1,
       padding: 5,
-      paddingHorizontal: 20
+      paddingHorizontal: 20,
   },
   marginText: {
     marginLeft: 10
