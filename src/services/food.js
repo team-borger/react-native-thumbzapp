@@ -27,3 +27,12 @@ export const addCartFoodAPI = async (body, callback, err) => {
         err
     )
 }
+
+export const placeFoodOrderAPI = async (body, callback, err) => {
+    checkConnection(
+        backendAPI.post(`/food_order/create`, body)
+            .then(callback)
+            .catch(err),
+        err
+    )
+}
