@@ -60,7 +60,6 @@ const Orders = ({ navigation }: Props) => {
     const ship = items.filter((obj) => obj.status.status_option.status === 'Pending' || obj.status.status_option.status === 'Processing' || obj.status.status_option.status === 'Packed')
     const receive = items.filter((obj) => obj.status.status_option.status === 'Shipped')
     const complete = items.filter((obj) => obj.status.status_option.status === 'Delivered')
-    console.log(receive[0].cart.product)
     setToShip(ship)
     setToReceive(receive)
     setCompleted(complete)

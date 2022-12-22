@@ -21,7 +21,7 @@ const Skekert = ({ navigation }) => {
         <FontAwesome name='mobile-phone' onPress={() => navigation.navigate("NetLoadScreen")} size={22} color='#333' />
       </View>
       <View style={styles.centerFLex}>
-        <Ionicons name='airplane' onPress={_openWeb} size={22} color='#333' />
+        <Ionicons name='airplane' onPress={() => navigation.navigate("BookScreen")} size={22} color='#333' />
       </View>
       <View style={styles.centerFLex}>
         <FontAwesome name='user' onPress={() => navigation.navigate("ProfileScreen")} size={22} color='#333' />

@@ -37,7 +37,7 @@ const Checkout = ({ navigation }: Props) => {
     var totalValue = 0
     var totalItem = 0
     for (let item of payload) {
-      totalValue = totalValue + (item.quantity * item.foods[0].price)
+      totalValue = totalValue + (item.quantity * item.food.price)
       totalItem = totalItem + item.quantity
     }
     setTotal(totalValue)
