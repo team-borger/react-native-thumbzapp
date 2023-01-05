@@ -144,6 +144,11 @@ const ProductInfo = ({ navigation }: Props) => {
     navigation.navigate('CartScreen')
   }
 
+  const formatNumber = (inputNumber) => {
+    let formetedNumber=(Number(inputNumber)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    return(formetedNumber);
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 10 }}>
@@ -178,7 +183,7 @@ const ProductInfo = ({ navigation }: Props) => {
           />
           <View style={{margin: 10}}>
             <Text style={{fontSize: 17}}>{product.name}</Text>
-            <Text style={{color: '#880ED4', fontSize: 15, marginTop: 10}}>{'\u20B1'}{product.price}</Text>
+            <Text style={{color: '#880ED4', fontSize: 15, marginTop: 10}}>{'\u20B1'}{formatNumber(product.price)}</Text>
           </View>
         </View>
       </View>

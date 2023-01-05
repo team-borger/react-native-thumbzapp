@@ -127,6 +127,11 @@ const FoodMerchant = ({ navigation }: Props) => {
     setFoodList(res.data.data)
   }
 
+  const formatNumber = (inputNumber) => {
+    let formetedNumber=(Number(inputNumber)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    return(formetedNumber);
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 10 }}>
@@ -178,7 +183,7 @@ const FoodMerchant = ({ navigation }: Props) => {
                         <Text>{ item.name }</Text>
                       </View>
                       <View>
-                        <Text>{'\u20B1'} { item.price }</Text>
+                        <Text>{'\u20B1'} { formatNumber(item.price) }</Text>
                       </View>
                     </Card.Content>
                   </Card>

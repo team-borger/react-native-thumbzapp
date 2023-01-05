@@ -59,7 +59,7 @@ const Cart = ({ navigation }: Props) => {
     for (let item of selected) {
       totalValue = totalValue + (item.quantity * item.product.price)
     }
-    return totalValue
+    return formatNumber(totalValue)
   }
 
   const _goBack = () => {
@@ -132,6 +132,11 @@ const Cart = ({ navigation }: Props) => {
     setListItemsRefresh(!listItemsRefresh)
   }
 
+  const formatNumber = (inputNumber) => {
+    let formetedNumber=(Number(inputNumber)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    return(formetedNumber);
+  }
+
   useIsFocused();
 
   return (
@@ -161,14 +166,14 @@ const Cart = ({ navigation }: Props) => {
                     <View style={{flex: 1}}>
                       <Text style={{fontWeight: 'bold'}}>{item.product.name}</Text>
                       <View style={{display: 'flex', flexDirection: 'row'}}>
-                        <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {item.product.price}</Text>
+                        <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {formatNumber(item.product.price)}</Text>
                         <Text style={{color: 'gray', fontSize: 12}}> X {item.quantity}</Text>
                       </View>
                     </View>
                   </View>
                 </View>
                 <View style={{paddingHorizontal: 2, paddingVertical: 2, width: '25%',}}>
-                  <Text style={{color: '#880ED4', fontSize: 15, fontWeight: 'bold', textAlign: 'center'}}>{'\u20B1'} {item.quantity * item.product.price}</Text>
+                  <Text style={{color: '#880ED4', fontSize: 15, fontWeight: 'bold', textAlign: 'center'}}>{'\u20B1'} {formatNumber(item.quantity * item.product.price)}</Text>
                 </View>
               </TouchableOpacity>
             )}
