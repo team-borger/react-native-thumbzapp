@@ -170,6 +170,26 @@ const Dashboard = ({ navigation }: Props) => {
               borderBottomWidth: 2,
             }}
           />
+          <TouchableHighlight onPress={() => navigation.navigate('MyAddressScreen')} underlayColor="#fff">
+            <View
+              style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: 20, alignItems: 'center'}}>
+              <View style={{display: 'flex', flexDirection:'row', alignItems: 'center'}}>
+                <View style={{width: 30}}>
+                  <FontAwesome name='map-marker' size={15} color='black' />
+                </View>
+                <View style={{marginLeft: 5}}>
+                  <Text>Food Orders</Text>
+                </View>
+              </View>
+              <FontAwesome name='angle-right' size={20} color='black' />
+            </View>
+          </TouchableHighlight>
+          <View
+            style={{
+              borderBottomColor: 'white',
+              borderBottomWidth: 2,
+            }}
+          />
         </View>
         <Button icon="logout" style={styles.logoutBtn} mode="contained" onPress={_onLogoutPressed}>
           Logout

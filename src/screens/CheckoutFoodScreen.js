@@ -131,6 +131,11 @@ const Checkout = ({ navigation }: Props) => {
     navigation.navigate('PaymentOptions')
   }
 
+  const formatNumber = (inputNumber) => {
+    let formetedNumber=(Number(inputNumber)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    return(formetedNumber);
+  }
+
   return (
     <SafeAreaView style={styles.container}>
 
@@ -170,7 +175,7 @@ const Checkout = ({ navigation }: Props) => {
                     <Image source={{ uri: `${environment.APP_URL}/storage/uploads/foods/${item.food.id}/${item.food.images[0].photo}` }} style={styles.image} />
                     <View>
                       <Text style={{fontWeight: 'bold'}}>{item.food.name}</Text>
-                      <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {item.food.price}</Text>
+                      <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {formatNumber(item.food.price)}</Text>
                     </View>
                   </View>
                   <View>
@@ -190,7 +195,7 @@ const Checkout = ({ navigation }: Props) => {
                 <Text>Total ( {totalItem} {totalItem > 1 ? 'Items' : 'Item'} )</Text>
               </View>
               <View>
-                <Text style={{fontWeight: 'bold', color: '#880ED4'}}>{'\u20B1'} {subTotal}</Text>
+                <Text style={{fontWeight: 'bold', color: '#880ED4'}}>{'\u20B1'} {formatNumber(subTotal)}</Text>
               </View>
             </View>
           </View>
@@ -219,7 +224,7 @@ const Checkout = ({ navigation }: Props) => {
       <View style={{ flexDirection: 'row'}}>
         <View style={styles.total}>
           <Text style={{marginLeft: 20}}>Total Payment:</Text>
-          <Text style={{fontWeight: 'bold', marginLeft: 20, color: '#880ED4' }}>{'\u20B1'} {subTotal}</Text>
+          <Text style={{fontWeight: 'bold', marginLeft: 20, color: '#880ED4' }}>{'\u20B1'} {formatNumber(subTotal)}</Text>
         </View>
         <Button style={styles.btn} mode="contained" onPress={_onPlaceOrder}>
           Place Order
