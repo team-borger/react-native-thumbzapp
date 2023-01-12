@@ -162,7 +162,7 @@ const RegisterScreen = ({ navigation }: Props) => {
 
   return (
     <Background>
-      <SafeAreaView style={{ flex: 1, width: '100%' }}>
+      <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1, width: '100%' }}>
         <Appbar.Header dark={false} style={styles.header}>
         </Appbar.Header>
         <View style={{ flex: 1 }}>

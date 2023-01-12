@@ -173,7 +173,7 @@ const Shop = ({ navigation }: Props) => {
               showsHorizontalScrollIndicator={false}
               >
               {products.map((item, index) =>
-                <TouchableHighlight style={styles.cardStyle} key={item.id} onPress={() => selectProduct(item)}>
+                <TouchableHighlight underlayColor="#eeeeee" style={styles.cardStyle} key={item.id} onPress={() => selectProduct(item)}>
                   <Card>
                     <Card.Cover style={styles.yawa} source={{ uri: `${environment.APP_URL}/storage/uploads/products/${item.id}/${item.images[0].photo}` }} />
                     <Card.Content>
@@ -187,7 +187,7 @@ const Shop = ({ navigation }: Props) => {
                   </Card>
                 </TouchableHighlight>
               )}
-              <TouchableHighlight style={styles.cardStyle} onPress={() => navigation.navigate('ShoppingScreen')}>
+              <TouchableHighlight underlayColor="#eeeeee" style={styles.cardStyle} onPress={() => navigation.navigate('ShoppingScreen')}>
                 <Card style={{height: 228, backgroundColor: '#ead3f9'}}>
                   <Card.Content>
                     <View style={{height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
@@ -210,7 +210,7 @@ const Shop = ({ navigation }: Props) => {
               showsHorizontalScrollIndicator={false}
               >
               {foods.map((item, index) =>
-                <TouchableHighlight style={styles.cardStyle} key={item.id} onPress={() => selectProduct(item)}>
+                <TouchableHighlight underlayColor="#eeeeee" style={styles.cardStyle} key={item.id} onPress={() => selectProduct(item)}>
                   <Card>
                     <Card.Cover style={styles.yawa} source={{ uri: `${environment.APP_URL}/storage/uploads/foods/${item.id}/${item.images[0].photo}` }} />
                     <Card.Content>
@@ -224,7 +224,7 @@ const Shop = ({ navigation }: Props) => {
                   </Card>
                 </TouchableHighlight>
               )}
-              <TouchableHighlight style={styles.cardStyle} onPress={() => navigation.navigate('FoodScreen')}>
+              <TouchableHighlight underlayColor="#eeeeee" style={styles.cardStyle} onPress={() => navigation.navigate('FoodScreen')}>
                 <Card style={{height: 228, backgroundColor: '#ead3f9'}}>
                   <Card.Content>
                     <View style={{height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>

@@ -56,7 +56,7 @@ const Calling = (response) => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['bottom', 'left', 'right']} style={styles.container}>
       <Appbar.Header dark={true} style={styles.header}>
         <Appbar.BackAction onPress={_goBack} />
       </Appbar.Header>

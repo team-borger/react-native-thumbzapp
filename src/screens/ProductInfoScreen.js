@@ -258,7 +258,8 @@ const styles = StyleSheet.create({
   },
   logoutBtn: {
     backgroundColor: '#880ED4',
-    padding: 10
+    padding: 10,
+    borderRadius: 0
   },
   image: {
     width: 30,
@@ -288,7 +289,8 @@ const styles = StyleSheet.create({
   },
   btn: {
     backgroundColor: '#880ED4',
-    padding: 5
+    padding: 5,
+    borderRadius: 0
   },
   ground: {
     paddingTop: 0,

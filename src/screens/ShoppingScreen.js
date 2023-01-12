@@ -179,7 +179,7 @@ const Shop = ({ navigation }: Props) => {
           renderItem={({ item }) => (
             <View style={styles.skeks}>
               <View style={styles.item}>
-                <TouchableHighlight style={styles.cardStyle} key={item.id} onPress={() => selectProduct(item)}>
+                <TouchableHighlight underlayColor="#eeeeee" style={styles.cardStyle} key={item.id} onPress={() => selectProduct(item)}>
                   <Card>
                     <Card.Cover style={styles.yawa} source={{ uri: `${environment.APP_URL}/storage/uploads/products/${item.id}/${item.images[0].photo}` }} />
                     <Card.Content>
