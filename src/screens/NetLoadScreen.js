@@ -169,7 +169,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#880ED4',
     padding: 5,
     marginTop: 10,
-    marginHorizontal: 10
+    marginHorizontal: 10,
+    borderRadius: 0
   },
   hide: {
     display: 'none'

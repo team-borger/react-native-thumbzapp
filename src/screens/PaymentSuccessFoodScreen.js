@@ -52,7 +52,7 @@ const Checkout = ({ navigation }: Props) => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['bottom', 'left', 'right']} style={styles.container}>
 
       <Appbar.Header dark={false} style={styles.header}>
         <Appbar.BackAction onPress={_goBack} />
@@ -106,9 +106,10 @@ const styles = StyleSheet.create({
   contentContainer: {
       flex: 1
   },
-  btn: {
+  logoutBtn: {
     backgroundColor: '#880ED4',
     padding: 5,
+    borderRadius: 0
   },
   ground: {
     paddingTop: 0,

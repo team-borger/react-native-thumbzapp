@@ -81,7 +81,7 @@ const Dashboard = ({ navigation }: Props) => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['bottom', 'left', 'right']} style={styles.container}>
 
       <Appbar.Header dark={false} style={styles.header}>
         <Appbar.Content style={styles.marginText} title={<Text style={styles.setColorText}>Messages</Text>} />

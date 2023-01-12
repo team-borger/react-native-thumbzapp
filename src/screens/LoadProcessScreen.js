@@ -255,7 +255,8 @@ const styles = StyleSheet.create({
   },
   logoutBtn: {
     backgroundColor: '#880ED4',
-    padding: 10
+    padding: 10,
+    borderRadius: 0
   },
   contentContainer: {
       flex: 1

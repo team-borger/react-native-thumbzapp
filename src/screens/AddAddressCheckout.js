@@ -79,7 +79,7 @@ const AddCard = ({ navigation }: Props) => {
   );
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1 }}>
       <Appbar.Header dark={false} style={styles.header}>
         <Appbar.BackAction onPress={_goBack} />
         <Appbar.Content title={<Text style={styles.setColorText}>{form.id ? 'Update' : 'Add'} Address</Text>}/>
@@ -115,7 +115,7 @@ const AddCard = ({ navigation }: Props) => {
         </View>
 
         <View style={form.default === false && form.id ? { paddingLeft: 20, paddingRight: 20, width: '100%', marginTop: 20 } : {display: 'none'}}>
-          <Button mode="outlined" onPress={() => makeDefault(form.id)}>
+          <Button mode="outlined" onPress={() => makeDefault(form.id)} style={{borderRadius: 5}}>
             Set as Default
           </Button>
         </View>
@@ -155,7 +155,8 @@ const styles = StyleSheet.create({
   },
   logoutBtn: {
     backgroundColor: '#880ED4',
-    padding: 10
+    padding: 10,
+    borderRadius: 0
   },
   ground: {
     padding: 20,

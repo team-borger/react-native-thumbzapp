@@ -408,8 +408,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#880ED4',
     padding: 5,
     marginTop: 10,
-    marginHorizontal: 10,
-    marginBottom: 20
+    marginHorizontal: 5,
+    marginBottom: 20,
+    borderRadius: 0
   },
   input: {
     backgroundColor: theme.colors.surface,
