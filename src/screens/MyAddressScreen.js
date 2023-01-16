@@ -69,7 +69,7 @@ const ChatScreen = ({ navigation }: Props) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1 }}>
       <Appbar.Header dark={false} style={styles.header}>
         <Appbar.BackAction onPress={_goBack} />
         <Appbar.Content title={<Text style={styles.setColorText}>My Address</Text>}/>
@@ -161,7 +161,8 @@ const styles = StyleSheet.create({
   },
   logoutBtn: {
     backgroundColor: '#880ED4',
-    padding: 10
+    padding: 10,
+    borderRadius: 0
   },
   ground: {
     padding: 20,

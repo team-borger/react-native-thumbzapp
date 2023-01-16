@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 12,
+    borderRadius: 0
   },
   label: {
     color: 'white',

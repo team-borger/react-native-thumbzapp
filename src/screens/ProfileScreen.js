@@ -224,6 +224,7 @@ const styles = StyleSheet.create({
   },
   logoutBtn: {
     backgroundColor: '#880ED4',
+    borderRadius: 0
   },
   avatar: {
     backgroundColor: '#880ED4',
