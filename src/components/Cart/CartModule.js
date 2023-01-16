@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { View, FlatList } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, FlatList, Text } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import CartItem from './CartItem';
 import { useIsFocused } from '@react-navigation/native'
 
-const MyComponent = () => {
+const MyComponent = (props) => {
   useIsFocused()
 
   const products = [
@@ -15,7 +15,13 @@ const MyComponent = () => {
     { product_id: 5, name: 'M4A1', quantity: 1 },
   ];
 
-  const [cartItems, setCartItems] = useState(products);
+  useEffect(() => {
+    setCartItems(props.cartItems)
+  })
+
+  // const [cartItems, setCartItems] = useState(products);
+  const [cartItems, setCartItems] = useState([]);
+
   const [toBeDeletedItems, setToBeDeletedItems] = useState([])
   const [listItemsRefresh, setListItemsRefresh] = useState(false)
 
@@ -68,15 +74,15 @@ const MyComponent = () => {
       const tempIndex = tempCart.findIndex((item) => item.product_id == markedItem.product_id)
       tempCart.splice(tempIndex, 1);
     })
-    removeCartItem()
 
     setCartItems(tempCart)
     setToBeDeletedItems([])
     console.log(cartItems)
   }
 
-  const removeCartItem = () => {
-
+  const exta = () => {
+    console.log(1, products)
+    console.log(2, cartItems)
   }
 
   const Cart = () => {
@@ -84,15 +90,15 @@ const MyComponent = () => {
       <FlatList
         data={cartItems}
         renderItem={({ item, index }) => (
-            <CartItem
-              key={item.product_id}
-              item={item}
-              index={index}
-              addClicked={addClicked}
-              minusClicked={minusClicked}
-              itemSelected={itemSelected}
-              removed={toBeDeletedItems}
-            />
+          <CartItem
+            key={item.product_id}
+            item={item}
+            index={index}
+            addClicked={addClicked}
+            minusClicked={minusClicked}
+            itemSelected={itemSelected}
+            removed={toBeDeletedItems}
+          />
         )}
         keyExtractor={(item) => item.product_id}
         extraData={listItemsRefresh}
@@ -101,10 +107,11 @@ const MyComponent = () => {
   }
 
   return (
-    <View style={{ margin: 10 }}>
+    <View>
       <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+        <IconButton color='black' icon="chat" onPress={() => {exta()}} />
         <IconButton color='black' icon="delete" onPress={() => {bulkDelete()}} />
-        <IconButton color='black' icon="refresh" onPress={() => {setCartItems(products)}} />
+        <IconButton color='black' icon="refresh" onPress={() => {setCartItems(props.cartItems)}} />
       </View>
       <Cart />
     </View>

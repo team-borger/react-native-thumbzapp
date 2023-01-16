@@ -1,6 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { View, StyleSheet, Animated } from 'react-native';
+import { View, StyleSheet, Animated, Image } from 'react-native';
 import { Text, TouchableRipple, Button, IconButton, RadioButton } from 'react-native-paper';
+import environment from '../../../environment';
+import NumericInput from 'react-native-numeric-input'
 
 const CartItem = (props, { removed }) => {
 
@@ -11,6 +13,7 @@ const CartItem = (props, { removed }) => {
   const [cartItemActive, setCartItemActive] = useState(false);
 
   const [quantity, setQuantity] = useState(props.item.quantity)
+  const [description, setDescription] = useState(props.item.product.description)
   const [checked, setCheckedStatus] = useState(false)
 
   useEffect(() => {
@@ -27,7 +30,7 @@ const CartItem = (props, { removed }) => {
 
   const heightInterpolate = slideDownAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: [40, 80],
+    outputRange: [70, 118],
   });
 
 
@@ -94,25 +97,51 @@ const CartItem = (props, { removed }) => {
     )
   }
 
+
+// additionals beding =========================================================================================
+
+const formatNumber = (inputNumber) => {
+  let formetedNumber=(Number(inputNumber)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+  return(formetedNumber);
+}
+
+// additionals end =============================================================================================
+
+// {flexDirection: 'row', alignItems: 'space-between'}
     return (
-    <View style={{marginBottom: 10}}>
+    <View style={{marginBottom: 0, borderBottomColor: '#eeeeee', borderBottomWidth: 2}}>
       <Animated.View style={[redAnimatedStyle, {position: 'absolute', zIndex: 1}]}>
         <TouchableRipple
           style={styles.red}
           onPress={() => console.log('Pressed', cartItemActive)}
           onLongPress={() => longPressed()}
           rippleColor="rgba(0, 0, 0, .32)">
-          <View style={{flexDirection: 'row', alignItems: 'space-between'}}>
-            <RadioButton
-              status={ checked ? 'checked' : 'unchecked' }
-              onPress={() => itemSelected()}
-            />
-            <Button style={{flex: 1}}>
-              <Text>{ `${props.item.name} : ${quantity}` }</Text>
-            </Button>
-            <View style={styles.iconContainer}>
-              { cartItemActive && <Cancel /> }
+          <View style={styles.base}>
+
+            <View style={{width: '10%'}}>
+              <RadioButton
+                status={ checked ? 'checked' : 'unchecked' }
+                onPress={() => itemSelected()}
+              />
             </View>
+
+            <View style={{width: '65%'}}>
+              <View style={styles.alignCenterRow}>
+                <Image source={{ uri: `${environment.APP_URL}/storage/uploads/products/${props.item.product.id}/${props.item.product.images[0].photo}` }} style={styles.image} />
+                <View style={{flex: 1}}>
+                  <Text style={{fontWeight: 'bold'}}>{props.item.product.name}</Text>
+                  <View style={{display: 'flex', flexDirection: 'row'}}>
+                    <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {formatNumber(props.item.product.price)}</Text>
+                    <Text style={{color: 'gray', fontSize: 12}}> X {props.item.quantity}</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+
+            <View style={{paddingHorizontal: 2, paddingVertical: 2, width: '25%'}}>
+              <Text style={{color: '#880ED4', fontSize: 15, fontWeight: 'bold', textAlign: 'center'}}>{'\u20B1'} {formatNumber(props.item.quantity * props.item.product.price)}</Text>
+            </View>
+
           </View>
         </TouchableRipple>
       </Animated.View>
@@ -123,8 +152,15 @@ const CartItem = (props, { removed }) => {
           rippleColor="rgba(0, 0, 0, .32)">
           <View style={styles.iconContainer}>
             <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-              <IconButton color='black' icon="minus-thick" onPress={() => minusClicked()} />
-              <IconButton color='black' icon="plus-thick" onPress={() => addClicked()} />
+              { cartItemActive && <Cancel /> }
+              <NumericInput
+                onChange={value => {}}
+                totalHeight={30}
+                iconSize={25}
+                minValue={1}
+                maxValue={69}
+                valueType='real'
+              />
             </View>
           </View>
         </TouchableRipple>
@@ -133,20 +169,56 @@ const CartItem = (props, { removed }) => {
   );
 }
 
+// <View>
+//   <Button style={{flex: 1}}>
+//     <Text>{ `${description} : ${quantity} x subtotal` }</Text>
+//   </Button>
+//   <View style={styles.iconContainer}>
+//     { cartItemActive && <Cancel /> }
+//   </View>
+// </View>
+
+// <IconButton color='black' icon="minus-thick" onPress={() => minusClicked()} />
+// <IconButton color='black' icon="plus-thick" onPress={() => addClicked()} />
+
+
 const styles = StyleSheet.create({
   red: {
-    backgroundColor: 'red',
-    height: 40,
+    backgroundColor: '#F5FCFF',
+    // backgroundColor: 'red',
+    // height: 50,
+  },
+  base: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    // borderBottomColor: '#eeeeee',
+    // borderBottomWidth: 2,
+    width: '100%',
+    // height: '100%',
+    flexDirection: 'row',
+    alignItems:'center'
   },
   below: {
-    backgroundColor: 'pink',
+    // backgroundColor: 'pink',
     height: '100%',
   },
   iconContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
     height: 40
-  }
+  },
+  image: {
+    width: 50,
+    height: 50,
+    resizeMode: 'contain',
+    marginRight: 10
+  },
+  alignCenterRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
 });
 
 export default CartItem;

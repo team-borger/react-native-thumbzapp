@@ -183,7 +183,7 @@ const Cart = ({ navigation }: Props) => {
           />
         </View>
 
-        <CartModule />
+        <CartModule cartItems={ items }/>
       </View>
 
       <View style={{ flexDirection: 'row'}}>
