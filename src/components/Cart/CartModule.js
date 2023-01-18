@@ -25,29 +25,6 @@ const MyComponent = (props) => {
   const [toBeDeletedItems, setToBeDeletedItems] = useState([])
   const [listItemsRefresh, setListItemsRefresh] = useState(false)
 
-  const addClicked = (index) => {
-    let tempCart = cartItems;
-    tempCart[index].quantity++;
-    setCartItems(tempCart);
-    console.log('qty-parent', cartItems[index].quantity);
-  };
-
-  const minusClicked = (index) => {
-    let tempCart = cartItems;
-    tempCart[index].quantity--;
-
-    if (tempCart[index].quantity < 1) {
-      removeItem(index);
-      setTimeout(()=>{
-        setListItemsRefresh(!listItemsRefresh)
-      }, 290)
-    } else {
-      setCartItems(tempCart);
-      console.log('qty-parent', cartItems[index].quantity);
-    }
-    console.log(123, cartItems);
-  };
-
   const removeItem = (i) => {
     let tempCart = cartItems;
     tempCart.splice(i, 1);
@@ -80,6 +57,26 @@ const MyComponent = (props) => {
     console.log(cartItems)
   }
 
+  const quantityChanged = (x) => {
+    let tempCart = cartItems;
+    const tempIndex = tempCart.findIndex((item) => item.product_id == x.product_id)
+
+    // console.log('tempIndex '+tempIndex, x.value)
+    tempCart[tempIndex].quantity = x.value;
+    // console.log(tempCart[tempIndex].quantity)
+
+    if(tempCart[tempIndex]) {
+      if (tempCart[tempIndex].quantity < 1) {
+        removeItem(tempIndex);
+        setTimeout(()=>{
+          setListItemsRefresh(!listItemsRefresh)
+        }, 290)
+      } else {
+        setCartItems(tempCart);
+      }
+    }
+  }
+
   const exta = () => {
     console.log(1, products)
     console.log(2, cartItems)
@@ -94,8 +91,7 @@ const MyComponent = (props) => {
             key={item.product_id}
             item={item}
             index={index}
-            addClicked={addClicked}
-            minusClicked={minusClicked}
+            quantityChanged={quantityChanged}
             itemSelected={itemSelected}
             removed={toBeDeletedItems}
           />

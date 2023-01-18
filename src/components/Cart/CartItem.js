@@ -13,6 +13,7 @@ const CartItem = (props, { removed }) => {
   const [cartItemActive, setCartItemActive] = useState(false);
 
   const [quantity, setQuantity] = useState(props.item.quantity)
+  const [subTotal, setSubTotal] = useState(0)
   const [description, setDescription] = useState(props.item.product.description)
   const [checked, setCheckedStatus] = useState(false)
 
@@ -22,6 +23,15 @@ const CartItem = (props, { removed }) => {
     }
   }, [removed])
 
+  useEffect(() => {
+    if(quantity == 0) {
+      deleteItem()
+    }
+    else {
+      setSubTotal( formatNumber(quantity * props.item.product.price) )
+    }
+    props.quantityChanged({ product_id: props.item.product_id, value: quantity })
+  })
 
   const widthInterpolate = fadeAnim2.interpolate({
     inputRange: [0, 1],
@@ -70,22 +80,6 @@ const CartItem = (props, { removed }) => {
     }).start();
   }
 
-  const addClicked = () => {
-    setQuantity(quantity + 1)
-    console.log('qty-props:', quantity)
-    props.addClicked(props.index)
-  }
-
-  const minusClicked = () => {
-    if(quantity > 0) {
-      setQuantity(quantity - 1)
-      if(quantity < 2) {
-        deleteItem()
-      }
-      props.minusClicked(props.index)
-    }
-  }
-
   const itemSelected = () => {
     setCheckedStatus(!checked)
     props.itemSelected(props.item.product_id, !checked)
@@ -93,10 +87,11 @@ const CartItem = (props, { removed }) => {
 
   function Cancel() {
     return (
-      <IconButton color='black' icon="close-box" onPress={() => deleteCanceled()} />
+      <Button icon="" mode="text" onPress={() => deleteCanceled()}>
+        Close
+      </Button>
     )
   }
-
 
 // additionals beding =========================================================================================
 
@@ -131,15 +126,15 @@ const formatNumber = (inputNumber) => {
                 <View style={{flex: 1}}>
                   <Text style={{fontWeight: 'bold'}}>{props.item.product.name}</Text>
                   <View style={{display: 'flex', flexDirection: 'row'}}>
-                    <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {formatNumber(props.item.product.price)}</Text>
-                    <Text style={{color: 'gray', fontSize: 12}}> X {props.item.quantity}</Text>
+                    <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} { formatNumber(props.item.product.price) }</Text>
+                    <Text style={{color: 'gray', fontSize: 12}}> X {quantity}</Text>
                   </View>
                 </View>
               </View>
             </View>
 
             <View style={{paddingHorizontal: 2, paddingVertical: 2, width: '25%'}}>
-              <Text style={{color: '#880ED4', fontSize: 15, fontWeight: 'bold', textAlign: 'center'}}>{'\u20B1'} {formatNumber(props.item.quantity * props.item.product.price)}</Text>
+              <Text style={{color: '#880ED4', fontSize: 15, fontWeight: 'bold', textAlign: 'center'}}>{'\u20B1'} { subTotal }</Text>
             </View>
 
           </View>
@@ -151,14 +146,15 @@ const formatNumber = (inputNumber) => {
           onPress={() => console.log('Pressed')}
           rippleColor="rgba(0, 0, 0, .32)">
           <View style={styles.iconContainer}>
+            <Cancel />
             <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-              { cartItemActive && <Cancel /> }
               <NumericInput
-                onChange={value => {}}
+                value={quantity}
+                onChange={value => {setQuantity(value)}}
                 totalHeight={30}
                 iconSize={25}
-                minValue={1}
-                maxValue={69}
+                minValue={0}
+                maxValue={ Number(props.item.product.quantity) }
                 valueType='real'
               />
             </View>
@@ -191,10 +187,7 @@ const styles = StyleSheet.create({
   base: {
     paddingHorizontal: 20,
     paddingVertical: 10,
-    // borderBottomColor: '#eeeeee',
-    // borderBottomWidth: 2,
     width: '100%',
-    // height: '100%',
     flexDirection: 'row',
     alignItems:'center'
   },
@@ -203,8 +196,8 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   iconContainer: {
-    flexDirection: 'column',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    // justifyContent: 'center',
     height: 40
   },
   image: {
