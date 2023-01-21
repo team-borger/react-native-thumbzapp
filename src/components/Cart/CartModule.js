@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, Text } from 'react-native';
+import { View, FlatList, Text, Alert } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import CartItem from './CartItem';
+import { deleteCartAPI } from '../../services/products';
 import { useIsFocused } from '@react-navigation/native'
 
 const MyComponent = (props) => {
@@ -50,6 +51,8 @@ const MyComponent = (props) => {
     toBeDeletedItems.forEach((markedItem) => {
       const tempIndex = tempCart.findIndex((item) => item.product_id == markedItem.product_id)
       tempCart.splice(tempIndex, 1);
+      console.log('marked', markedItem.id)
+      _deleteCartItem(markedItem.id)
     })
 
     setCartItems(tempCart)
@@ -77,9 +80,52 @@ const MyComponent = (props) => {
     }
   }
 
+  const confirmDelete = () => {
+    console.log(toBeDeletedItems.length)
+    if(toBeDeletedItems.length > 0) {
+      Alert.alert('Remove confirmation', `Sected items will be removed, proceed?`, [
+        {
+          text: 'Remove items',
+          onPress: () => {
+            bulkDelete()
+          },
+        },
+        {
+          text: 'Cancel',
+          onPress: () => {},
+          style: 'cancel',
+        },
+      ])
+    }
+    else {
+      Alert.alert(`Please select items to remove!`, null, [
+        {
+          text: 'close',
+        },
+      ])
+    }
+  }
+
+  const _deleteCartItem = (id) => {
+    deleteCartAPI(id, null, _requestFail)
+  }
+
+    const _requestFail = err => {
+      const { error, message } = err.response.data;
+      if (error) {
+        Alert.alert('Something went wrong. Please try again.', error,
+          [{ text: 'OK' },], { cancelable: false }
+        );
+      }
+      if (message) {
+        Alert.alert('Something went wrong. Please try again.', message,
+          [{ text: 'OK' },], { cancelable: false }
+        );
+      }
+    }
+
   const exta = () => {
-    console.log(1, products)
-    console.log(2, cartItems)
+    console.log('cartItems', cartItems)
   }
 
   const Cart = () => {
@@ -93,7 +139,6 @@ const MyComponent = (props) => {
             index={index}
             quantityChanged={quantityChanged}
             itemSelected={itemSelected}
-            removed={toBeDeletedItems}
           />
         )}
         keyExtractor={(item) => item.product_id}
@@ -106,7 +151,7 @@ const MyComponent = (props) => {
     <View>
       <View style={{flexDirection: 'row', justifyContent: 'center'}}>
         <IconButton color='black' icon="chat" onPress={() => {exta()}} />
-        <IconButton color='black' icon="delete" onPress={() => {bulkDelete()}} />
+        <IconButton color='black' icon="delete" onPress={() => {confirmDelete()}} />
         <IconButton color='black' icon="refresh" onPress={() => {setCartItems(props.cartItems)}} />
       </View>
       <Cart />

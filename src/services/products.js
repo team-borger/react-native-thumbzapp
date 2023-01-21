@@ -28,6 +28,24 @@ export const addCartAPI = async (body, callback, err) => {
     )
 }
 
+export const updateCartAPI = async (body, callback, err) => {
+    checkConnection(
+        backendAPI.post(`/cart/update`, body)
+            .then(callback)
+            .catch(err),
+        err
+    )
+}
+
+export const deleteCartAPI = async (id, callback, err) => {
+    checkConnection(
+        backendAPI.delete(`/cart/delete/${id}`)
+            .then(callback)
+            .catch(err),
+        err
+    )
+}
+
 export const cartAllAPI = async (body, callback, err) => {
     checkConnection(
         backendAPI.get(`/cart/user/${body}`)

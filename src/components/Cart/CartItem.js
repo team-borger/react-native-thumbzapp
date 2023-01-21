@@ -1,10 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { View, StyleSheet, Animated, Image } from 'react-native';
+import { View, StyleSheet, Animated, Image, Alert } from 'react-native';
 import { Text, TouchableRipple, Button, IconButton, RadioButton } from 'react-native-paper';
+import { updateCartAPI, deleteCartAPI } from '../../services/products';
 import environment from '../../../environment';
 import NumericInput from 'react-native-numeric-input'
 
-const CartItem = (props, { removed }) => {
+const CartItem = (props) => {
 
   const fadeAnim1 = useRef(new Animated.Value(0)).current;
   const fadeAnim2 = useRef(new Animated.Value(0)).current;
@@ -18,19 +19,12 @@ const CartItem = (props, { removed }) => {
   const [checked, setCheckedStatus] = useState(false)
 
   useEffect(() => {
-    if(removed) {
-      console.log(removed)
-    }
-  }, [removed])
-
-  useEffect(() => {
-    if(quantity == 0) {
-      deleteItem()
-    }
-    else {
+    if(quantity != 0) {
       setSubTotal( formatNumber(quantity * props.item.product.price) )
+      props.quantityChanged({ product_id: props.item.product_id, value: quantity })
+
+      _updateCartItem()
     }
-    props.quantityChanged({ product_id: props.item.product_id, value: quantity })
   })
 
   const widthInterpolate = fadeAnim2.interpolate({
@@ -83,6 +77,56 @@ const CartItem = (props, { removed }) => {
   const itemSelected = () => {
     setCheckedStatus(!checked)
     props.itemSelected(props.item.product_id, !checked)
+  }
+
+  const confirmDelete = () => {
+    Alert.alert('Remove confirmation', `"${props.item.product.name}" will be removed from your cart, proceed?`, [
+      {
+        text: 'Yes, remove from cart',
+        onPress: () => {
+          deleteItem()
+          props.quantityChanged({ product_id: props.item.product_id, value: 0 })
+          _deleteCartItem()
+        },
+      },
+      {
+        text: 'Cancel',
+        onPress: () => {
+          setQuantity(1)
+        },
+        style: 'cancel',
+      },
+    ])
+  }
+
+  const _updateCartItem = () => {
+    const payload =
+      {
+        id: props.item.id,
+        user_id: props.item.user_id,
+        product_id: props.item.product_id,
+        quantity: quantity > 0 ? quantity : 1,
+        status: 'pending',
+      }
+    updateCartAPI(payload, null, _requestFail)
+  }
+
+    const _requestFail = err => {
+      const { error, message } = err.response.data;
+      if (error) {
+        Alert.alert('Something went wrong. Please try again.', error,
+          [{ text: 'OK' },], { cancelable: false }
+        );
+      }
+      if (message) {
+        Alert.alert('Something went wrong. Please try again.', message,
+          [{ text: 'OK' },], { cancelable: false }
+        );
+      }
+    }
+
+  const _deleteCartItem = () => {
+    deleteCartAPI(props.item.id, null, _requestFail)
   }
 
   function Cancel() {
@@ -147,15 +191,16 @@ const formatNumber = (inputNumber) => {
           rippleColor="rgba(0, 0, 0, .32)">
           <View style={styles.iconContainer}>
             <Cancel />
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'center', paddingRight: 15}}>
               <NumericInput
                 value={quantity}
-                onChange={value => {setQuantity(value)}}
+                onChange={value => { value > 0 ? setQuantity(value) : confirmDelete() }}
+                editable={false}
                 totalHeight={30}
                 iconSize={25}
                 minValue={0}
                 maxValue={ Number(props.item.product.quantity) }
-                valueType='real'
+                extraTextInputProps={'dynamicMutate'}
               />
             </View>
           </View>

@@ -11,8 +11,13 @@ npm install
 // or
 yarn install
 ```
+3. Apply npm packages patches.
 
-3. Run project on iOS / Android.
+```js
+npx patch-package
+```
+
+4. Run project on iOS / Android.
 
 ```js
  npm run ios // npm run android
@@ -51,4 +56,4 @@ var sharedBlacklist = [
 notice the difference on line 2.
 
 
-4. When updating App logo, please read docs of [icon-set-creator](https://github.com/martiliones/icon-set-creator).
+5. When updating App logo, please read docs of [icon-set-creator](https://github.com/martiliones/icon-set-creator).
