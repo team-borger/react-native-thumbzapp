@@ -208,6 +208,7 @@ const ProductInfo = ({ navigation }: Props) => {
             </View>
             <View>
               <NumericInput
+                value={1}
                 onChange={value => setQuantity(value)}
                 totalHeight={30}
                 iconSize={25}

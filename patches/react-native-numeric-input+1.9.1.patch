@@ -1,0 +1,36 @@
+diff --git a/node_modules/react-native-numeric-input/NumericInput/NumericInput.js b/node_modules/react-native-numeric-input/NumericInput/NumericInput.js
+index 2925548..0828a5b 100644
+--- a/node_modules/react-native-numeric-input/NumericInput/NumericInput.js
++++ b/node_modules/react-native-numeric-input/NumericInput/NumericInput.js
+@@ -1,4 +1,4 @@
+-import React, { Component } from 'react'
++import React, { Component, useEffect } from 'react'
+ import { View, TextInput, StyleSheet, Text } from 'react-native'
+ import Icon from 'react-native-vector-icons/Ionicons'
+ import Button from '../Button'
+@@ -20,7 +20,7 @@ export default class NumericInput extends Component {
+     }
+ 
+     // this.props refers to the new props
+-    componentDidUpdate() {
++    componentDidUpdate(props) {
+         const initSent = !(this.props.initValue !== 0 && !this.props.initValue);
+ 
+         // compare the new value (props.initValue) with the existing/old one (this.state.value)
+@@ -31,6 +31,16 @@ export default class NumericInput extends Component {
+                 stringValue: this.props.initValue.toString()
+             });
+         }
++
++        if(this.state.value != props.value && props.extraTextInputProps == 'dynamicMutate') {
++          const theValue = props.value > 0 ? props.value : 1
++
++          this.setState({
++            value: theValue,
++            lastValid: this.props.initValue,
++            stringValue: theValue.toString()
++          });
++        }
+     }
+ 
+     updateBaseResolution = (width, height) => {

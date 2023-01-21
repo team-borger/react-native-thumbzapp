@@ -9,6 +9,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { IMAGE } from '../constants/Image';
 import NumericInput from 'react-native-numeric-input'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CartModule from '../components/Cart/CartModule';
 import { cartAllAPI } from '../services/products';
 import environment from '../../environment';
 import { useIsFocused} from '@react-navigation/native';
@@ -181,6 +182,8 @@ const Cart = ({ navigation }: Props) => {
             extraData={listItemsRefresh}
           />
         </View>
+
+        <CartModule cartItems={ items }/>
       </View>
 
       <View style={{ flexDirection: 'row'}}>
