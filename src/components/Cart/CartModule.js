@@ -5,26 +5,49 @@ import CartItem from './CartItem';
 import { deleteCartAPI } from '../../services/products';
 import { useIsFocused } from '@react-navigation/native'
 
-const MyComponent = (props) => {
+const MyComponent = (props, {bulkDeleteTrigger}) => {
   useIsFocused()
 
-  const products = [
-    { product_id: 1, name: 'ice tubig', quantity: 5 },
-    { product_id: 2, name: 'Coco crunch', quantity: 2 },
-    { product_id: 3, name: 'ispeP', quantity: 3 },
-    { product_id: 4, name: 'Short bond paper', quantity: 5 },
-    { product_id: 5, name: 'M4A1', quantity: 1 },
-  ];
-
   useEffect(() => {
-    setCartItems(props.cartItems)
+      setCartItems(props.cartItems)
   })
 
-  // const [cartItems, setCartItems] = useState(products);
+  useEffect(() => {
+    // console.log('props.bulkDeletePressed')
+    if(props.bulkDeleteTrigger) {
+      confirmDelete()
+    }
+  }, [props.bulkDeleteTrigger])
+
   const [cartItems, setCartItems] = useState([]);
 
-  const [toBeDeletedItems, setToBeDeletedItems] = useState([])
+  const [selectedItems, setSelectedItems] = useState([])
   const [listItemsRefresh, setListItemsRefresh] = useState(false)
+
+
+  const deepEqual = (object1, object2) => {
+    const keys1 = Object.keys(object1);
+    const keys2 = Object.keys(object2);
+    if (keys1.length !== keys2.length) {
+      return false;
+    }
+    for (const key of keys1) {
+      const val1 = object1[key];
+      const val2 = object2[key];
+      const areObjects = isObject(val1) && isObject(val2);
+      if (
+        areObjects && !deepEqual(val1, val2) ||
+        !areObjects && val1 !== val2
+      ) {
+        return false;
+      }
+    }
+    return true;
+  }
+  const isObject = (object) => {
+    return object != null && typeof object === 'object';
+  }
+
 
   const removeItem = (i) => {
     let tempCart = cartItems;
@@ -33,7 +56,7 @@ const MyComponent = (props) => {
   };
 
   const itemSelected = (product_id, checked) => {
-    let tempCart = toBeDeletedItems
+    let tempCart = selectedItems
     const selected = cartItems.find((item) => item.product_id == product_id)
     if(checked) {
       tempCart.push(selected)
@@ -42,13 +65,13 @@ const MyComponent = (props) => {
       let tempIndex = tempCart.findIndex((item) => item.product_id == product_id)
       tempCart.splice(tempIndex, 1);
     }
-    setToBeDeletedItems(tempCart)
-    console.log(toBeDeletedItems)
+    setSelectedItems(tempCart)
+    console.log(selectedItems)
   }
 
   const bulkDelete = () => {
     let tempCart = cartItems
-    toBeDeletedItems.forEach((markedItem) => {
+    selectedItems.forEach((markedItem) => {
       const tempIndex = tempCart.findIndex((item) => item.product_id == markedItem.product_id)
       tempCart.splice(tempIndex, 1);
       console.log('marked', markedItem.id)
@@ -56,7 +79,7 @@ const MyComponent = (props) => {
     })
 
     setCartItems(tempCart)
-    setToBeDeletedItems([])
+    setSelectedItems([])
     console.log(cartItems)
   }
 
@@ -81,8 +104,8 @@ const MyComponent = (props) => {
   }
 
   const confirmDelete = () => {
-    console.log(toBeDeletedItems.length)
-    if(toBeDeletedItems.length > 0) {
+    console.log(selectedItems.length)
+    if(selectedItems.length > 0) {
       Alert.alert('Remove confirmation', `Sected items will be removed, proceed?`, [
         {
           text: 'Remove items',
@@ -152,7 +175,6 @@ const MyComponent = (props) => {
       <View style={{flexDirection: 'row', justifyContent: 'center'}}>
         <IconButton color='black' icon="chat" onPress={() => {exta()}} />
         <IconButton color='black' icon="delete" onPress={() => {confirmDelete()}} />
-        <IconButton color='black' icon="refresh" onPress={() => {setCartItems(props.cartItems)}} />
       </View>
       <Cart />
     </View>

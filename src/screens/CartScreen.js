@@ -25,6 +25,7 @@ const Cart = ({ navigation }: Props) => {
   const [selected, setSelected] = useState([])
   const [showButton, setShowButton] = useState(false)
   const [listItemsRefresh, setListItemsRefresh] = useState(false)
+  const [bulkDeleteTrigger, setBulkDeleteTrigger] = useState(0)
 
   const fetchSuccess = res => {
     let arr = []
@@ -69,6 +70,10 @@ const Cart = ({ navigation }: Props) => {
 
   const _goToChats = () => {
     navigation.navigate('Dashboard');
+  }
+
+  const _bulkDeleteTrigger = () => {
+    setBulkDeleteTrigger( bulkDeleteTrigger + 1 )
   }
 
   const _onCheckoutPressed = () => {
@@ -146,7 +151,8 @@ const Cart = ({ navigation }: Props) => {
       <Appbar.Header dark={false} style={styles.header}>
         <Appbar.BackAction onPress={_goBack} />
         <Appbar.Content style={styles.marginText} title={<Text style={styles.setColorText}>Cart</Text>}/>
-        <Appbar.Action icon="chat" color="#880ED4" onPress={_goToChats} />
+        {/*<Appbar.Action icon="chat" color="#880ED4" onPress={_goToChats} />*/}
+        <Appbar.Action icon="delete" color="#880ED4" onPress={ _bulkDeleteTrigger } />
       </Appbar.Header>
 
       <View style={styles.contentContainer}>
@@ -183,7 +189,7 @@ const Cart = ({ navigation }: Props) => {
           />
         </View>
 
-        <CartModule cartItems={ items }/>
+        <CartModule cartItems={ items } bulkDeleteTrigger={bulkDeleteTrigger}/>
       </View>
 
       <View style={{ flexDirection: 'row'}}>
