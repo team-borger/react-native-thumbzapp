@@ -64,6 +64,15 @@ export const placeOrderAPI = async (body, callback, err) => {
     )
 }
 
+export const checkoutAPI = async (body, callback, err) => {
+    checkConnection(
+        backendAPI.post(`/transaction/checkout`, body)
+            .then(callback)
+            .catch(err),
+        err
+    )
+}
+
 export const userOrdersAPI = async (body, callback, err) => {
     checkConnection(
         backendAPI.get(`/product_order/user/${body}`)
