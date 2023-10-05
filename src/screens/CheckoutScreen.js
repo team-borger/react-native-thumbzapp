@@ -142,8 +142,18 @@ const Checkout = ({ navigation }: Props) => {
     //   }
     // }
     setLoading(true)
-    checkoutAPI({ food_orders: false }, addSuccess, getError)
-    
+
+    const cart_id = items.map(obj => obj.id);
+    checkoutAPI({ food_orders: false, ids: cart_id }, openWebViewer, getError)
+  }
+
+  const openWebViewer = res => {
+    // console.log('callback', res.data.paymentLink.invoice_url)
+    const path = res.data.paymentLink.invoice_url
+    AsyncStorage.setItem('xenditInvoiceUrl', path)
+    console.log(path)
+    navigation.navigate('XenditInvoice');
+    setLoading(false)
   }
 
   const _goPay = () => {
