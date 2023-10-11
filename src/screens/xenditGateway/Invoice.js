@@ -11,6 +11,7 @@ type Props = {
 
 const XenditInvoice = ({ navigation }: Props) => {
   const [link, setLink] = useState('');
+  const [passedProcessing, setPassedProcessing] = useState(false);
 
   useEffect(() => {
     getLink();
@@ -19,6 +20,25 @@ const XenditInvoice = ({ navigation }: Props) => {
   const getLink = async () => {
     const link = await AsyncStorage.getItem('xenditInvoiceUrl');
     setLink(link);
+  };
+
+  const webViewResponse = res => {
+    const stagingCompletePattern = /^https:\/\/checkout-staging.xendit.co\/v2\/\w+$/;
+    const stagingProcessingPattern = /^https:\/\/checkout-staging.xendit.co\/v2\/([\w-]+)\/(\w+)$/;
+
+    const processingMatch = stagingProcessingPattern.test(res.url);
+    if (processingMatch) {
+      setPassedProcessing(true);
+    }
+    if (passedProcessing) {
+      const completeMatch = stagingCompletePattern.test(res.url);
+
+      if (completeMatch) {
+        setTimeout(() => {
+          navigation.navigate('CheckoutScreen');
+        }, 5000);
+      }
+    }
   };
 
   return (
@@ -30,7 +50,11 @@ const XenditInvoice = ({ navigation }: Props) => {
             borderBottomWidth: 4,
           }}
         />
-        <WebView source={{ uri: link }} style={{ flex: 1 }} />
+        <WebView
+          source={{ uri: link }}
+          style={{ flex: 1 }}
+          onNavigationStateChange={webViewResponse}
+        />
       </View>
     </SafeAreaView>
   );
