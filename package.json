@@ -17,6 +17,7 @@
     "@react-native-community/datetimepicker": "^6.7.0",
     "@react-native-community/netinfo": "8.2.0",
     "@react-native-firebase/app": "^14.11.0",
+    "@react-navigation/bottom-tabs": "^6.5.11",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.2",
     "axios": "^0.27.2",
