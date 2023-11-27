@@ -12,7 +12,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import environment from '../../environment';
 import { userAddressAPI } from '../services/address';
-import { placeOrderAPI } from '../services/products';
+import { placeOrderAPI, checkoutAPI } from '../services/products';
 
 type Props = {
   navigation: Navigation;
@@ -24,6 +24,7 @@ const Checkout = ({ navigation }: Props) => {
   const [totalItem, setTotalItem] = useState([])
   const [payMethod, setPayment] = useState({})
   const [loginuser, setUser] = useState({})
+  const [loading, setLoading] = useState(false)
   const [userAddress, setAddress] = useState({})
 
   const showToast = text => {
@@ -51,10 +52,13 @@ const Checkout = ({ navigation }: Props) => {
   }
 
   const addSuccess = res => {
-    console.log(res.data)
+    console.log('callback', res)
+    // console.log('callback', res.data)
+    setLoading(false)
   }
 
   const getError = err => {
+    console.error(err)
     const { error, message } = err.response.data;
     setLoading(false)
     if (error) {
@@ -109,21 +113,47 @@ const Checkout = ({ navigation }: Props) => {
   }
 
   const _onPlaceOrder = () => {
-    if (payMethod.method_type) {
-      for (let i of Object.keys(items)) {
-        var payload = {
-          cart_id: items[i].id,
-          price_at_time_of_purchase: items[i].product.price,
-          payment_method: payMethod.method_type
-        }
-        placeOrderAPI(payload, addSuccess, getError)
-        if(((+i)+1) === items.length) {
-          navigation.navigate('PaymentSuccessScreen')
-        }
-      }
-    } else {
-      showToast(`Please add payment method`)
-    }
+    // if (payMethod.method_type) {
+    //   for (let i of Object.keys(items)) {
+    //     var payload = {
+    //       cart_id: items[i].id,
+    //       price_at_time_of_purchase: items[i].product.price,
+    //       payment_method: payMethod.method_type
+    //     }
+    //     placeOrderAPI(payload, addSuccess, getError)
+    //     if(((+i)+1) === items.length) {
+    //       navigation.navigate('PaymentSuccessScreen')
+    //     }
+    //   }
+    // } else {
+    //   showToast(`Please add payment method`)
+    // }
+
+    // for (let i of Object.keys(items)) {
+    //   var payload = {
+    //     cart_id: items[i].id,
+    //     price_at_time_of_purchase: items[i].product.price,
+    //     payment_method: payMethod.method_type
+    //   }
+    //   placeOrderAPI(payload, addSuccess, getError)
+    //   const gatewayPayload = {
+    //     amount: subTotal,
+         
+    //   }
+    // }
+    setLoading(true)
+
+    const cart_id = items.map(obj => obj.id);
+    checkoutAPI({ food_orders: false, ids: cart_id }, openWebViewer, getError)
+  }
+
+  const openWebViewer = res => {
+    // console.log('callback', res.data.paymentLink.invoice_url)
+    const path = res.data.paymentLink.invoice_url
+    AsyncStorage.setItem('xenditInvoiceUrl', path)
+    console.log(path)
+    navigation.navigate('XenditInvoice');
+    setLoading(false)
   }
 
   const _goPay = () => {
@@ -226,7 +256,7 @@ const Checkout = ({ navigation }: Props) => {
           <Text style={{marginLeft: 20}}>Total Payment:</Text>
           <Text style={{fontWeight: 'bold', marginLeft: 20, color: '#880ED4' }}>{'\u20B1'} {formatNumber(subTotal)}</Text>
         </View>
-        <Button style={styles.btn} mode="contained" onPress={_onPlaceOrder}>
+        <Button loading={loading} disabled={loading} style={styles.btn} mode="contained" onPress={_onPlaceOrder}>
           Place Order
         </Button>
       </View>
