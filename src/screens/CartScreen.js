@@ -8,7 +8,6 @@ import NavbarBot from '../components/NavbarBot';
 import QuantitySelector from '../components/QuantitySelector';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { IMAGE } from '../constants/Image';
-import NumericInput from 'react-native-numeric-input'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CartModule from '../components/Cart/CartModule';
 import { cartAllAPI } from '../services/products';
