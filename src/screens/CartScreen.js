@@ -55,7 +55,6 @@ const Cart = ({ navigation }: Props) => {
   const changeQuantity = (value, payload) => {
     let index = items.findIndex(el => el.id === payload.id);
     items[index].quantity = value;
-    // setsubtotal()
   }
 
   const totalSelected = () => {
@@ -154,12 +153,14 @@ const Cart = ({ navigation }: Props) => {
         quantity: x.value,
         status: 'pending',
       }
-      console.log(payload)
+    changeQuantity(x.value, payload)
+    setListItemsRefresh(!listItemsRefresh)
     updateCartAPI(payload, null, _requestFail)
   }
 
   const _deleteCartItem = (x) => {
     deleteCartAPI(x.item.id, null, _requestFail)
+    _getUserInfo()
   }
 
   const _requestFail = err => {
