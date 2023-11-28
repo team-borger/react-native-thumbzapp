@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 
 const QuantitySelector = (props) => {
 
-  const [minQuantity, setMinQuantity] = useState(0);
+  const [minQuantity, setMinQuantity] = useState(props.minQuantity);
   const [baseColor, setBaseColor] = useState('#6a0ba7');
   const [quantity, setQuantity] = useState(props.value);
 
