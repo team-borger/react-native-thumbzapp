@@ -215,7 +215,7 @@ const ProductInfo = ({ navigation }: Props) => {
                 item={product}
                 value={1}
                 valueChanged={valueChanged}
-                minQuantity={0}
+                minQuantity={1}
                 maxQuantity={Number(product.quantity)}
               />
             </View>
