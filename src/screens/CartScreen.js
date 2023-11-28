@@ -86,6 +86,7 @@ const Cart = ({ navigation }: Props) => {
     React.useCallback(() => {
       _getUserInfo()
       setSelected([])
+      AsyncStorage.setItem('choosenAddress', JSON.stringify({}))
     }, [navigation])
   );
 
