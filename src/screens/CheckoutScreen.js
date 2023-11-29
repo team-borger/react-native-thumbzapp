@@ -111,9 +111,8 @@ const Checkout = ({ navigation }: Props) => {
 
   const _onPlaceOrder = () => {
     setLoading(true)
-
     const cart_id = items.map(obj => obj.id);
-    checkoutAPI({ food_orders: false, ids: cart_id }, openWebViewer, getError)
+    checkoutAPI({ food_orders: false, ids: cart_id, user_address_id: selectedAddress.id }, openWebViewer, getError)
   }
 
   const openWebViewer = res => {

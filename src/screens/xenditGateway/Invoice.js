@@ -35,7 +35,7 @@ const XenditInvoice = ({ navigation }: Props) => {
 
       if (completeMatch) {
         setTimeout(() => {
-          navigation.navigate('CheckoutScreen');
+          navigation.navigate('PaymentSuccessScreen');
         }, 5000);
       }
     }
