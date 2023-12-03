@@ -1693,9 +1693,9 @@
     rimraf "^3.0.2"
 
 "@react-native-async-storage/async-storage@^1.19.1":
-  version "1.19.1"
-  resolved "https://registry.npmjs.org/@react-native-async-storage/async-storage/-/async-storage-1.19.1.tgz"
-  integrity sha512-5QXuGCtB+HL3VtKL2JN3+6t4qh8VXizK+aGDAv6Dqiq3MLrzgZHb4tjVgtEWMd8CcDtD/JqaAI1b6/EaYGtFIA==
+  "integrity" "sha512-5QXuGCtB+HL3VtKL2JN3+6t4qh8VXizK+aGDAv6Dqiq3MLrzgZHb4tjVgtEWMd8CcDtD/JqaAI1b6/EaYGtFIA=="
+  "resolved" "https://registry.npmjs.org/@react-native-async-storage/async-storage/-/async-storage-1.19.1.tgz"
+  "version" "1.19.1"
   dependencies:
     merge-options "^3.0.4"
 
@@ -1918,6 +1918,15 @@
     color "^4.2.3"
     warn-once "^0.1.0"
 
+"@react-navigation/bottom-tabs@^6.5.11":
+  "integrity" "sha512-CBN/NOdxnMvmjw+AJQI1kltOYaClTZmGec5pQ3ZNTPX86ytbIOylDIITKMfTgHZcIEFQDymx1SHeS++PIL3Szw=="
+  "resolved" "https://registry.npmjs.org/@react-navigation/bottom-tabs/-/bottom-tabs-6.5.11.tgz"
+  "version" "6.5.11"
+  dependencies:
+    "@react-navigation/elements" "^1.3.21"
+    "color" "^4.2.3"
+    "warn-once" "^0.1.0"
+
 "@react-navigation/core@^6.2.1":
   version "6.2.1"
   resolved "https://registry.npmjs.org/@react-navigation/core/-/core-6.2.1.tgz"
@@ -1929,10 +1938,10 @@
     query-string "^7.0.0"
     react-is "^16.13.0"
 
-"@react-navigation/elements@^1.3.21", "@react-navigation/elements@^1.3.3":
-  version "1.3.21"
-  resolved "https://registry.npmjs.org/@react-navigation/elements/-/elements-1.3.21.tgz"
-  integrity sha512-eyS2C6McNR8ihUoYfc166O1D8VYVh9KIl0UQPI8/ZJVsStlfSTgeEEh+WXge6+7SFPnZ4ewzEJdSAHH+jzcEfg==
+"@react-navigation/elements@^1.3.3":
+  "integrity" "sha512-Lv2lR7si5gNME8dRsqz57d54m4FJtrwHRjNQLOyQO546ZxO+g864cSvoLC6hQedQU0+IJnPTsZiEI2hHqfpEpw=="
+  "resolved" "https://registry.npmjs.org/@react-navigation/elements/-/elements-1.3.3.tgz"
+  "version" "1.3.3"
 
 "@react-navigation/native-stack@^6.6.2":
   version "6.6.2"
@@ -3600,75 +3609,75 @@ errorhandler@^1.5.0:
     accepts "~1.3.7"
     escape-html "~1.0.3"
 
-escalade@^3.1.1:
-  version "3.1.1"
-  resolved "https://registry.npmjs.org/escalade/-/escalade-3.1.1.tgz"
-  integrity sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==
+"escalade@^3.1.1":
+  "integrity" "sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw=="
+  "resolved" "https://registry.npmjs.org/escalade/-/escalade-3.1.1.tgz"
+  "version" "3.1.1"
 
-escape-html@~1.0.3:
-  version "1.0.3"
-  resolved "https://registry.npmjs.org/escape-html/-/escape-html-1.0.3.tgz"
-  integrity sha1-Aljq5NPQwJdN4cFpGI7wBR0dGYg=
+"escape-html@~1.0.3":
+  "integrity" "sha1-Aljq5NPQwJdN4cFpGI7wBR0dGYg="
+  "resolved" "https://registry.npmjs.org/escape-html/-/escape-html-1.0.3.tgz"
+  "version" "1.0.3"
 
-escape-string-regexp@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz"
-  integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
+"escape-string-regexp@^1.0.5":
+  "integrity" "sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ="
+  "resolved" "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz"
+  "version" "1.0.5"
 
-escape-string-regexp@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-4.0.0.tgz"
-  integrity sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==
+"escape-string-regexp@^4.0.0":
+  "integrity" "sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA=="
+  "resolved" "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-4.0.0.tgz"
+  "version" "4.0.0"
 
-escape-string-regexp@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-2.0.0.tgz"
-  integrity sha512-UpzcLCXolUWcNu5HtVMHYdXJjArjsF9C0aNnquZYY4uW/Vu0miy5YoWvbV345HauVvcAUnpRuhMMcqTcGOY2+w==
+"escape-string-regexp@2.0.0":
+  "integrity" "sha512-UpzcLCXolUWcNu5HtVMHYdXJjArjsF9C0aNnquZYY4uW/Vu0miy5YoWvbV345HauVvcAUnpRuhMMcqTcGOY2+w=="
+  "resolved" "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-2.0.0.tgz"
+  "version" "2.0.0"
 
-esprima@^4.0.0, esprima@~4.0.0:
-  version "4.0.1"
-  resolved "https://registry.npmjs.org/esprima/-/esprima-4.0.1.tgz"
-  integrity sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==
+"esprima@^4.0.0", "esprima@~4.0.0":
+  "integrity" "sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A=="
+  "resolved" "https://registry.npmjs.org/esprima/-/esprima-4.0.1.tgz"
+  "version" "4.0.1"
 
-esutils@^2.0.2:
-  version "2.0.3"
-  resolved "https://registry.npmjs.org/esutils/-/esutils-2.0.3.tgz"
-  integrity sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==
+"esutils@^2.0.2":
+  "integrity" "sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g=="
+  "resolved" "https://registry.npmjs.org/esutils/-/esutils-2.0.3.tgz"
+  "version" "2.0.3"
 
-etag@~1.8.1:
-  version "1.8.1"
-  resolved "https://registry.npmjs.org/etag/-/etag-1.8.1.tgz"
-  integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
+"etag@~1.8.1":
+  "integrity" "sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc="
+  "resolved" "https://registry.npmjs.org/etag/-/etag-1.8.1.tgz"
+  "version" "1.8.1"
 
-event-target-shim@^1.0.5:
-  version "1.1.1"
-  resolved "https://registry.npmjs.org/event-target-shim/-/event-target-shim-1.1.1.tgz"
-  integrity sha1-qG5e5r2qFgVEddp5fM3fDFVphJE=
+"event-target-shim@^1.0.5":
+  "integrity" "sha1-qG5e5r2qFgVEddp5fM3fDFVphJE="
+  "resolved" "https://registry.npmjs.org/event-target-shim/-/event-target-shim-1.1.1.tgz"
+  "version" "1.1.1"
 
-event-target-shim@^5.0.0, event-target-shim@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.npmjs.org/event-target-shim/-/event-target-shim-5.0.1.tgz"
-  integrity sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==
+"event-target-shim@^5.0.0", "event-target-shim@^5.0.1":
+  "integrity" "sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ=="
+  "resolved" "https://registry.npmjs.org/event-target-shim/-/event-target-shim-5.0.1.tgz"
+  "version" "5.0.1"
 
-event-target-shim@6.0.2:
-  version "6.0.2"
-  resolved "https://registry.npmjs.org/event-target-shim/-/event-target-shim-6.0.2.tgz"
-  integrity sha512-8q3LsZjRezbFZ2PN+uP+Q7pnHUMmAOziU2vA2OwoFaKIXxlxl38IylhSSgUorWu/rf4er67w0ikBqjBFk/pomA==
+"event-target-shim@6.0.2":
+  "integrity" "sha512-8q3LsZjRezbFZ2PN+uP+Q7pnHUMmAOziU2vA2OwoFaKIXxlxl38IylhSSgUorWu/rf4er67w0ikBqjBFk/pomA=="
+  "resolved" "https://registry.npmjs.org/event-target-shim/-/event-target-shim-6.0.2.tgz"
+  "version" "6.0.2"
 
-events@^3.0.0:
-  version "3.3.0"
-  resolved "https://registry.npmjs.org/events/-/events-3.3.0.tgz"
-  integrity sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==
+"events@^3.0.0":
+  "integrity" "sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q=="
+  "resolved" "https://registry.npmjs.org/events/-/events-3.3.0.tgz"
+  "version" "3.3.0"
 
-exec-async@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.npmjs.org/exec-async/-/exec-async-2.2.0.tgz"
-  integrity sha512-87OpwcEiMia/DeiKFzaQNBNFeN3XkkpYIh9FyOqq5mS2oKv3CBE67PXoEKcr6nodWdXNogTiQ0jE2NGuoffXPw==
+"exec-async@^2.2.0":
+  "integrity" "sha1-x8WtLu80eNODkMbdOs/orw78gwE="
+  "resolved" "https://registry.npmjs.org/exec-async/-/exec-async-2.2.0.tgz"
+  "version" "2.2.0"
 
-execa@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/execa/-/execa-1.0.0.tgz"
-  integrity sha512-adbxcyWV46qiHyvSp50TKt05tB4tK3HcmF7/nxfAdhnox83seTDbwnaqKO4sXRy7roHAIFqJP/Rw/AuEbX61LA==
+"execa@^1.0.0":
+  "integrity" "sha512-adbxcyWV46qiHyvSp50TKt05tB4tK3HcmF7/nxfAdhnox83seTDbwnaqKO4sXRy7roHAIFqJP/Rw/AuEbX61LA=="
+  "resolved" "https://registry.npmjs.org/execa/-/execa-1.0.0.tgz"
+  "version" "1.0.0"
   dependencies:
     cross-spawn "^6.0.0"
     get-stream "^4.0.0"
@@ -4493,10 +4502,10 @@ internal-ip@4.3.0:
     default-gateway "^4.2.0"
     ipaddr.js "^1.9.0"
 
-invariant@*, invariant@^2.2.4, invariant@2.2.4:
-  version "2.2.4"
-  resolved "https://registry.npmjs.org/invariant/-/invariant-2.2.4.tgz"
-  integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
+"invariant@*", "invariant@^2.2.4", "invariant@2.2.4":
+  "integrity" "sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA=="
+  "resolved" "https://registry.npmjs.org/invariant/-/invariant-2.2.4.tgz"
+  "version" "2.2.4"
   dependencies:
     loose-envify "^1.0.0"
 
@@ -6601,18 +6610,18 @@ react-native-webrtc@1.92.0:
     prop-types "^15.5.10"
     uuid "^3.3.2"
 
-react-native-webview@^13.6.0:
-  version "13.6.0"
-  resolved "https://registry.npmjs.org/react-native-webview/-/react-native-webview-13.6.0.tgz"
-  integrity sha512-KapVfHEj60e+2QplhqoCMdqW4vDzzvLS3YasfjVoMV4qhsZ3padncMEqOHX6AY4FIAdRzAxG0JQs+kXczAPYeQ==
+"react-native-webview@^13.6.0":
+  "integrity" "sha512-KapVfHEj60e+2QplhqoCMdqW4vDzzvLS3YasfjVoMV4qhsZ3padncMEqOHX6AY4FIAdRzAxG0JQs+kXczAPYeQ=="
+  "resolved" "https://registry.npmjs.org/react-native-webview/-/react-native-webview-13.6.0.tgz"
+  "version" "13.6.0"
   dependencies:
-    escape-string-regexp "2.0.0"
-    invariant "2.2.4"
+    "escape-string-regexp" "2.0.0"
+    "invariant" "2.2.4"
 
-react-native@*, "react-native@^0.0.0-0 || 0.60 - 0.72 || 1000.0.0", react-native@>=0.40.0, react-native@>=0.42.0, react-native@>=0.57.0, react-native@>=0.59, react-native@>=0.60.0, react-native@>=0.8.0, react-native@0.68.2:
-  version "0.68.2"
-  resolved "https://registry.npmjs.org/react-native/-/react-native-0.68.2.tgz"
-  integrity sha512-qNMz+mdIirCEmlrhapAtAG+SWVx6MAiSfCbFNhfHqiqu1xw1OKXdzIrjaBEPihRC2pcORCoCHduHGQe/Pz9Yuw==
+"react-native@*", "react-native@^0.0.0-0 || 0.60 - 0.72 || 1000.0.0", "react-native@>=0.40.0", "react-native@>=0.42.0", "react-native@>=0.57.0", "react-native@>=0.59", "react-native@>=0.60.0", "react-native@>=0.8.0", "react-native@0.68.2":
+  "integrity" "sha512-qNMz+mdIirCEmlrhapAtAG+SWVx6MAiSfCbFNhfHqiqu1xw1OKXdzIrjaBEPihRC2pcORCoCHduHGQe/Pz9Yuw=="
+  "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.68.2.tgz"
+  "version" "0.68.2"
   dependencies:
     "@jest/create-cache-key-function" "^27.0.1"
     "@react-native-community/cli" "^7.0.3"

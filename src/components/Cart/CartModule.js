@@ -5,7 +5,7 @@ import CartItem from './CartItem';
 import { deleteCartAPI } from '../../services/products';
 import { useIsFocused } from '@react-navigation/native'
 
-const MyComponent = (props, {bulkDeleteTrigger}) => {
+const MyComponent = (props, {bulkDeleteTrigger, choosenItems}) => {
   useIsFocused()
 
   useEffect(() => {
@@ -59,14 +59,15 @@ const MyComponent = (props, {bulkDeleteTrigger}) => {
     let tempCart = selectedItems
     const selected = cartItems.find((item) => item.product_id == product_id)
     if(checked) {
-      tempCart.push(selected)
+      tempCart.push(selectedItems)
     }
     else {
       let tempIndex = tempCart.findIndex((item) => item.product_id == product_id)
       tempCart.splice(tempIndex, 1);
     }
     setSelectedItems(tempCart)
-    console.log(selectedItems)
+    console.log(tempCart)
+    props.choosenItems(tempCart)
   }
 
   const bulkDelete = () => {
@@ -74,13 +75,11 @@ const MyComponent = (props, {bulkDeleteTrigger}) => {
     selectedItems.forEach((markedItem) => {
       const tempIndex = tempCart.findIndex((item) => item.product_id == markedItem.product_id)
       tempCart.splice(tempIndex, 1);
-      console.log('marked', markedItem.id)
+      // console.log('marked', markedItem.id)
       _deleteCartItem(markedItem.id)
     })
 
     setCartItems(tempCart)
-    setSelectedItems([])
-    console.log(cartItems)
   }
 
   const quantityChanged = (x) => {

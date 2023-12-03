@@ -1,7 +1,7 @@
 import React, { memo, useState } from 'react';
 import { FlatList, View, Text, StyleSheet, ScrollView, Image, TouchableHighlight } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button, List, Avatar, Searchbar, Appbar, Card } from 'react-native-paper';
+import { Button, List, Avatar, Searchbar, Appbar, Card, RadioButton } from 'react-native-paper';
 import { Navigation } from '../types';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { IMAGE } from '../constants/Image';
@@ -16,8 +16,8 @@ type Props = {
 
 const ChatScreen = ({ navigation }: Props) => {
   const [items, setItems] = useState([])
-  const [showAlert, setState] = useState(false)
   const [choosenItem, setItem] = useState({})
+  const [listItemsRefresh, setListItemsRefresh] = useState(false)
 
   const hideAlert = () => {
     setState(false);
@@ -25,7 +25,23 @@ const ChatScreen = ({ navigation }: Props) => {
 
   const fetchSuccess = res => {
     setItems(res.data)
-    setState(false)
+    checkSelected(res.data)
+  }
+
+  const checkSelected = async (x) => {
+    const address = await AsyncStorage.getItem('choosenAddress')
+    if (Object.keys(address).length < 3) {
+      var objIndex = x.findIndex((obj => obj.default == true));
+      x[objIndex].status = 'checked'
+      setItem(x[objIndex])
+      setItems(x)
+    } else {
+      const addressinfo = JSON.parse(address);
+      var objIndex = x.findIndex((obj => obj.id == addressinfo.id));
+      x[objIndex].status = 'checked'
+      setItem(addressinfo)
+      setItems(x)
+    }
   }
 
   const fetchError = err => {
@@ -42,30 +58,38 @@ const ChatScreen = ({ navigation }: Props) => {
     }
   }
 
-  const _deleteConfirm = (payload) => {
-    setItem({})
-    setItem(payload)
-    setState(true);
-  }
-
-  const _deleteCard = () => {
-    deleteCardAPI(choosenItem, deleteSuccess, fetchError);
-  }
-
   const updateAddress = (payload) => {
-    AsyncStorage.setItem('choosenAddress', JSON.stringify(payload))
     navigation.navigate('AddAddressCheckout')
   }
 
   useFocusEffect(
     React.useCallback(() => {
-      AsyncStorage.setItem('choosenAddress', JSON.stringify({}))
       allAddressAPI(fetchSuccess,fetchError);
     }, [navigation])
   );
 
   const _goBack = () => {
     navigation.navigate('CheckoutScreen');
+  }
+
+  const setChoice = (payload) => {
+    const found = items.some(el => el.status === 'checked')
+    var objIndex = items.findIndex((obj => obj.id == payload.id));
+
+    if (found) {
+      var smegs = items.findIndex((obj => obj.status == 'checked'));
+      items[smegs].status = 'unchecked'
+      items[objIndex].status = 'checked'
+      setItem(payload)
+    } else {
+      items[objIndex].status = 'checked'
+    }
+    setChoosenAddress(payload)
+    setListItemsRefresh(!listItemsRefresh)
+  }
+
+  const setChoosenAddress = (payload) => {
+    AsyncStorage.setItem('choosenAddress', JSON.stringify(payload))
   }
 
   return (
@@ -84,44 +108,41 @@ const ChatScreen = ({ navigation }: Props) => {
             style={styles.scrollView}
             data={items}
             renderItem={({ item }) => (
-              <TouchableHighlight key={item.id} onPress={() => updateAddress(item)} underlayColor="white">
-                <Card style={styles.customCard}>
-                  <Card.Content>
-                    <View style={styles.alignCenterRow}>
-                      <View style={{width: '80%'}}>
-                        <Text style={{color: 'gray'}}>{item.name} | {item.phone}</Text>
-                        <Text>{item.address}</Text>
+              <Card style={styles.customCard} key={item.id} >
+                <Card.Content>
+                  <View style={styles.alignCenterRow}>
+                    <TouchableHighlight onPress={() => setChoice(item)} underlayColor="transparent" style={{width: '85%'}}>
+                      <View style={styles.alignCenterRow}>
+                        <View style={{width: '10%'}}>
+                          <RadioButton
+                            status={item.status}
+                            onPress={() => {setChoice(item)}}
+                          />
+                        </View>
+                        <View style={{width: '80%'}}>
+                          <Text style={{color: 'gray'}}>{item.name} | {item.phone}</Text>
+                          <Text>{item.address}</Text>
+                          <View style={item.default === true ? {padding: 3, borderColor: 'red', borderWidth: 1, alignSelf: 'flex-start', marginTop: 5} : {}}>
+                            <Text style={{color: 'red', fontSize: 10}}>{item.default === true ? 'Default' : ''}</Text>
+                          </View>
+                        </View>
                       </View>
-                      <View style={item.default === true ? {padding: 3, borderColor: 'red', borderWidth: 1, alignSelf: 'flex-start', marginTop: 5} : {}}>
-                        <Text style={{color: 'red', fontSize: 10}}>{item.default === true ? 'Default' : ''}</Text>
-                      </View>
-                    </View>
-                  </Card.Content>
-                </Card>
-              </TouchableHighlight>
+                    </TouchableHighlight>
+                    <TouchableHighlight onPress={() => updateAddress(item)} underlayColor="transparent">
+                      <Text style={{color: 'red', alignSelf: 'center'}}>Edit</Text>
+                    </TouchableHighlight>
+                  </View>
+                </Card.Content>
+              </Card>
+
             )}
             keyExtractor={(item) => item.id}
+            extraData={listItemsRefresh}
           />
         </View>
         <Button icon="plus-circle" style={styles.logoutBtn} mode="contained" onPress={() => navigation.navigate('AddAddressCheckout')}>
           Add New Address
         </Button>
-
-        <AwesomeAlert
-          show={showAlert}
-          showProgress={false}
-          title="Are you sure?"
-          message="This won't be reverted!"
-          closeOnTouchOutside={true}
-          closeOnHardwareBackPress={false}
-          showCancelButton={true}
-          showConfirmButton={true}
-          cancelText="No, cancel"
-          confirmText="Yes, delete it"
-          confirmButtonColor="#DD6B55"
-          onCancelPressed={hideAlert}
-          onConfirmPressed={_deleteCard}
-        />
 
       </View>
 
