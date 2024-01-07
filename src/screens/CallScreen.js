@@ -34,27 +34,30 @@ const CallScreen = (response) => {
       
       setMuteVideo(!isMutedVideo);
       CallService.muteVideo({ status: isMutedVideo });
-      onAudioCall
+      return (
+        <View>
+          <AudioCall/>
+        </View>
+       );
     };
 
     const onCameraTogglePressed = () => {
       CallService.toggleCameras();
     };
 
-    const onAudioCall = () => {
+    const AudioCall = () => {
       return (
         <View>
           <RTCView style={styles.localKey} key={res.localKey} streamURL={res.localStream.toURL()} mirror={isCameraFacingFront ? true : false}/>
           <RTCView style={styles.remoteKey} objectFit="cover" key={res.remoteKey} streamURL={res.remoteStream.toURL()} mirror={isCameraFacingFront ? false : true}/>
         </View>
-       
         );
     };
 
     if(res.localKey) {
       return (
         <View style={styles.blackView}>
-          {{ onAudioCall }}
+          <AudioCall/>
           <View style={styles.dropCallButton}>
             <View style={{display: 'flex', flexDirection: 'row'}}>
             <TouchableOpacity style={{marginHorizontal: 5}} onPress={onMuteVideoPressed}>
