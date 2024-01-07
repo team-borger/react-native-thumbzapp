@@ -9,6 +9,7 @@ import Sound from 'react-native-sound';
 
 export default class CallService {
   static MEDIA_OPTIONS = { audio: true, video: { facingMode: 'user' } };
+  static MEDIA_OPTIONS_AUDIO = { audio: true, video: false };
   _session = null;
   mediaDevices = [];
 
@@ -56,6 +57,33 @@ export default class CallService {
 
     return this._session
       .getUserMedia(CallService.MEDIA_OPTIONS)
+      .then((stream) => {
+        console.log('on sessionCreate', stream)
+        this._session.call({});
+
+        return {calee: session_.id, stream: stream}
+        // RootNavigation.navigate('CallScreen', { calee: session_.id, stream: stream });
+      })
+      .catch((error) => {
+        console.error('session error', error)
+      });
+  };
+
+  startCallAudio = async callee => {
+    let calleesIds = []; // User's ids
+
+    const session_ = JSON.parse(await AsyncStorage.getItem('session_'))
+
+    calleesIds.push(callee.connectycube_id)
+    // if(session_.id == 5757268) calleesIds.push(5744964)
+    // else calleesIds.push(5757268)
+
+    const sessionType = ConnectyCube.videochat.CallType.AUDIO; // AUDIO is also possible
+    const additionalOptions = { bandwidth: 256 };
+    this._session = ConnectyCube.videochat.createNewSession(calleesIds, sessionType, additionalOptions);
+
+    return this._session
+      .getUserMedia(CallService.MEDIA_OPTIONS_AUDIO)
       .then((stream) => {
         console.log('on sessionCreate', stream)
         this._session.call({});
@@ -137,6 +165,16 @@ export default class CallService {
       this._session.unmute("audio")
     }
     this.showToast(`microphone ${ params.status ? 'muted' : 'unmuted' }`)
+  };
+
+  muteVideo = params => {
+    if(params.status) {
+      this._session.mute("video")
+    }
+    else {
+      this._session.unmute("video")
+    }
+    this.showToast(`video ${ params.status ? 'muted' : 'unmuted' }`)
   };
 
   toggleSpeaker = params => {

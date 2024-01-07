@@ -14,6 +14,7 @@ const CallScreen = (response) => {
 
   const RTCViews = () => {
     const [isMuted, setMute] = useState(true);
+    const [isMutedVideo, setMuteVideo] = useState(true);
     const [isLoudSpeaker, setLoudSpeaker] = useState(true);
     const [isCameraFacingFront, setCameraFacingFront] = useState(true);
 
@@ -29,17 +30,39 @@ const CallScreen = (response) => {
       CallService.muteAudio({ status: isMuted });
     };
 
+    const onMuteVideoPressed = () => {
+      
+      setMuteVideo(!isMutedVideo);
+      CallService.muteVideo({ status: isMutedVideo });
+      return (
+        <View>
+          <AudioCall/>
+        </View>
+       );
+    };
+
     const onCameraTogglePressed = () => {
       CallService.toggleCameras();
+    };
+
+    const AudioCall = () => {
+      return (
+        <View>
+          <RTCView style={styles.localKey} key={res.localKey} streamURL={res.localStream.toURL()} mirror={isCameraFacingFront ? true : false}/>
+          <RTCView style={styles.remoteKey} objectFit="cover" key={res.remoteKey} streamURL={res.remoteStream.toURL()} mirror={isCameraFacingFront ? false : true}/>
+        </View>
+        );
     };
 
     if(res.localKey) {
       return (
         <View style={styles.blackView}>
-          <RTCView style={styles.localKey} key={res.localKey} streamURL={res.localStream.toURL()} mirror={isCameraFacingFront ? true : false}/>
-          <RTCView style={styles.remoteKey} objectFit="cover" key={res.remoteKey} streamURL={res.remoteStream.toURL()} mirror={isCameraFacingFront ? false : true}/>
+          <AudioCall/>
           <View style={styles.dropCallButton}>
             <View style={{display: 'flex', flexDirection: 'row'}}>
+            <TouchableOpacity style={{marginHorizontal: 5}} onPress={onMuteVideoPressed}>
+                <Avatar.Icon size={50} icon={isMutedVideo ? "video" : "video-off"} style={{backgroundColor:"white"}}/>
+              </TouchableOpacity>
               <TouchableOpacity style={{marginHorizontal: 5}} onPress={toggleSpeaker}>
                 <Avatar.Icon size={50} icon={isLoudSpeaker ? "headphones" : "volume-high"} style={{backgroundColor:"white"}}/>
               </TouchableOpacity>

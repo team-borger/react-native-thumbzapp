@@ -45,20 +45,30 @@ const ChatScreen = ({ navigation }: Props) => {
     navigation.navigate('Dashboard');
   }
 
-  const _handleCall = () => {
-    console.log('Calling...')
-    Alert.alert('Calling...', 'message',
-      [
-        {
-          text: "Reject",
-          onPress: () => console.log("Reject Pressed"),
-        },
-        {
-          text: "Accept",
-          onPress: () => console.log("Accept Pressed"),
-        },
-      ], { cancelable: false }
-    );
+  const _handleCall = async () => {
+    // console.log('Calling...')
+    // Alert.alert('Calling...', 'message',
+    //   [
+    //     {
+    //       text: "Reject",
+    //       onPress: () => console.log("Reject Pressed"),
+    //     },
+    //     {
+    //       text: "Accept",
+    //       onPress: () => console.log("Accept Pressed"),
+    //     },
+    //   ], { cancelable: false }
+    // );
+    const value = await AsyncStorage.getItem('active_chat')
+    const ret = JSON.parse(value);
+
+    CallService.startCallAudio({connectycube_id: ret.contact.connectycube_id})
+      .then(response => {
+        if(response) {
+          navigation.navigate('CallingScreen', {response: response})
+          // navigation.navigate('CallScreen', {response: response})
+        }
+      })
   };
 
   const _handlevideoCall = async () => {
