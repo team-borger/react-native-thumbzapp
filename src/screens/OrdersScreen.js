@@ -18,7 +18,8 @@ type Props = {
 };
 
 const Orders = ({ navigation }: Props) => {
-  const [tabNow, setTabNow] = useState('ship')
+  const [tabNow, setTabNow] = useState('pay')
+  const [toPay, setToPay] = useState({})
   const [toShip, setToShip] = useState({})
   const [toReceive, setToReceive] = useState({})
   const [completed, setCompleted] = useState({})
@@ -57,9 +58,11 @@ const Orders = ({ navigation }: Props) => {
 
   const fetchSuccess = res => {
     var items = res.data
-    const ship = items.filter((obj) => obj.status.status_option.status === 'Pending' || obj.status.status_option.status === 'Processing' || obj.status.status_option.status === 'Packed')
-    const receive = items.filter((obj) => obj.status.status_option.status === 'Shipped')
-    const complete = items.filter((obj) => obj.status.status_option.status === 'Delivered')
+    const pay = items.filter((obj) => obj.status.status === 'Waiting for Payment')
+    const ship = items.filter((obj) => obj.status.status === 'Paid' || obj.status.status === 'Pending' || obj.status.status === 'Processing' || obj.status.status === 'Packed')
+    const receive = items.filter((obj) => obj.status.status === 'Shipped')
+    const complete = items.filter((obj) => obj.status.status === 'Delivered')
+    setToPay(pay)
     setToShip(ship)
     setToReceive(receive)
     setCompleted(complete)
@@ -88,6 +91,19 @@ const Orders = ({ navigation }: Props) => {
     return(formetedNumber);
   }
 
+  const totalTransaction = (payload) => {
+    var customtotal = 0
+    for (var item of payload) {
+      customtotal += (+item.price_at_time_of_purchase) * (+item.quantity)
+    }
+    return customtotal
+  }
+
+  const orderInfo = (payload) => {
+    AsyncStorage.setItem('orderinfo', JSON.stringify(payload))
+    navigation.navigate('OrderInfo')
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 10 }}>
@@ -106,6 +122,9 @@ const Orders = ({ navigation }: Props) => {
       <View style={styles.contentContainer}>
         <View>
           <View style={{display: 'flex', flexDirection: 'row'}}>
+            <TouchableHighlight underlayColor="#eeeeee" onPress={() => {setTabNow('pay')}} style={ tabNow === 'pay' ? styles.activeTab : styles.notActiveTab }>
+              <Text style={tabNow === 'pay' ? styles.activeTextTab : styles.notActiveTextTab}>To Pay</Text>
+            </TouchableHighlight>
             <TouchableHighlight underlayColor="#eeeeee" onPress={() => {setTabNow('ship')}} style={ tabNow === 'ship' ? styles.activeTab : styles.notActiveTab }>
               <Text style={tabNow === 'ship' ? styles.activeTextTab : styles.notActiveTextTab}>To Ship</Text>
             </TouchableHighlight>
@@ -116,29 +135,90 @@ const Orders = ({ navigation }: Props) => {
               <Text style={tabNow === 'complete' ? styles.activeTextTab : styles.notActiveTextTab}>Completed</Text>
             </TouchableHighlight>
           </View>
+          <View style={tabNow === 'pay' ? {} : {display: 'none'}}>
+            <FlatList
+              data={toPay}
+              renderItem={({ item }) => (
+                <View>
+                  <View style={{padding: 5, backgroundColor: '#eeeeee'}}></View>
+                  <TouchableOpacity key={item.id} onPress={() => {orderInfo(item)}} style={{marginBottom: 5, paddingVertical: 10, width: '100%'}}>
+                    <View style={{flexDirection: 'row', alignItems:'center'}}>
+                      <View style={{width: '70%'}}>
+                        <View style={styles.alignCenterRow}>
+                          <Image source={{ uri: `${environment.APP_URL}/storage/uploads/products/${item.items[0].product.id}/${item.items[0].product.images[0].photo}` }} style={styles.image} />
+                          <View style={{flex: 1}}>
+                            <Text style={{fontWeight: 'bold'}}>{item.items[0].product.name}</Text>
+                            <View style={{display: 'flex', flexDirection: 'row'}}>
+                              <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {formatNumber(item.items[0].price_at_time_of_purchase)}</Text>
+                              <Text style={{color: 'gray', fontSize: 12}}> X {item.items[0].quantity}</Text>
+                            </View>
+                          </View>
+                        </View>
+                      </View>
+                      <View style={{paddingHorizontal: 10, paddingVertical: 2, width: '30%',}}>
+                        <Text style={{color: '#880ED4', fontSize: 13, fontWeight: 'bold', textAlign: 'right'}}>{'\u20B1'} {formatNumber(item.items[0].quantity * item.items[0].price_at_time_of_purchase)}</Text>
+                      </View>
+                    </View>
+                    <View style={{borderBottomColor: '#eeeeee',  borderBottomWidth: 1, marginVertical: 10}}></View>
+                    <View style={item.items.length > 0 ? {} : {display: 'none'}}>
+                      <Text style={{color: '#777777', textAlign: 'center'}}>View more product</Text>
+                      <View style={{borderBottomColor: '#eeeeee',  borderBottomWidth: 1, marginVertical: 10}}></View>
+                    </View>
+                    <View style={{flexDirection: 'row', alignItems:'center'}}>
+                      <View style={{width: '50%', paddingHorizontal: 15}}>
+                        <Text style={{color: '#555555'}}>Order Total</Text>
+                      </View>
+                      <View style={{paddingHorizontal: 10, paddingVertical: 2, width: '50%'}}>
+                        <Text style={{color: '#880ED4', fontSize: 15, fontWeight: 'bold', textAlign: 'right'}}>{'\u20B1'} {formatNumber(totalTransaction(item.items))}</Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                  <View style={{padding: 5, backgroundColor: '#eeeeee'}}></View>
+                </View>
+              )}
+              keyExtractor={(item) => item.id}
+            />
+          </View>
           <View style={tabNow === 'ship' ? {} : {display: 'none'}}>
             <FlatList
               data={toShip}
               renderItem={({ item }) => (
-                <TouchableOpacity key={item.id} onPress={() => {}} style={{marginBottom: 5, paddingHorizontal: 20, paddingVertical: 10, borderBottomColor: '#eeeeee',  borderBottomWidth: 2, width: '100%'}}>
-                  <View style={{flexDirection: 'row', alignItems:'center'}}>
-                    <View style={{width: '75%'}}>
-                      <View style={styles.alignCenterRow}>
-                        <Image source={{ uri: `${environment.APP_URL}/storage/uploads/products/${item.cart.product.id}/${item.cart.product.images[0].photo}` }} style={styles.image} />
-                        <View style={{flex: 1}}>
-                          <Text style={{fontWeight: 'bold'}}>{item.cart.product.name}</Text>
-                          <View style={{display: 'flex', flexDirection: 'row'}}>
-                            <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {formatNumber(item.price_at_time_of_purchase)}</Text>
-                            <Text style={{color: 'gray', fontSize: 12}}> X {item.cart.quantity}</Text>
+                <View>
+                  <View style={{padding: 5, backgroundColor: '#eeeeee'}}></View>
+                  <TouchableOpacity key={item.id} onPress={() => {}} style={{marginBottom: 5, paddingVertical: 10, width: '100%'}}>
+                    <View style={{flexDirection: 'row', alignItems:'center'}}>
+                      <View style={{width: '70%'}}>
+                        <View style={styles.alignCenterRow}>
+                          <Image source={{ uri: `${environment.APP_URL}/storage/uploads/products/${item.items[0].product.id}/${item.items[0].product.images[0].photo}` }} style={styles.image} />
+                          <View style={{flex: 1}}>
+                            <Text style={{fontWeight: 'bold'}}>{item.items[0].product.name}</Text>
+                            <View style={{display: 'flex', flexDirection: 'row'}}>
+                              <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {formatNumber(item.items[0].price_at_time_of_purchase)}</Text>
+                              <Text style={{color: 'gray', fontSize: 12}}> X {item.items[0].quantity}</Text>
+                            </View>
                           </View>
                         </View>
                       </View>
+                      <View style={{paddingHorizontal: 10, paddingVertical: 2, width: '30%',}}>
+                        <Text style={{color: '#880ED4', fontSize: 13, fontWeight: 'bold', textAlign: 'right'}}>{'\u20B1'} {formatNumber(item.items[0].quantity * item.items[0].price_at_time_of_purchase)}</Text>
+                      </View>
                     </View>
-                    <View style={{paddingHorizontal: 2, paddingVertical: 2, width: '25%',}}>
-                      <Text style={{color: '#880ED4', fontSize: 15, fontWeight: 'bold', textAlign: 'center'}}>{'\u20B1'} {formatNumber(item.cart.quantity * item.price_at_time_of_purchase)}</Text>
+                    <View style={{borderBottomColor: '#eeeeee',  borderBottomWidth: 1, marginVertical: 10}}></View>
+                    <View style={item.items.length > 0 ? {} : {display: 'none'}}>
+                      <Text style={{color: '#777777', textAlign: 'center'}}>View more product</Text>
+                      <View style={{borderBottomColor: '#eeeeee',  borderBottomWidth: 1, marginVertical: 10}}></View>
                     </View>
-                  </View>
-                </TouchableOpacity>
+                    <View style={{flexDirection: 'row', alignItems:'center'}}>
+                      <View style={{width: '50%', paddingHorizontal: 15}}>
+                        <Text style={{color: '#555555'}}>Order Total</Text>
+                      </View>
+                      <View style={{paddingHorizontal: 10, paddingVertical: 2, width: '50%'}}>
+                        <Text style={{color: '#880ED4', fontSize: 15, fontWeight: 'bold', textAlign: 'right'}}>{'\u20B1'} {formatNumber(totalTransaction(item.items))}</Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                  <View style={{padding: 5, backgroundColor: '#eeeeee'}}></View>
+                </View>
               )}
               keyExtractor={(item) => item.id}
             />
@@ -147,23 +227,42 @@ const Orders = ({ navigation }: Props) => {
             <FlatList
               data={toReceive}
               renderItem={({ item }) => (
-                <TouchableOpacity key={item.id} onPress={() => {}} style={{marginBottom: 5, paddingHorizontal: 20, paddingVertical: 10, borderBottomColor: '#eeeeee',  borderBottomWidth: 2, width: '100%', flexDirection: 'row', alignItems:'center'}}>
-                  <View style={{width: '75%'}}>
-                    <View style={styles.alignCenterRow}>
-                      <Image source={{ uri: `${environment.APP_URL}/storage/uploads/products/${item.cart.product.id}/${item.cart.product.images[0].photo}` }} style={styles.image} />
-                      <View style={{flex: 1}}>
-                        <Text style={{fontWeight: 'bold'}}>{item.cart.product.name}</Text>
-                        <View style={{display: 'flex', flexDirection: 'row'}}>
-                          <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {formatNumber(item.price_at_time_of_purchase)}</Text>
-                          <Text style={{color: 'gray', fontSize: 12}}> X {item.cart.quantity}</Text>
+                <View>
+                  <View style={{padding: 5, backgroundColor: '#eeeeee'}}></View>
+                  <TouchableOpacity key={item.id} onPress={() => {}} style={{marginBottom: 5, paddingVertical: 10, width: '100%'}}>
+                    <View style={{flexDirection: 'row', alignItems:'center'}}>
+                      <View style={{width: '70%'}}>
+                        <View style={styles.alignCenterRow}>
+                          <Image source={{ uri: `${environment.APP_URL}/storage/uploads/products/${item.items[0].product.id}/${item.items[0].product.images[0].photo}` }} style={styles.image} />
+                          <View style={{flex: 1}}>
+                            <Text style={{fontWeight: 'bold'}}>{item.items[0].product.name}</Text>
+                            <View style={{display: 'flex', flexDirection: 'row'}}>
+                              <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {formatNumber(item.items[0].price_at_time_of_purchase)}</Text>
+                              <Text style={{color: 'gray', fontSize: 12}}> X {item.items[0].quantity}</Text>
+                            </View>
+                          </View>
                         </View>
                       </View>
+                      <View style={{paddingHorizontal: 10, paddingVertical: 2, width: '30%',}}>
+                        <Text style={{color: '#880ED4', fontSize: 13, fontWeight: 'bold', textAlign: 'right'}}>{'\u20B1'} {formatNumber(item.items[0].quantity * item.items[0].price_at_time_of_purchase)}</Text>
+                      </View>
                     </View>
-                  </View>
-                  <View style={{paddingHorizontal: 2, paddingVertical: 2, width: '25%',}}>
-                    <Text style={{color: '#880ED4', fontSize: 15, fontWeight: 'bold', textAlign: 'center'}}>{'\u20B1'} {formatNumber(item.cart.quantity * item.price_at_time_of_purchase)}</Text>
-                  </View>
-                </TouchableOpacity>
+                    <View style={{borderBottomColor: '#eeeeee',  borderBottomWidth: 1, marginVertical: 10}}></View>
+                    <View style={item.items.length > 0 ? {} : {display: 'none'}}>
+                      <Text style={{color: '#777777', textAlign: 'center'}}>View more product</Text>
+                      <View style={{borderBottomColor: '#eeeeee',  borderBottomWidth: 1, marginVertical: 10}}></View>
+                    </View>
+                    <View style={{flexDirection: 'row', alignItems:'center'}}>
+                      <View style={{width: '50%', paddingHorizontal: 15}}>
+                        <Text style={{color: '#555555'}}>Order Total</Text>
+                      </View>
+                      <View style={{paddingHorizontal: 10, paddingVertical: 2, width: '50%'}}>
+                        <Text style={{color: '#880ED4', fontSize: 15, fontWeight: 'bold', textAlign: 'right'}}>{'\u20B1'} {formatNumber(totalTransaction(item.items))}</Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                  <View style={{padding: 5, backgroundColor: '#eeeeee'}}></View>
+                </View>
               )}
               keyExtractor={(item) => item.id}
             />
@@ -172,23 +271,42 @@ const Orders = ({ navigation }: Props) => {
             <FlatList
               data={completed}
               renderItem={({ item }) => (
-                <TouchableOpacity key={item.id} onPress={() => {}} style={{marginBottom: 5, paddingHorizontal: 20, paddingVertical: 10, borderBottomColor: '#eeeeee',  borderBottomWidth: 2, width: '100%', flexDirection: 'row', alignItems:'center'}}>
-                  <View style={{width: '75%'}}>
-                    <View style={styles.alignCenterRow}>
-                      <Image source={{ uri: `${environment.APP_URL}/storage/uploads/products/${item.cart.product.id}/${item.cart.product.images[0].photo}` }} style={styles.image} />
-                      <View style={{flex: 1}}>
-                        <Text style={{fontWeight: 'bold'}}>{item.cart.product.name}</Text>
-                        <View style={{display: 'flex', flexDirection: 'row'}}>
-                          <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {formatNumber(item.price_at_time_of_purchase)}</Text>
-                          <Text style={{color: 'gray', fontSize: 12}}> X {item.cart.quantity}</Text>
+                <View>
+                  <View style={{padding: 5, backgroundColor: '#eeeeee'}}></View>
+                  <TouchableOpacity key={item.id} onPress={() => {}} style={{marginBottom: 5, paddingVertical: 10, width: '100%'}}>
+                    <View style={{flexDirection: 'row', alignItems:'center'}}>
+                      <View style={{width: '70%'}}>
+                        <View style={styles.alignCenterRow}>
+                          <Image source={{ uri: `${environment.APP_URL}/storage/uploads/products/${item.items[0].product.id}/${item.items[0].product.images[0].photo}` }} style={styles.image} />
+                          <View style={{flex: 1}}>
+                            <Text style={{fontWeight: 'bold'}}>{item.items[0].product.name}</Text>
+                            <View style={{display: 'flex', flexDirection: 'row'}}>
+                              <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {formatNumber(item.items[0].price_at_time_of_purchase)}</Text>
+                              <Text style={{color: 'gray', fontSize: 12}}> X {item.items[0].quantity}</Text>
+                            </View>
+                          </View>
                         </View>
                       </View>
+                      <View style={{paddingHorizontal: 10, paddingVertical: 2, width: '30%',}}>
+                        <Text style={{color: '#880ED4', fontSize: 13, fontWeight: 'bold', textAlign: 'right'}}>{'\u20B1'} {formatNumber(item.items[0].quantity * item.items[0].price_at_time_of_purchase)}</Text>
+                      </View>
                     </View>
-                  </View>
-                  <View style={{paddingHorizontal: 2, paddingVertical: 2, width: '25%',}}>
-                    <Text style={{color: '#880ED4', fontSize: 15, fontWeight: 'bold', textAlign: 'center'}}>{'\u20B1'} {formatNumber(item.cart.quantity * item.price_at_time_of_purchase)}</Text>
-                  </View>
-                </TouchableOpacity>
+                    <View style={{borderBottomColor: '#eeeeee',  borderBottomWidth: 1, marginVertical: 10}}></View>
+                    <View style={item.items.length > 0 ? {} : {display: 'none'}}>
+                      <Text style={{color: '#777777', textAlign: 'center'}}>View more product</Text>
+                      <View style={{borderBottomColor: '#eeeeee',  borderBottomWidth: 1, marginVertical: 10}}></View>
+                    </View>
+                    <View style={{flexDirection: 'row', alignItems:'center'}}>
+                      <View style={{width: '50%', paddingHorizontal: 15}}>
+                        <Text style={{color: '#555555'}}>Order Total</Text>
+                      </View>
+                      <View style={{paddingHorizontal: 10, paddingVertical: 2, width: '50%'}}>
+                        <Text style={{color: '#880ED4', fontSize: 15, fontWeight: 'bold', textAlign: 'right'}}>{'\u20B1'} {formatNumber(totalTransaction(item.items))}</Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                  <View style={{padding: 5, backgroundColor: '#eeeeee'}}></View>
+                </View>
               )}
               keyExtractor={(item) => item.id}
             />
@@ -256,11 +374,13 @@ const styles = StyleSheet.create({
     borderBottomColor: '#880ED4'
   },
   activeTextTab: {
+    fontSize: 11,
     textAlign: 'center',
     fontWeight: 'bold',
     color: '#880ED4'
   },
   notActiveTextTab: {
+    fontSize: 11,
     textAlign: 'center'
   },
   notActiveTab: {

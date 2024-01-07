@@ -8,6 +8,7 @@ const IMAGE = {
     ICON_GCASH: require('../assets/gcash.png'),
     GCASH_LOGO: require('../assets/gcash_logo.png'),
     COD: require('../assets/cod.png'),
+    TO_PAY: require('../assets/wallet.png'),
     TO_SHIP: require('../assets/toship.png'),
     TO_RECEIVE: require('../assets/toreceive.png'),
     COMPLETED: require('../assets/done.png'),
