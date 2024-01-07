@@ -52,6 +52,7 @@ const AddCard = ({ navigation }: Props) => {
   }
 
   const _updateAddress = () => {
+    delete form["user_id"]
     setLoading(true)
     updateAddressAPI(form,addSuccess,addError);
   }
@@ -114,7 +115,7 @@ const AddCard = ({ navigation }: Props) => {
 
         </View>
 
-        <View style={form.default === false && form.id ? { paddingLeft: 20, paddingRight: 20, width: '100%', marginTop: 20 } : {display: 'none'}}>
+        <View style={form.default !== true && form.id ? { paddingLeft: 20, paddingRight: 20, width: '100%', marginTop: 20 } : {display: 'none'}}>
           <Button mode="outlined" onPress={() => makeDefault(form.id)} style={{borderRadius: 5}}>
             Set as Default
           </Button>

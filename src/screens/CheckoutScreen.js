@@ -12,7 +12,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import environment from '../../environment';
 import { userAddressAPI } from '../services/address';
-import { placeOrderAPI } from '../services/products';
+import { placeOrderAPI, checkoutAPI } from '../services/products';
 
 type Props = {
   navigation: Navigation;
@@ -24,7 +24,9 @@ const Checkout = ({ navigation }: Props) => {
   const [totalItem, setTotalItem] = useState([])
   const [payMethod, setPayment] = useState({})
   const [loginuser, setUser] = useState({})
+  const [loading, setLoading] = useState(false)
   const [userAddress, setAddress] = useState({})
+  const [selectedAddress, setSelectedAddress] = useState({})
 
   const showToast = text => {
     const commonToast = Platform.OS === 'android' ? ToastAndroid : Toast;
@@ -46,15 +48,19 @@ const Checkout = ({ navigation }: Props) => {
     userAddressAPI(payload.id, getSuccess, getError)
   }
 
-  const getSuccess = res => {
+  const getSuccess = async(res) => {
     setAddress(res.data)
-  }
-
-  const addSuccess = res => {
-    console.log(res.data)
+    const address = await AsyncStorage.getItem('choosenAddress')
+    if (Object.keys(address).length < 3) {
+      setSelectedAddress(res.data)
+    } else {
+      const addressinfo = JSON.parse(address);
+      setSelectedAddress(addressinfo)
+    }
   }
 
   const getError = err => {
+    console.error(err)
     const { error, message } = err.response.data;
     setLoading(false)
     if (error) {
@@ -72,16 +78,11 @@ const Checkout = ({ navigation }: Props) => {
   const _getCheckout = async () => {
     try {
       const value = await AsyncStorage.getItem('checkout')
-      const payment = await AsyncStorage.getItem('paymentMethod')
       const user = await AsyncStorage.getItem('user')
       if (value !== null) {
         const ret = JSON.parse(value);
         setItems(ret)
         setsubtotal(ret)
-      }
-      if (payment !== null) {
-        const pay = JSON.parse(payment);
-        setPayment(pay)
       }
       if (user !== null) {
         const userinfo = JSON.parse(user);
@@ -109,21 +110,18 @@ const Checkout = ({ navigation }: Props) => {
   }
 
   const _onPlaceOrder = () => {
-    if (payMethod.method_type) {
-      for (let i of Object.keys(items)) {
-        var payload = {
-          cart_id: items[i].id,
-          price_at_time_of_purchase: items[i].product.price,
-          payment_method: payMethod.method_type
-        }
-        placeOrderAPI(payload, addSuccess, getError)
-        if(((+i)+1) === items.length) {
-          navigation.navigate('PaymentSuccessScreen')
-        }
-      }
-    } else {
-      showToast(`Please add payment method`)
-    }
+    setLoading(true)
+    const cart_id = items.map(obj => obj.id);
+    checkoutAPI({ food_orders: false, ids: cart_id, user_address_id: selectedAddress.id }, openWebViewer, getError)
+  }
+
+  const openWebViewer = res => {
+    // console.log('callback', res.data.paymentLink.invoice_url)
+    const path = res.data.paymentLink.invoice_url
+    AsyncStorage.setItem('xenditInvoiceUrl', path)
+    console.log(path)
+    navigation.navigate('XenditInvoice');
+    setLoading(false)
   }
 
   const _goPay = () => {
@@ -155,10 +153,10 @@ const Checkout = ({ navigation }: Props) => {
           <View style={{ flexDirection: 'row'}}>
             <View style={{width: '80%'}}>
               <View style={{flexDirection: 'row'}}>
-                <Text style={{fontWeight: 'bold'}}>{userAddress.name}</Text>
-                <Text style={{marginLeft: 10, color: '#777777'}}>{userAddress.phone}</Text>
+                <Text style={{fontWeight: 'bold'}}>{selectedAddress.name}</Text>
+                <Text style={{marginLeft: 10, color: '#777777'}}>{selectedAddress.phone}</Text>
               </View>
-              <Text style={{color: '#555555'}}>{userAddress.address}</Text>
+              <Text style={{color: '#555555'}}>{selectedAddress.address}</Text>
             </View>
             <View style={{width: '20%', justifyContent: 'center', alignItems: 'flex-end'}}>
               <FontAwesome name='chevron-right' size={15} color='gray' />
@@ -200,25 +198,6 @@ const Checkout = ({ navigation }: Props) => {
             </View>
           </View>
         </View>
-        <View style={styles.skeks}>
-          <TouchableHighlight onPress={_goPay} underlayColor="#eeeeee">
-            <View
-              style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: 20, alignItems: 'center'}}>
-              <View style={{display: 'flex', flexDirection:'row', alignItems: 'center'}}>
-                <FontAwesome name='credit-card' size={15} color='black' />
-                <View style={{marginLeft: 5}}>
-                  <Text>Payment Options</Text>
-                </View>
-              </View>
-              <Text>{payMethod.method_type === 'E-Wallet' ? `E-Wallet - Gcash` : payMethod.method_type}</Text>
-              <FontAwesome name='angle-right' size={20} color='black' />
-            </View>
-          </TouchableHighlight>
-          <View style={{marginLeft: 50, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-            <Image source={payMethod.account_number ? IMAGE.ICON_MASTERCARD : ''} style={styles.image} />
-            <Text style={{color: '#880ED4'}}>{payMethod.account_number}</Text>
-          </View>
-        </View>
       </View>
 
       <View style={{ flexDirection: 'row'}}>
@@ -226,7 +205,7 @@ const Checkout = ({ navigation }: Props) => {
           <Text style={{marginLeft: 20}}>Total Payment:</Text>
           <Text style={{fontWeight: 'bold', marginLeft: 20, color: '#880ED4' }}>{'\u20B1'} {formatNumber(subTotal)}</Text>
         </View>
-        <Button style={styles.btn} mode="contained" onPress={_onPlaceOrder}>
+        <Button loading={loading} disabled={loading} style={styles.btn} mode="contained" onPress={_onPlaceOrder}>
           Place Order
         </Button>
       </View>

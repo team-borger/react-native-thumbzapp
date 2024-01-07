@@ -25,6 +25,8 @@ const CartItem = (props) => {
 
       _updateCartItem()
     }
+
+    // console.log('as123', itemSelected)
   })
 
   const widthInterpolate = fadeAnim2.interpolate({
