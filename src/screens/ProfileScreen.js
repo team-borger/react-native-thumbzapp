@@ -16,6 +16,7 @@ type Props = {
 
 const Dashboard = ({ navigation }: Props) => {
   const [loginUser, setLoginUser] = useState({});
+  const [toPay, setToPay] = useState(0);
   const [toShip, setToShip] = useState(0);
   const [toReceive, setToReceive] = useState(0);
   const [completed, setCompleted] = useState(0);
@@ -38,9 +39,11 @@ const Dashboard = ({ navigation }: Props) => {
 
   const getSuccess = res => {
     var items = res.data
-    const ship = items.filter((obj) => obj.status.status_option.status === 'Pending' || obj.status.status_option.status === 'Processing' || obj.status.status_option.status === 'Packed').length
-    const receive = items.filter((obj) => obj.status.status_option.status === 'Shipped').length
-    const complete = items.filter((obj) => obj.status.status_option.status === 'Delivered').length
+    const pay = items.filter((obj) => obj.status.status === 'Waiting for Payment').length
+    const ship = items.filter((obj) => obj.status.status === 'Paid' || obj.status.status === 'Pending' || obj.status.status === 'Processing' || obj.status.status === 'Packed').length
+    const receive = items.filter((obj) => obj.status.status === 'Shipped').length
+    const complete = items.filter((obj) => obj.status.status === 'Delivered').length
+    setToPay(pay)
     setToShip(ship)
     setToReceive(receive)
     setCompleted(complete)
@@ -89,26 +92,28 @@ const Dashboard = ({ navigation }: Props) => {
           </View>
         </View>
         <View style={styles.profileInfo}>
-          <View
-            style={{
-              borderBottomColor: '#eeeeee',
-              borderBottomWidth: 4,
-            }}
-          />
-          <TouchableHighlight onPress={() => navigation.navigate('PaymentMethodList')} underlayColor="#fff">
-            <View
-              style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: 20, alignItems: 'center'}}>
-              <View style={{display: 'flex', flexDirection:'row', alignItems: 'center'}}>
-                <View style={{width: 30}}>
-                  <FontAwesome name='credit-card' size={15} color='black' />
-                </View>
-                <View style={{marginLeft: 5}}>
-                  <Text>Payment Methods</Text>
-                </View>
-              </View>
-              <FontAwesome name='angle-right' size={20} color='black' />
-            </View>
-          </TouchableHighlight>
+          {
+            // <View
+            //   style={{
+            //     borderBottomColor: '#eeeeee',
+            //     borderBottomWidth: 4,
+            //   }}
+            // />
+            // <TouchableHighlight onPress={() => navigation.navigate('PaymentMethodList')} underlayColor="#fff">
+            //   <View
+            //     style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: 20, alignItems: 'center'}}>
+            //     <View style={{display: 'flex', flexDirection:'row', alignItems: 'center'}}>
+            //       <View style={{width: 30}}>
+            //         <FontAwesome name='credit-card' size={15} color='black' />
+            //       </View>
+            //       <View style={{marginLeft: 5}}>
+            //         <Text>Payment Methods</Text>
+            //       </View>
+            //     </View>
+            //     <FontAwesome name='angle-right' size={20} color='black' />
+            //   </View>
+            // </TouchableHighlight>
+          }
           <View
             style={{
               borderBottomColor: 'white',
@@ -136,6 +141,15 @@ const Dashboard = ({ navigation }: Props) => {
             }}
           />
           <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+            <TouchableHighlight style={{padding: 15, paddingTop: 20, flex: 1, alignItems: 'center'}} onPress={() => goToOrders('pay')} underlayColor="#fff">
+              <View style={{alignItems: 'center'}}>
+                <Image source={IMAGE.TO_PAY} style={styles.icon_image} />
+                <Text style={{fontSize: 10, marginTop: 10}}>To Pay</Text>
+                <View style={{ position: 'absolute', top: 0, right: -5 }}>
+                  <Badge style={toPay === 0 ? {display:'none'} : {} }>{toPay}</Badge>
+                </View>
+              </View>
+            </TouchableHighlight>
             <TouchableHighlight style={{padding: 15, paddingTop: 20, flex: 1, alignItems: 'center'}} onPress={() => goToOrders('ship')} underlayColor="#fff">
               <View style={{alignItems: 'center'}}>
                 <Image source={IMAGE.TO_SHIP} style={styles.icon_image} />

@@ -40,3 +40,4 @@ export { default as ForgotPassEmail } from './ForgotPassEmail';
 export { default as BookScreen } from './BookScreen';
 export { default as BookSuccess } from './BookSuccess';
 export { default as XenditInvoice } from './xenditGateway/Invoice';
+export { default as OrderInfo } from './OrderInfo';
