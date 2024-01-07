@@ -9,6 +9,7 @@ import Sound from 'react-native-sound';
 
 export default class CallService {
   static MEDIA_OPTIONS = { audio: true, video: { facingMode: 'user' } };
+  static MEDIA_OPTIONS_AUDIO = { audio: true, video: false };
   _session = null;
   mediaDevices = [];
 
@@ -82,7 +83,7 @@ export default class CallService {
     this._session = ConnectyCube.videochat.createNewSession(calleesIds, sessionType, additionalOptions);
 
     return this._session
-      .getUserMedia(CallService.MEDIA_OPTIONS)
+      .getUserMedia(CallService.MEDIA_OPTIONS_AUDIO)
       .then((stream) => {
         console.log('on sessionCreate', stream)
         this._session.call({});
