@@ -9,7 +9,7 @@ import QuantitySelector from '../components/QuantitySelector';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { IMAGE } from '../constants/Image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CartModule from '../components/Cart/CartModule';
+import CartFoodModule from '../components/Cart/CartFoodModule';
 import { cartAllAPI } from '../services/products';
 import environment from '../../environment';
 import { useIsFocused} from '@react-navigation/native';
@@ -248,7 +248,7 @@ const Cart = ({ navigation }: Props) => {
           />
         </View>
         {
-        // <CartModule cartItems={ items } bulkDeleteTrigger={bulkDeleteTrigger}/>
+        // <CartFoodModule cartItems={ items } bulkDeleteTrigger={bulkDeleteTrigger}/>
         }
       </View>
 

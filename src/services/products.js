@@ -81,3 +81,12 @@ export const userOrdersAPI = async (body, callback, err) => {
         err
     )
 }
+
+export const cancelOrdersAPI = async (body, callback, err) => {
+    checkConnection(
+        backendAPI.post(`/transaction/cancel`)
+            .then(callback)
+            .catch(err),
+        err
+    )
+}

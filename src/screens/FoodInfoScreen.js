@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
 import { Navigation } from '../types';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import NumericInput from 'react-native-numeric-input'
+import QuantitySelector from '../components/QuantitySelector';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
@@ -23,7 +23,7 @@ const FoodInfo = ({ navigation }: Props) => {
   const [product, setProduct] = useState({})
   const [images, setImages] = useState([])
   const [isVisible, setVisible] = useState(false);
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [loginuser, setUser] = useState({});
   const [count, setCount] = useState(0);
 
@@ -39,6 +39,10 @@ const FoodInfo = ({ navigation }: Props) => {
       _geUserInfo()
     }, [navigation])
   );
+
+  const valueChanged = (x) => {
+     setQuantity(x.value)
+  }
 
   const _getCartInfo = (payload) => {
     let body = payload.id
@@ -201,14 +205,11 @@ const FoodInfo = ({ navigation }: Props) => {
               </View>
             </View>
             <View>
-              <NumericInput
+              <QuantitySelector
+                item={product}
                 value={1}
-                onChange={value => setQuantity(value)}
-                totalHeight={30}
-                iconSize={25}
-                minValue={1}
-                maxValue={product.quantity}
-                valueType='real'
+                valueChanged={valueChanged}
+                minQuantity={1}
               />
             </View>
           </View>

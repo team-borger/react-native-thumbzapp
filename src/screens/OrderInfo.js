@@ -11,7 +11,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { networkInfoAPI } from '../services/load';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import environment from '../../environment';
-import { userOrdersAPI } from '../services/products';
+import { userOrdersAPI, cancelOrdersAPI } from '../services/products';
 
 type Props = {
   navigation: Navigation;
@@ -20,6 +20,7 @@ type Props = {
 const OrderInfo = ({ navigation }: Props) => {
   const [orderinfo, setOrderInfo] = useState({})
   const [orderitems, setOrderItems] = useState([])
+  const [loading, setLoading] = useState(false)
 
   useFocusEffect(
     React.useCallback(() => {
@@ -69,6 +70,33 @@ const OrderInfo = ({ navigation }: Props) => {
       } else if (orderinfo.status.status === 'Delivered') {
         return 'Order Completed'
       }
+    }
+  }
+
+  const cancelOrder = () => {
+    setLoading(true)
+    cancelOrdersAPI(orderinfo, cancelSuccess, cancelError)
+  }
+
+  const cancelSuccess = res => {
+    setLoading(false)
+    console.log(res)
+    navigation.navigate('ProfileScreen')
+  }
+
+  const cancelError = err => {
+    console.log(err)
+    setLoading(false)
+    const { error, message } = err.response.data;
+    if (error) {
+      Alert.alert('Something went wrong. Please try again.', error,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+    if (message) {
+      Alert.alert('Something went wrong. Please try again.', message,
+        [{ text: 'OK' },], { cancelable: false }
+      );
     }
   }
 
@@ -141,7 +169,7 @@ const OrderInfo = ({ navigation }: Props) => {
         </View>
         <View style={{padding: 5, backgroundColor: '#eeeeee', marginBottom: 10}}></View>
         <View style={{ paddingLeft: 20, paddingRight: 20, width: '100%', marginTop: 10 }}>
-          <Button mode="outlined" style={{borderRadius: 5}}>
+          <Button mode="outlined" style={{borderRadius: 5}} onPress={cancelOrder} loading={loading} disabled={loading}>
             Cancel Order
           </Button>
         </View>

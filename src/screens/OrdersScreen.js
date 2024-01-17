@@ -160,7 +160,7 @@ const Orders = ({ navigation }: Props) => {
                       </View>
                     </View>
                     <View style={{borderBottomColor: '#eeeeee',  borderBottomWidth: 1, marginVertical: 10}}></View>
-                    <View style={item.items.length > 0 ? {} : {display: 'none'}}>
+                    <View style={item.items.length > 1 ? {} : {display: 'none'}}>
                       <Text style={{color: '#777777', textAlign: 'center'}}>View more product</Text>
                       <View style={{borderBottomColor: '#eeeeee',  borderBottomWidth: 1, marginVertical: 10}}></View>
                     </View>
@@ -204,7 +204,7 @@ const Orders = ({ navigation }: Props) => {
                       </View>
                     </View>
                     <View style={{borderBottomColor: '#eeeeee',  borderBottomWidth: 1, marginVertical: 10}}></View>
-                    <View style={item.items.length > 0 ? {} : {display: 'none'}}>
+                    <View style={item.items.length > 1 ? {} : {display: 'none'}}>
                       <Text style={{color: '#777777', textAlign: 'center'}}>View more product</Text>
                       <View style={{borderBottomColor: '#eeeeee',  borderBottomWidth: 1, marginVertical: 10}}></View>
                     </View>
@@ -248,7 +248,7 @@ const Orders = ({ navigation }: Props) => {
                       </View>
                     </View>
                     <View style={{borderBottomColor: '#eeeeee',  borderBottomWidth: 1, marginVertical: 10}}></View>
-                    <View style={item.items.length > 0 ? {} : {display: 'none'}}>
+                    <View style={item.items.length > 1 ? {} : {display: 'none'}}>
                       <Text style={{color: '#777777', textAlign: 'center'}}>View more product</Text>
                       <View style={{borderBottomColor: '#eeeeee',  borderBottomWidth: 1, marginVertical: 10}}></View>
                     </View>
@@ -292,7 +292,7 @@ const Orders = ({ navigation }: Props) => {
                       </View>
                     </View>
                     <View style={{borderBottomColor: '#eeeeee',  borderBottomWidth: 1, marginVertical: 10}}></View>
-                    <View style={item.items.length > 0 ? {} : {display: 'none'}}>
+                    <View style={item.items.length > 1 ? {} : {display: 'none'}}>
                       <Text style={{color: '#777777', textAlign: 'center'}}>View more product</Text>
                       <View style={{borderBottomColor: '#eeeeee',  borderBottomWidth: 1, marginVertical: 10}}></View>
                     </View>
