@@ -141,9 +141,9 @@ const LoginScreen = ({ navigation }) => {
           errorText={password.error}
           secureTextEntry={passwordVisible}
           right={
-            <TextInput.Icon name={passwordVisible ? "eye" : "eye-off"}
-            onPress={() => setPasswordVisible(!passwordVisible)} />
-          }
+            <TextInput.Icon icon={passwordVisible ? "eye" : "eye-off"}
+              onPress={() => setPasswordVisible(!passwordVisible)} />
+            }
         />
 
         <View style={{ paddingLeft: 20, paddingRight: 20, width: '100%' }}>
