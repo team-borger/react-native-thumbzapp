@@ -11,6 +11,7 @@ export default class CallService {
   static MEDIA_OPTIONS = { audio: true, video: { facingMode: 'user' } };
   static MEDIA_OPTIONS_AUDIO = { audio: true, video: false };
   _session = null;
+  _callType = null;
   mediaDevices = [];
 
   _incomingCallSession = null;
@@ -44,9 +45,9 @@ export default class CallService {
 
   startCall = async callee => {
     let calleesIds = []; // User's ids
-
+    this._callType = 'video';
+    await AsyncStorage.removeItem('callType')
     const session_ = JSON.parse(await AsyncStorage.getItem('session_'))
-
     calleesIds.push(callee.connectycube_id)
     // if(session_.id == 5757268) calleesIds.push(5744964)
     // else calleesIds.push(5757268)
@@ -70,8 +71,9 @@ export default class CallService {
   };
 
   startCallAudio = async callee => {
+    this._callType = 'audio';
     let calleesIds = []; // User's ids
-
+    await AsyncStorage.setItem('callType', this._callType)
     const session_ = JSON.parse(await AsyncStorage.getItem('session_'))
 
     calleesIds.push(callee.connectycube_id)
@@ -102,7 +104,7 @@ export default class CallService {
     this.setMediaDevices();
 
     return this._incomingCallSession
-      .getUserMedia(CallService.MEDIA_OPTIONS)
+      .getUserMedia(this._isAudio === 'audio' ? CallService.MEDIA_OPTIONS_AUDIO : CallService.MEDIA_OPTIONS)
       .then(stream => {
         this._incomingCallSession.accept({});
         return stream;
