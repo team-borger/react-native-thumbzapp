@@ -41,3 +41,5 @@ export { default as BookScreen } from './BookScreen';
 export { default as BookSuccess } from './BookSuccess';
 export { default as XenditInvoice } from './xenditGateway/Invoice';
 export { default as OrderInfo } from './OrderInfo';
+export { default as OrdersFoodScreen } from './OrdersFoodScreen';
+export { default as OrderFoodInfo } from './OrderFoodInfo';

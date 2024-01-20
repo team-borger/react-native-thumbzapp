@@ -184,7 +184,7 @@ const Dashboard = ({ navigation }: Props) => {
               borderBottomWidth: 2,
             }}
           />
-          <TouchableHighlight onPress={() => navigation.navigate('MyAddressScreen')} underlayColor="#fff">
+          <TouchableHighlight onPress={() => navigation.navigate('OrdersFoodScreen')} underlayColor="#fff">
             <View
               style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: 20, alignItems: 'center'}}>
               <View style={{display: 'flex', flexDirection:'row', alignItems: 'center'}}>

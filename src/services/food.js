@@ -36,3 +36,21 @@ export const placeFoodOrderAPI = async (body, callback, err) => {
         err
     )
 }
+
+export const updateFoodCartAPI = async (body, callback, err) => {
+    checkConnection(
+        backendAPI.post(`/cart_food/update`, body)
+            .then(callback)
+            .catch(err),
+        err
+    )
+}
+
+export const deleteFoodCartAPI = async (id, callback, err) => {
+    checkConnection(
+        backendAPI.delete(`/cart_food/delete/${id}`)
+            .then(callback)
+            .catch(err),
+        err
+    )
+}

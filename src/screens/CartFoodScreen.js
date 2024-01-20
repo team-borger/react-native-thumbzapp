@@ -1,29 +1,32 @@
 import React, { memo, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar, Button, ToggleButton, RadioButton } from 'react-native-paper';
 import { Navigation } from '../types';
 import { useFocusEffect } from '@react-navigation/native';
 import NavbarBot from '../components/NavbarBot';
+import QuantitySelector from '../components/QuantitySelector';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { IMAGE } from '../constants/Image';
-import NumericInput from 'react-native-numeric-input'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CartModule from '../components/Cart/CartModule';
 import { cartFoodAllAPI } from '../services/food';
 import environment from '../../environment';
 import { useIsFocused} from '@react-navigation/native';
+import { updateFoodCartAPI, deleteFoodCartAPI } from '../services/food';
 
 type Props = {
   navigation: Navigation;
 };
 
-const Cart = ({ navigation }: Props) => {
+const CartFood = ({ navigation }: Props) => {
   const [subTotal, setTotal] = useState(0)
   const [items, setItems] = useState([])
   const [loginuser, setUser] = useState({})
   const [selected, setSelected] = useState([])
   const [showButton, setShowButton] = useState(false)
   const [listItemsRefresh, setListItemsRefresh] = useState(false)
+  const [bulkDeleteTrigger, setBulkDeleteTrigger] = useState(0)
 
   const fetchSuccess = res => {
     let arr = []
@@ -51,7 +54,6 @@ const Cart = ({ navigation }: Props) => {
   const changeQuantity = (value, payload) => {
     let index = items.findIndex(el => el.id === payload.id);
     items[index].quantity = value;
-    // setsubtotal()
   }
 
   const totalSelected = () => {
@@ -70,20 +72,25 @@ const Cart = ({ navigation }: Props) => {
     navigation.navigate('Dashboard');
   }
 
+  const _bulkDeleteTrigger = () => {
+    setBulkDeleteTrigger( bulkDeleteTrigger + 1 )
+  }
+
   const _onCheckoutPressed = () => {
-    AsyncStorage.setItem('checkoutFood', JSON.stringify(items))
+    AsyncStorage.setItem('checkoutFood', JSON.stringify(selected))
     AsyncStorage.setItem('paymentMethod', JSON.stringify({}))
     navigation.navigate('CheckoutFoodScreen');
   }
 
   useFocusEffect(
     React.useCallback(() => {
-      _geUserInfo()
+      _getUserInfo()
       setSelected([])
+      AsyncStorage.setItem('choosenAddress', JSON.stringify({}))
     }, [navigation])
   );
 
-  const _geUserInfo = async () => {
+  const _getUserInfo = async () => {
     try {
       const value = await AsyncStorage.getItem('user')
       if (value !== null) {
@@ -137,6 +144,62 @@ const Cart = ({ navigation }: Props) => {
     return(formetedNumber);
   }
 
+  const _updateCartItem = (x) => {
+    const payload =
+      {
+        id: x.item.id,
+        user_id: x.item.user_id,
+        product_id: x.item.food_id,
+        quantity: x.value,
+        status: 'pending',
+      }
+    changeQuantity(x.value, payload)
+    setListItemsRefresh(!listItemsRefresh)
+    updateFoodCartAPI(payload, null, _requestFail)
+  }
+
+  const _deleteCartItem = (x) => {
+    deleteFoodCartAPI(x.item.id, null, _requestFail)
+    _getUserInfo()
+  }
+
+  const _requestFail = err => {
+    const { error, message } = err.response.data;
+    if (error) {
+      Alert.alert('Something went wrong. Please try again.', error,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+    if (message) {
+      Alert.alert('Something went wrong. Please try again.', message,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+  }
+
+  const confirmDelete = (x) => {
+    Alert.alert('Remove confirmation', `"${x.item.food.name}" will be removed from your cart, proceed?`, [
+      {
+        text: 'Yes, remove from cart',
+        onPress: () => {
+          _deleteCartItem(x)
+        },
+      },
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+    ])
+  }
+
+  const valueChanged = (x) => {
+     if (x.value > 0) {
+       _updateCartItem(x)
+     } else {
+       confirmDelete(x)
+     }
+  }
+
   useIsFocused();
 
   return (
@@ -145,7 +208,7 @@ const Cart = ({ navigation }: Props) => {
       <Appbar.Header dark={false} style={styles.header}>
         <Appbar.BackAction onPress={_goBack} />
         <Appbar.Content style={styles.marginText} title={<Text style={styles.setColorText}>Cart</Text>}/>
-        <Appbar.Action icon="chat" color="#880ED4" onPress={_goToChats} />
+        <Appbar.Action icon="delete" color="#880ED4" onPress={ _bulkDeleteTrigger } />
       </Appbar.Header>
 
       <View style={styles.contentContainer}>
@@ -160,20 +223,22 @@ const Cart = ({ navigation }: Props) => {
                     onPress={() => {setChoice(item)}}
                   />
                 </View>
-                <View style={{width: '65%'}}>
+                <View style={{width: '90%'}}>
                   <View style={styles.alignCenterRow}>
                     <Image source={{ uri: `${environment.APP_URL}/storage/uploads/foods/${item.food.id}/${item.food.images[0].photo}` }} style={styles.image} />
                     <View style={{flex: 1}}>
                       <Text style={{fontWeight: 'bold'}}>{item.food.name}</Text>
-                      <View style={{display: 'flex', flexDirection: 'row'}}>
-                        <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {formatNumber(item.food.price)}</Text>
-                        <Text style={{color: 'gray', fontSize: 12}}> X {item.quantity}</Text>
+                      <View style={{display: 'flex', flexDirection: 'column', marginTop: 3}}>
+                        <Text style={{color: '#880ED4', fontSize: 12, marginBottom: 5}}>{'\u20B1'} {formatNumber(item.food.price)}</Text>
+                        <QuantitySelector
+                          item={item}
+                    			value={item.quantity}
+                          valueChanged={valueChanged}
+                    			minQuantity={0}
+                        />
                       </View>
                     </View>
                   </View>
-                </View>
-                <View style={{paddingHorizontal: 2, paddingVertical: 2, width: '25%',}}>
-                  <Text style={{color: '#880ED4', fontSize: 15, fontWeight: 'bold', textAlign: 'center'}}>{'\u20B1'} {formatNumber(item.quantity * item.food.price)}</Text>
                 </View>
               </TouchableOpacity>
             )}
@@ -181,6 +246,9 @@ const Cart = ({ navigation }: Props) => {
             extraData={listItemsRefresh}
           />
         </View>
+        {
+        // <CartModule cartItems={ items } bulkDeleteTrigger={bulkDeleteTrigger}/>
+        }
       </View>
 
       <View style={{ flexDirection: 'row'}}>
@@ -205,10 +273,11 @@ const styles = StyleSheet.create({
       backgroundColor: '#F5FCFF',
   },
   image: {
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
     resizeMode: 'contain',
-    marginRight: 10
+    marginRight: 10,
+    borderColor: 'red'
   },
   total: {
     flex: 1,
@@ -258,4 +327,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default memo(Cart);
+export default memo(CartFood);
