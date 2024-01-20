@@ -80,7 +80,6 @@ const OrderInfo = ({ navigation }: Props) => {
 
   const cancelSuccess = res => {
     setLoading(false)
-    console.log(res)
     navigation.navigate('ProfileScreen')
   }
 

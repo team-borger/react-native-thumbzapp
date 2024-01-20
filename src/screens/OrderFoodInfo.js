@@ -30,7 +30,7 @@ const OrderInfo = ({ navigation }: Props) => {
 
   const getOrderInfo = async () => {
     try {
-      const skeks = await AsyncStorage.getItem('orderinfo')
+      const skeks = await AsyncStorage.getItem('orderfoodinfo')
       if (skeks !== null) {
         const skek = JSON.parse(skeks);
         setOrderInfo(skek)
