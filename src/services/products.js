@@ -75,7 +75,16 @@ export const checkoutAPI = async (body, callback, err) => {
 
 export const userOrdersAPI = async (body, callback, err) => {
     checkConnection(
-        backendAPI.get(`/transaction/info/all`)
+        backendAPI.get(`/transaction/info/product/all`)
+            .then(callback)
+            .catch(err),
+        err
+    )
+}
+
+export const userFoodOrdersAPI = async (body, callback, err) => {
+    checkConnection(
+        backendAPI.get(`/transaction/info/food/all`)
             .then(callback)
             .catch(err),
         err

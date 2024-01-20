@@ -48,6 +48,8 @@ import BookScreen from './screens/BookScreen'
 import BookSuccess from './screens/BookSuccess'
 import XenditInvoice from './screens/xenditGateway/Invoice'
 import OrderInfo from './screens/OrderInfo';
+import OrdersFoodScreen from './screens/OrdersFoodScreen';
+import OrderFoodInfo from './screens/OrderFoodInfo';
 
 
 const Stack = createNativeStackNavigator();
@@ -105,6 +107,8 @@ const App = () => {
           <Stack.Screen name="BookSuccess" component={BookSuccess} option={{title: 'BookSuccess!!'}} />
           <Stack.Screen name="XenditInvoice" component={XenditInvoice} option={{title: 'XenditInvoice!!'}} />
           <Stack.Screen name="OrderInfo" component={OrderInfo} option={{title: 'OrderInfo!!'}} />
+          <Stack.Screen name="OrdersFoodScreen" component={OrdersFoodScreen} option={{title: 'OrdersFoodScreen!!'}} />
+          <Stack.Screen name="OrderFoodInfo" component={OrderFoodInfo} option={{title: 'OrderFoodInfo!!'}} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
