@@ -17,13 +17,17 @@ const CallScreen = (response) => {
     const [isMutedVideo, setMuteVideo] = useState(true);
     const [isLoudSpeaker, setLoudSpeaker] = useState(true);
     const [isCameraFacingFront, setCameraFacingFront] = useState(true);
+    const [loginUser, setLoginUser] = useState({});
+    const [chatUser, setChatUser] = useState({});
+    let isAudio = null;
 
     useEffect(async () => {
       const callType = await AsyncStorage.getItem('callType');
-      const isAudio = callType === 'audio' ? false : true
+      isAudio = callType === 'audio' ? false : true
       if (callType !== null) {
         setMuteVideo(isAudio)
       }
+      _getActiveChat()
     }, []);
 
     const res = response.route.params;
@@ -46,11 +50,37 @@ const CallScreen = (response) => {
       CallService.toggleCameras();
     };
 
+    const _getActiveChat = async () => {
+      try {
+        const value = await AsyncStorage.getItem('active_chat')
+        const skeks = await AsyncStorage.getItem('user')
+        if (skeks !== null) {
+          const skek = JSON.parse(skeks);
+          setLoginUser(skek)
+        }
+        if (value !== null) {
+          const ret = JSON.parse(value);
+          setChatUser(ret.contact)
+        }
+      } catch (error) {
+        console.log('error async storage')
+      }
+    }
+
     if(res.localKey) {
       return (
         <View style={styles.blackView}>
-          <RTCView style={styles.remoteKey} objectFit="cover" key={res.remoteKey} streamURL={res.remoteStream.toURL()} mirror={isCameraFacingFront ? false : true}/>
-          <RTCView style={styles.localKey} key={res.localKey} streamURL={res.localStream.toURL()} mirror={isCameraFacingFront ? true : false}/>
+          {isMutedVideo ?
+            (<View>
+              <RTCView style={styles.remoteKey} objectFit="cover" key={res.remoteKey} streamURL={res.remoteStream.toURL()} mirror={isCameraFacingFront ? false : true}/>
+              <RTCView style={styles.localKey} key={res.localKey} streamURL={res.localStream.toURL()} mirror={isCameraFacingFront ? true : false}/>
+            </View>)
+            : (
+            <View style={{flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+              <Text style={{color: 'white', fontSize: 30, fontWeight: 'bold'}}>{chatUser.first_name + ' ' + chatUser.last_name}</Text>
+            </View>
+            ) 
+          }
           <View style={styles.dropCallButton}>
             <View style={{display: 'flex', flexDirection: 'row'}}>
               <TouchableOpacity style={{marginHorizontal: 5}} onPress={onMuteVideoPressed}>
