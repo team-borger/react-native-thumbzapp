@@ -70,7 +70,7 @@ const CallScreen = (response) => {
     if(res.localKey) {
       return (
         <View style={styles.blackView}>
-          {isMutedVideo ?
+          { isMutedVideo ?
             (<View>
               <RTCView style={styles.remoteKey} objectFit="cover" key={res.remoteKey} streamURL={res.remoteStream.toURL()} mirror={isCameraFacingFront ? false : true}/>
               <RTCView style={styles.localKey} key={res.localKey} streamURL={res.localStream.toURL()} mirror={isCameraFacingFront ? true : false}/>
@@ -78,8 +78,7 @@ const CallScreen = (response) => {
             : (
             <View style={{flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
               <Text style={{color: 'white', fontSize: 30, fontWeight: 'bold'}}>{chatUser.first_name + ' ' + chatUser.last_name}</Text>
-            </View>
-            ) 
+            </View>) 
           }
           <View style={styles.dropCallButton}>
             <View style={{display: 'flex', flexDirection: 'row'}}>
