@@ -39,6 +39,7 @@ const Dashboard = ({ navigation }: Props) => {
 
   const getSuccess = res => {
     var items = res.data
+    console.log(res.data)
     const pay = items.filter((obj) => obj.status.status === 'Waiting for Payment').length
     const ship = items.filter((obj) => obj.status.status === 'Paid' || obj.status.status === 'Pending' || obj.status.status === 'Processing' || obj.status.status === 'Packed').length
     const receive = items.filter((obj) => obj.status.status === 'Shipped').length
@@ -184,7 +185,7 @@ const Dashboard = ({ navigation }: Props) => {
               borderBottomWidth: 2,
             }}
           />
-          <TouchableHighlight onPress={() => navigation.navigate('MyAddressScreen')} underlayColor="#fff">
+          <TouchableHighlight onPress={() => navigation.navigate('OrdersFoodScreen')} underlayColor="#fff">
             <View
               style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: 20, alignItems: 'center'}}>
               <View style={{display: 'flex', flexDirection:'row', alignItems: 'center'}}>

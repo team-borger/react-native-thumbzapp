@@ -11,13 +11,13 @@ import { useFocusEffect } from '@react-navigation/native';
 import { networkInfoAPI } from '../services/load';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import environment from '../../environment';
-import { userOrdersAPI } from '../services/products';
+import { userFoodOrdersAPI } from '../services/products';
 
 type Props = {
   navigation: Navigation;
 };
 
-const Orders = ({ navigation }: Props) => {
+const OrdersFood = ({ navigation }: Props) => {
   const [tabNow, setTabNow] = useState('pay')
   const [toPay, setToPay] = useState({})
   const [toShip, setToShip] = useState({})
@@ -50,7 +50,7 @@ const Orders = ({ navigation }: Props) => {
       if (skeks !== null) {
         const skek = JSON.parse(skeks);
         setLoginUser(skek)
-        userOrdersAPI(skek.id, fetchSuccess, fetchError)
+        userFoodOrdersAPI(skek.id, fetchSuccess, fetchError)
       }
     } catch (error) {
       console.log('error async storage')
@@ -103,8 +103,8 @@ const Orders = ({ navigation }: Props) => {
   }
 
   const orderInfo = (payload) => {
-    AsyncStorage.setItem('orderinfo', JSON.stringify(payload))
-    navigation.navigate('OrderInfo')
+    AsyncStorage.setItem('orderfoodinfo', JSON.stringify(payload))
+    navigation.navigate('OrderFoodInfo')
   }
 
   return (
@@ -151,9 +151,9 @@ const Orders = ({ navigation }: Props) => {
                     <View style={{flexDirection: 'row', alignItems:'center'}}>
                       <View style={{width: '70%'}}>
                         <View style={styles.alignCenterRow}>
-                          <Image source={{ uri: `${environment.APP_URL}/storage/uploads/products/${item.items[0].product.id}/${item.items[0].product.images[0].photo}` }} style={styles.image} />
+                          <Image source={{ uri: `${environment.APP_URL}/storage/uploads/foods/${item.items[0].food.id}/${item.items[0].food.images[0].photo}` }} style={styles.image} />
                           <View style={{flex: 1}}>
-                            <Text style={{fontWeight: 'bold'}}>{item.items[0].product.name}</Text>
+                            <Text style={{fontWeight: 'bold'}}>{item.items[0].food.name}</Text>
                             <View style={{display: 'flex', flexDirection: 'row'}}>
                               <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {formatNumber(item.items[0].price_at_time_of_purchase)}</Text>
                               <Text style={{color: 'gray', fontSize: 12}}> X {item.items[0].quantity}</Text>
@@ -195,9 +195,9 @@ const Orders = ({ navigation }: Props) => {
                     <View style={{flexDirection: 'row', alignItems:'center'}}>
                       <View style={{width: '70%'}}>
                         <View style={styles.alignCenterRow}>
-                          <Image source={{ uri: `${environment.APP_URL}/storage/uploads/products/${item.items[0].product.id}/${item.items[0].product.images[0].photo}` }} style={styles.image} />
+                          <Image source={{ uri: `${environment.APP_URL}/storage/uploads/foods/${item.items[0].food.id}/${item.items[0].food.images[0].photo}` }} style={styles.image} />
                           <View style={{flex: 1}}>
-                            <Text style={{fontWeight: 'bold'}}>{item.items[0].product.name}</Text>
+                            <Text style={{fontWeight: 'bold'}}>{item.items[0].food.name}</Text>
                             <View style={{display: 'flex', flexDirection: 'row'}}>
                               <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {formatNumber(item.items[0].price_at_time_of_purchase)}</Text>
                               <Text style={{color: 'gray', fontSize: 12}}> X {item.items[0].quantity}</Text>
@@ -239,9 +239,9 @@ const Orders = ({ navigation }: Props) => {
                     <View style={{flexDirection: 'row', alignItems:'center'}}>
                       <View style={{width: '70%'}}>
                         <View style={styles.alignCenterRow}>
-                          <Image source={{ uri: `${environment.APP_URL}/storage/uploads/products/${item.items[0].product.id}/${item.items[0].product.images[0].photo}` }} style={styles.image} />
+                          <Image source={{ uri: `${environment.APP_URL}/storage/uploads/foods/${item.items[0].food.id}/${item.items[0].food.images[0].photo}` }} style={styles.image} />
                           <View style={{flex: 1}}>
-                            <Text style={{fontWeight: 'bold'}}>{item.items[0].product.name}</Text>
+                            <Text style={{fontWeight: 'bold'}}>{item.items[0].food.name}</Text>
                             <View style={{display: 'flex', flexDirection: 'row'}}>
                               <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {formatNumber(item.items[0].price_at_time_of_purchase)}</Text>
                               <Text style={{color: 'gray', fontSize: 12}}> X {item.items[0].quantity}</Text>
@@ -283,9 +283,9 @@ const Orders = ({ navigation }: Props) => {
                     <View style={{flexDirection: 'row', alignItems:'center'}}>
                       <View style={{width: '70%'}}>
                         <View style={styles.alignCenterRow}>
-                          <Image source={{ uri: `${environment.APP_URL}/storage/uploads/products/${item.items[0].product.id}/${item.items[0].product.images[0].photo}` }} style={styles.image} />
+                          <Image source={{ uri: `${environment.APP_URL}/storage/uploads/foods/${item.items[0].food.id}/${item.items[0].food.images[0].photo}` }} style={styles.image} />
                           <View style={{flex: 1}}>
-                            <Text style={{fontWeight: 'bold'}}>{item.items[0].product.name}</Text>
+                            <Text style={{fontWeight: 'bold'}}>{item.items[0].food.name}</Text>
                             <View style={{display: 'flex', flexDirection: 'row'}}>
                               <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {formatNumber(item.items[0].price_at_time_of_purchase)}</Text>
                               <Text style={{color: 'gray', fontSize: 12}}> X {item.items[0].quantity}</Text>
@@ -327,9 +327,9 @@ const Orders = ({ navigation }: Props) => {
                     <View style={{flexDirection: 'row', alignItems:'center'}}>
                       <View style={{width: '70%'}}>
                         <View style={styles.alignCenterRow}>
-                          <Image source={{ uri: `${environment.APP_URL}/storage/uploads/products/${item.items[0].product.id}/${item.items[0].product.images[0].photo}` }} style={styles.image} />
+                          <Image source={{ uri: `${environment.APP_URL}/storage/uploads/foods/${item.items[0].food.id}/${item.items[0].food.images[0].photo}` }} style={styles.image} />
                           <View style={{flex: 1}}>
-                            <Text style={{fontWeight: 'bold'}}>{item.items[0].product.name}</Text>
+                            <Text style={{fontWeight: 'bold'}}>{item.items[0].food.name}</Text>
                             <View style={{display: 'flex', flexDirection: 'row'}}>
                               <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {formatNumber(item.items[0].price_at_time_of_purchase)}</Text>
                               <Text style={{color: 'gray', fontSize: 12}}> X {item.items[0].quantity}</Text>
@@ -448,4 +448,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default memo(Orders);
+export default memo(OrdersFood);

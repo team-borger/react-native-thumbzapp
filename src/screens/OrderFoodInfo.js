@@ -30,7 +30,7 @@ const OrderInfo = ({ navigation }: Props) => {
 
   const getOrderInfo = async () => {
     try {
-      const skeks = await AsyncStorage.getItem('orderinfo')
+      const skeks = await AsyncStorage.getItem('orderfoodinfo')
       if (skeks !== null) {
         const skek = JSON.parse(skeks);
         setOrderInfo(skek)
@@ -42,8 +42,8 @@ const OrderInfo = ({ navigation }: Props) => {
   }
 
   const _goBack = () => {
-    AsyncStorage.setItem('orderinfo', JSON.stringify({}))
-    navigation.navigate('OrdersScreen')
+    AsyncStorage.setItem('orderfoodinfo', JSON.stringify({}))
+    navigation.navigate('OrdersFoodScreen')
   }
 
   const formatNumber = (inputNumber) => {
@@ -80,6 +80,7 @@ const OrderInfo = ({ navigation }: Props) => {
 
   const cancelSuccess = res => {
     setLoading(false)
+    console.log(res)
     navigation.navigate('ProfileScreen')
   }
 
@@ -139,9 +140,9 @@ const OrderInfo = ({ navigation }: Props) => {
               <View style={{flexDirection: 'row', alignItems:'center'}}>
                 <View style={{width: '70%'}}>
                   <View style={styles.alignCenterRow}>
-                    <Image source={{ uri: `${environment.APP_URL}/storage/uploads/products/${item.product.id}/${item.product.images[0].photo}` }} style={styles.image} />
+                    <Image source={{ uri: `${environment.APP_URL}/storage/uploads/foods/${item.food.id}/${item.food.images[0].photo}` }} style={styles.image} />
                     <View style={{flex: 1}}>
-                      <Text style={{fontWeight: 'bold'}}>{item.product.name}</Text>
+                      <Text style={{fontWeight: 'bold'}}>{item.food.name}</Text>
                       <View style={{display: 'flex', flexDirection: 'row'}}>
                         <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {formatNumber(item.price_at_time_of_purchase)}</Text>
                         <Text style={{color: 'gray', fontSize: 12}}> X {item.quantity}</Text>
