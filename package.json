@@ -13,6 +13,7 @@
     "debug": "adb shell input keyevent 82"
   },
   "dependencies": {
+    "@expo/vector-icons": "^13.0.0",
     "@react-native-async-storage/async-storage": "^1.19.1",
     "@react-native-community/datetimepicker": "^6.7.0",
     "@react-native-community/netinfo": "8.2.0",
