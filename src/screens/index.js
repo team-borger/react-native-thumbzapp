@@ -44,12 +44,3 @@ export { default as OrderInfo } from './OrderInfo';
 export { default as OrdersFoodScreen } from './OrdersFoodScreen';
 export { default as OrderFoodInfo } from './OrderFoodInfo';
 
-import { View, Text } from 'react-native'
-
-export default function Other1 (){
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center"  }}>
-      <Text>Other1</Text>
-    </View>
-  )
-}
