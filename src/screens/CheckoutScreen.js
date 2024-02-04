@@ -22,7 +22,7 @@ const Checkout = ({ navigation }: Props) => {
   const [subTotal, setTotal] = useState(0)
   const [items, setItems] = useState([])
   const [totalItem, setTotalItem] = useState([])
-  const [payMethod, setPayment] = useState({})
+  const [payMethod, setPayment] = useState('')
   const [loginuser, setUser] = useState({})
   const [loading, setLoading] = useState(false)
   const [userAddress, setAddress] = useState({})
@@ -60,7 +60,7 @@ const Checkout = ({ navigation }: Props) => {
   }
 
   const getError = err => {
-    console.error(err)
+    console.error(err.response.data)
     const { error, message } = err.response.data;
     setLoading(false)
     if (error) {
@@ -78,11 +78,16 @@ const Checkout = ({ navigation }: Props) => {
   const _getCheckout = async () => {
     try {
       const value = await AsyncStorage.getItem('checkout')
+      const payment = await AsyncStorage.getItem('paymentMethod')
       const user = await AsyncStorage.getItem('user')
       if (value !== null) {
         const ret = JSON.parse(value);
         setItems(ret)
         setsubtotal(ret)
+      }
+      if (payment !== null) {
+        const pay = JSON.parse(payment);
+        setPayment(pay)
       }
       if (user !== null) {
         const userinfo = JSON.parse(user);
@@ -109,10 +114,21 @@ const Checkout = ({ navigation }: Props) => {
     navigation.navigate('CartScreen');
   }
 
+  const placeSuccess = () => {
+    navigation.navigate('PaymentSuccessScreen')
+  }
+
   const _onPlaceOrder = () => {
-    setLoading(true)
     const cart_id = items.map(obj => obj.id);
-    checkoutAPI({ food_orders: false, ids: cart_id, user_address_id: selectedAddress.id }, openWebViewer, getError)
+    if (payMethod === 'online') {
+      setLoading(true)
+      checkoutAPI({ food_orders: false, ids: cart_id, user_address_id: selectedAddress.id, cod: false }, openWebViewer, getError)
+    } else if (payMethod === 'cod') {
+      setLoading(true)
+      checkoutAPI({ food_orders: false, ids: cart_id, user_address_id: selectedAddress.id, cod: true }, placeSuccess ,getError)
+    } else {
+
+    }
   }
 
   const openWebViewer = res => {
@@ -197,6 +213,21 @@ const Checkout = ({ navigation }: Props) => {
               </View>
             </View>
           </View>
+        </View>
+        <View style={styles.skeks}>
+          <TouchableHighlight onPress={_goPay} underlayColor="#eeeeee">
+            <View
+              style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: 20, alignItems: 'center'}}>
+              <View style={{display: 'flex', flexDirection:'row', alignItems: 'center'}}>
+                <FontAwesome name='credit-card' size={15} color='black' />
+                <View style={{marginLeft: 5}}>
+                  <Text>Payment Options</Text>
+                </View>
+              </View>
+              <Text style={{fontWeight: 'bold', color: '#880ED4'}}>{payMethod === 'online' ? `Online Payment` : payMethod === 'cod' ? 'Cash on Delivery' : ''}</Text>
+              <FontAwesome name='angle-right' size={20} color='black' />
+            </View>
+          </TouchableHighlight>
         </View>
       </View>
 

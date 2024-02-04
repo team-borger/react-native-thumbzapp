@@ -14,6 +14,7 @@ const IMAGE = {
     COMPLETED: require('../assets/done.png'),
     MO_PRODUCT: require('../assets/tag.png'),
     EMAIL_VERIFY: require('../assets/read.png'),
+    ONLINE: require('../assets/online.png'),
   }
 
   export { IMAGE };

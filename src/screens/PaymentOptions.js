@@ -19,7 +19,7 @@ type Props = {
 const ChatScreen = ({ navigation }: Props) => {
   const [items, setItems] = useState([])
   const [showAlert, setState] = useState(false)
-  const [choosenItem, setItem] = useState({})
+  const [choosenItem, setItem] = useState('')
   const [payType, setPayType] = useState('')
   const [listItemsRefresh, setListItemsRefresh] = useState(false)
   const [statusChecked, setChecked] = useState(null)
@@ -46,7 +46,7 @@ const ChatScreen = ({ navigation }: Props) => {
   }
 
   const _isConfirm = () => {
-    if (items[0].id) {
+    if (choosenItem !='') {
       AsyncStorage.setItem('paymentMethod', JSON.stringify(choosenItem))
       if (payType == 'food') {
         navigation.navigate('CheckoutFoodScreen');
@@ -99,32 +99,14 @@ const ChatScreen = ({ navigation }: Props) => {
     }
   }
 
-  const setChoice = (payload) => {
-
-    var objIndex = items.findIndex((obj => obj.id == payload.id));
-
-    items[objIndex].method_type = 'Credit / Debit Card'
-    setItem(items[objIndex])
-    setChecked(payload.id)
-    setListItemsRefresh(!listItemsRefresh)
-  }
-
-  const setGcash = () => {
-    var gcash = {
-      method_type: 'E-Wallet',
-      type: 'Gcash'
-    }
-    setItem(gcash)
+  const setOnline = () => {
+    setItem('online')
     setChecked(null)
     setListItemsRefresh(!listItemsRefresh)
   }
 
   const setCod = () => {
-    var cod = {
-      method_type: 'Cash on Delivery',
-      type: 'Cash on Delivery'
-    }
-    setItem(cod)
+    setItem('cod')
     setChecked(null)
     setListItemsRefresh(!listItemsRefresh)
   }
@@ -151,87 +133,27 @@ const ChatScreen = ({ navigation }: Props) => {
             </View>
             <View style={{paddingRight: 7}}>
               <RadioButton
-                status={choosenItem.method_type === 'Cash on Delivery' ? 'checked' : 'unchecked'}
+                status={choosenItem === 'cod' ? 'checked' : 'unchecked'}
                 onPress={() => {setCod()}}
               />
             </View>
           </TouchableOpacity>
-          <List.AccordionGroup>
-            <List.Accordion id="1"
-              title={
-                <View style={styles.alignCenterRow}>
-                  <FontAwesome name='credit-card' size={15} color='gray'/>
-                  <View style={{marginRight: 10}}></View>
-                  <Text>Credit / Debit Card</Text>
+          <TouchableOpacity onPress={() => {setOnline()}} style={{marginBottom: 5, paddingVertical: 10, borderBottomColor: '#eeeeee',  borderBottomWidth: 2, width: '100%', flexDirection: 'row', alignItems:'center', justifyContent: 'space-between'}}>
+            <View style={{paddingLeft: 15}}>
+              <View style={styles.alignCenterRow}>
+                <Image source={IMAGE.ONLINE} style={styles.gcash_image} />
+                <View>
+                  <Text style={{fontWeight: 'bold'}}>Online Payment</Text>
                 </View>
-              }
-            >
-              <List.Item style={{padding:0, margin: 0, paddingHorizontal: 25}} title={
-                <FlatList
-                  data={items}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity key={item.id} onPress={() => {setChoice(item)}} style={{marginBottom: 5, paddingVertical: 10, borderBottomColor: '#eeeeee',  borderBottomWidth: 2, width: '100%', flexDirection: 'row', alignItems:'center'}}>
-                      <View style={{width: '20%'}}>
-                        <RadioButton
-                          status={statusChecked === item.id ? 'checked' : 'unchecked'}
-                          onPress={() => {setChoice(item)}}
-                        />
-                      </View>
-                      <View style={{width: '60%'}}>
-                        <View style={styles.alignCenterRow}>
-                          <Image source={IMAGE.ICON_MASTERCARD} style={styles.image} />
-                          <View>
-                            <Text style={{fontWeight: 'bold'}}>{item.account_number}</Text>
-                          </View>
-                        </View>
-                      </View>
-                    </TouchableOpacity>
-
-                  )}
-                  keyExtractor={(item) => item.id}
-                />
-              }/>
-              <List.Item style={{padding:10, margin: 0, paddingHorizontal: 25}}  onPress={() => navigation.navigate('AddPaymentScreen')} title={
-                <View style={styles.alignCenterRow}>
-                  <View style={styles.alignCenterRow}>
-                    <FontAwesome name='plus' size={15} color='gray'/>
-                    <View style={{marginRight: 10}}></View>
-                    <View>
-                      <Text style={{fontWeight: 'bold'}}>ADD NEW</Text>
-                    </View>
-                  </View>
-                </View>
-              }/>
-            </List.Accordion>
-            <List.Accordion id="2"
-              title={
-                <View style={styles.alignCenterRow}>
-                  <FontAwesome name='mobile' size={20} color='gray'/>
-                  <View style={{marginRight: 10}}></View>
-                  <Text>E-Wallet</Text>
-                </View>
-              }
-            >
-              <List.Item style={{padding:0, margin: 0, paddingHorizontal: 25}} title={
-                <TouchableOpacity onPress={() => {setGcash()}} style={{marginBottom: 5, paddingVertical: 10, borderBottomColor: '#eeeeee',  borderBottomWidth: 2, width: '100%', flexDirection: 'row', alignItems:'center'}}>
-                  <View style={{width: '20%'}}>
-                    <RadioButton
-                      status={choosenItem.method_type === 'E-Wallet' ? 'checked' : 'unchecked'}
-                      onPress={() => {setGcash()}}
-                    />
-                  </View>
-                  <View style={{width: '60%'}}>
-                    <View style={styles.alignCenterRow}>
-                      <Image source={IMAGE.GCASH_LOGO} style={styles.gcash_image} />
-                      <View>
-                        <Text style={{fontWeight: 'bold'}}>GCash</Text>
-                      </View>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              }/>
-            </List.Accordion>
-          </List.AccordionGroup>
+              </View>
+            </View>
+            <View style={{paddingRight: 7}}>
+              <RadioButton
+                status={choosenItem === 'online' ? 'checked' : 'unchecked'}
+                onPress={() => {setOnline()}}
+              />
+            </View>
+          </TouchableOpacity>
         </View>
         <Button style={styles.logoutBtn} mode="contained" onPress={_isConfirm}>
           Confirm
