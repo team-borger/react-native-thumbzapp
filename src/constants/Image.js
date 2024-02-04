@@ -15,6 +15,13 @@ const IMAGE = {
     MO_PRODUCT: require('../assets/tag.png'),
     EMAIL_VERIFY: require('../assets/read.png'),
     ONLINE: require('../assets/online.png'),
+    navbar: {
+      shop: require('../assets/navbar/bag.png'),
+      chat: require('../assets/navbar/message.png'),
+      load: require('../assets/navbar/load.png'),
+      flight: require('../assets/navbar/flight.png'),
+      profile: require('../assets/navbar/profile.png'),
+    }
   }
 
   export { IMAGE };

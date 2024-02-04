@@ -1,7 +1,8 @@
 import React, { memo } from 'react';
-import { View, StyleSheet, Linking } from 'react-native';
+import { View, StyleSheet, Linking, Image, TouchableOpacity } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { IMAGE } from '../constants/Image';
 
 const Skekert = ({ navigation }) => {
 
@@ -12,19 +13,29 @@ const Skekert = ({ navigation }) => {
   return (
     <View style={styles.footer}>
       <View style={styles.centerFLex}>
-        <FontAwesome name='shopping-bag' onPress={() => navigation.navigate("HomeScreen")} size={22} color='#333' />
+        <TouchableOpacity onPress={() => navigation.navigate("HomeScreen")}>
+          <Image source={IMAGE.navbar.shop} style={styles.custom_image}  />
+        </TouchableOpacity>
       </View>
       <View style={styles.centerFLex}>
-        <FontAwesome name='comment' onPress={() => navigation.navigate("Dashboard")} size={22} color='#333' />
+        <TouchableOpacity onPress={() => navigation.navigate("Dashboard")}>
+          <Image source={IMAGE.navbar.chat} style={styles.custom_image}  />
+        </TouchableOpacity>
       </View>
       <View style={styles.centerFLex}>
-        <FontAwesome name='mobile-phone' onPress={() => navigation.navigate("NetLoadScreen")} size={22} color='#333' />
+        <TouchableOpacity onPress={() => navigation.navigate("NetLoadScreen")}>
+          <Image source={IMAGE.navbar.load} style={styles.custom_image}  />
+        </TouchableOpacity>
       </View>
       <View style={styles.centerFLex}>
-        <Ionicons name='airplane' onPress={() => navigation.navigate("BookScreen")} size={22} color='#333' />
+        <TouchableOpacity onPress={() => navigation.navigate("BookScreen")}>
+          <Image source={IMAGE.navbar.flight} style={styles.custom_image}  />
+        </TouchableOpacity>
       </View>
       <View style={styles.centerFLex}>
-        <FontAwesome name='user' onPress={() => navigation.navigate("ProfileScreen")} size={22} color='#333' />
+        <TouchableOpacity onPress={() => navigation.navigate("ProfileScreen")}>
+          <Image source={IMAGE.navbar.profile} style={styles.custom_image}  />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -39,6 +50,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 15,
     flexDirection: "row"
+  },
+  custom_image: {
+    width: 30,
+    height: 30,
+    resizeMode: 'contain'
   },
 });
 
