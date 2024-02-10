@@ -2,18 +2,18 @@ import React, { memo, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar, Button, ToggleButton, RadioButton } from 'react-native-paper';
-import { Navigation } from '../types';
+import { Navigation } from '../../types';
 import { useFocusEffect } from '@react-navigation/native';
-import NavbarBot from '../components/NavbarBot';
-import QuantitySelector from '../components/QuantitySelector';
+import NavbarBot from '../../components/NavbarBot';
+import QuantitySelector from '../../components/QuantitySelector';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { IMAGE } from '../constants/Image';
+import { IMAGE } from '../../constants/Image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CartFoodModule from '../components/Cart/CartFoodModule';
-import { cartAllAPI } from '../services/products';
-import environment from '../../environment';
+import CartFoodModule from '../../components/Cart/CartFoodModule';
+import { cartAllAPI } from '../../services/products';
+import environment from '../../../environment';
 import { useIsFocused} from '@react-navigation/native';
-import { updateCartAPI, deleteCartAPI } from '../services/products';
+import { updateCartAPI, deleteCartAPI } from '../../services/products';
 
 type Props = {
   navigation: Navigation;

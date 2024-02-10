@@ -3,17 +3,17 @@ import { View, Text, StyleSheet, FlatList, Platform, ToastAndroid, Alert, Toucha
 import { Appbar, Badge } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
-import { Navigation } from '../types';
+import { Navigation } from '../../types';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import QuantitySelector from '../components/QuantitySelector';
+import QuantitySelector from '../../components/QuantitySelector';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import { SliderBox } from "react-native-image-slider-box";
 import BottomSheet from "react-native-easy-bottomsheet";
-import { addCartAPI, cartAllAPI } from '../services/products';
+import { addCartAPI, cartAllAPI } from '../../services/products';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import environment from '../../environment';
+import environment from '../../../environment';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
 type Props = {
