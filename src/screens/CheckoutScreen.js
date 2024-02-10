@@ -60,7 +60,7 @@ const Checkout = ({ navigation }: Props) => {
   }
 
   const getError = err => {
-    console.error(err.response.data)
+    console.log(err)
     const { error, message } = err.response.data;
     setLoading(false)
     if (error) {
@@ -132,12 +132,13 @@ const Checkout = ({ navigation }: Props) => {
   }
 
   const openWebViewer = res => {
+    console.log('aaa: ', res)
     // console.log('callback', res.data.paymentLink.invoice_url)
-    const path = res.data.paymentLink.invoice_url
-    AsyncStorage.setItem('xenditInvoiceUrl', path)
-    console.log(path)
-    navigation.navigate('XenditInvoice');
-    setLoading(false)
+    // const path = res.data.paymentLink.invoice_url
+    // AsyncStorage.setItem('xenditInvoiceUrl', path)
+    // console.log(path)
+    // navigation.navigate('XenditInvoice');
+    // setLoading(false)
   }
 
   const _goPay = () => {

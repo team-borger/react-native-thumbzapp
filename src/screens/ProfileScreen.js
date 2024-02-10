@@ -39,11 +39,26 @@ const Dashboard = ({ navigation }: Props) => {
 
   const getSuccess = res => {
     var items = res.data
-    console.log(res.data)
-    const pay = items.filter((obj) => obj.status.status === 'Waiting for Payment').length
-    const ship = items.filter((obj) => obj.status.status === 'Paid' || obj.status.status === 'Pending' || obj.status.status === 'Processing' || obj.status.status === 'Packed').length
-    const receive = items.filter((obj) => obj.status.status === 'Shipped').length
-    const complete = items.filter((obj) => obj.status.status === 'Delivered').length
+    var pay = 0
+    var ship = 0
+    var receive = 0
+    var complete = 0
+    for (let item of items) {
+      if (item.status) {
+        if (item.status.status === 'Waiting for Payment') {
+          pay += 1
+        }
+        if (item.status.status === 'Paid' || item.status.status === 'Pending' || item.status.status === 'Processing' || item.status.status === 'Packed') {
+          ship += 1
+        }
+        if (item.status.status === 'Shipped') {
+          receive += 1
+        }
+        if (item.status.status === 'Delivered') {
+          complete += 1
+        }
+      }
+    }
     setToPay(pay)
     setToShip(ship)
     setToReceive(receive)
