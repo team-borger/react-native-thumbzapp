@@ -14,6 +14,7 @@ import { FontAwesome } from '@expo/vector-icons';
 // NEW SCREENS
 import Marketplace from './screens/marketplace';
 import Load from './screens/load';
+import Ticketing from './screens/ticketing';
 
 // import LoginScreen from './screens/LoginScreen';
 // import HomeScreen from './screens/marketplace/HomeScreen';
@@ -54,7 +55,7 @@ import ProfileScreen from './screens/ProfileScreen';
 // import PaymentOptionLoad from './screens/PaymentOptionLoad';
 // import VerifyEmailScreen from './screens/VerifyEmailScreen';
 // import ForgotPassEmail from './screens/ForgotPassEmail';
-import BookScreen from './screens/BookScreen';
+// import BookScreen from './screens/booking/BookScreen';
 // import BookSuccess from './screens/BookSuccess';
 // import XenditInvoice from './screens/xenditGateway/Invoice';
 // import OrderInfo from './screens/OrderInfo';
@@ -181,8 +182,8 @@ const App = () => {
             }}
           />
           <Tab.Screen
-            name="BookScreen"
-            component={BookScreen}
+            name="Ticketing"
+            component={Ticketing}
             options={{
               tabBarIcon: ({ focused }) => {
                 return (

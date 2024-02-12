@@ -2,15 +2,15 @@ import React, { memo, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableHighlight, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, RadioButton, TextInput, Card } from 'react-native-paper';
-import { Navigation } from '../types';
-import NavbarBot from '../components/NavbarBot';
+import { Navigation } from '../../types';
+import NavbarBot from '../../components/NavbarBot';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { theme } from '../core/theme';
+import { theme } from '../../core/theme';
 import moment from 'moment';
-import { bookAPI } from '../services/users';
+import { bookAPI } from '../../services/users';
 
 type Props = {
   navigation: Navigation;

@@ -2,9 +2,9 @@ import React, { memo } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
-import { Navigation } from '../types';
+import { Navigation } from '../../types';
 import { useFocusEffect } from '@react-navigation/native';
-import { IMAGE } from '../constants/Image';
+import { IMAGE } from '../../constants/Image';
 
 type Props = {
   navigation: Navigation;
