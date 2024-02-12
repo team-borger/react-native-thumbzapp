@@ -13,52 +13,53 @@ import { FontAwesome } from '@expo/vector-icons';
 
 // NEW SCREENS
 import Marketplace from './screens/marketplace';
+import Load from './screens/load';
 
-import LoginScreen from './screens/LoginScreen';
-import HomeScreen from './screens/marketplace/HomeScreen';
-import RegisterScreen from './screens/RegisterScreen';
-import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
+// import LoginScreen from './screens/LoginScreen';
+// import HomeScreen from './screens/marketplace/HomeScreen';
+// import RegisterScreen from './screens/RegisterScreen';
+// import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 import Dashboard from './screens/Dashboard';
-import ChatScreen from './screens/ChatScreen';
-import CallScreen from './screens/CallScreen';
+// import ChatScreen from './screens/ChatScreen';
+// import CallScreen from './screens/CallScreen';
 import ProfileScreen from './screens/ProfileScreen';
-import AddCardScreen from './screens/AddCardScreen';
-import AddCardListScreen from './screens/AddCardListScreen';
-import PaymentMethodList from './screens/PaymentMethodList';
-import SearchContactScreen from './screens/SearchContactScreen';
-import CartScreen from './screens/marketplace/CartScreen';
-import CheckoutScreen from './screens/CheckoutScreen';
-import PaymentOptions from './screens/PaymentOptions';
-import CallingScreen from './screens/CallingScreen';
-import IncomingCallScreen from './screens/IncomingCallScreen';
-import AddPaymentScreen from './screens/AddPaymentScreen';
-import PaymentSuccessScreen from './screens/PaymentSuccessScreen';
-import ProductInfoScreen from './screens/marketplace/ProductInfoScreen';
-import ShoppingScreen from './screens/marketplace/ShoppingScreen';
-import FoodScreen from './screens/marketplace/FoodScreen';
-import NetLoadScreen from './screens/NetLoadScreen';
-import FoodMerchantInfoScreen from './screens/FoodMerchantInfoScreen';
-import CartFoodScreen from './screens/marketplace/CartFoodScreen';
-import FoodInfoScreen from './screens/FoodInfoScreen';
-import CheckoutFoodScreen from './screens/CheckoutFoodScreen';
-import LoadProcessScreen from './screens/LoadProcessScreen';
-import LoadCheckoutScreen from './screens/LoadCheckoutScreen';
-import LoadPayedScreen from './screens/LoadPayedScreen';
-import PaymentSuccessFoodScreen from './screens/PaymentSuccessFoodScreen';
-import MyAddressScreen from './screens/MyAddressScreen';
-import AddAddressScreen from './screens/AddAddressScreen';
-import MyAddressCheckout from './screens/MyAddressCheckout';
-import AddAddressCheckout from './screens/AddAddressCheckout';
-import OrdersScreen from './screens/OrdersScreen';
-import PaymentOptionLoad from './screens/PaymentOptionLoad';
-import VerifyEmailScreen from './screens/VerifyEmailScreen';
-import ForgotPassEmail from './screens/ForgotPassEmail';
+// import AddCardScreen from './screens/AddCardScreen';
+// import AddCardListScreen from './screens/AddCardListScreen';
+// import PaymentMethodList from './screens/PaymentMethodList';
+// import SearchContactScreen from './screens/SearchContactScreen';
+// import CartScreen from './screens/marketplace/CartScreen';
+// import CheckoutScreen from './screens/CheckoutScreen';
+// import PaymentOptions from './screens/PaymentOptions';
+// import CallingScreen from './screens/CallingScreen';
+// import IncomingCallScreen from './screens/IncomingCallScreen';
+// import AddPaymentScreen from './screens/AddPaymentScreen';
+// import PaymentSuccessScreen from './screens/PaymentSuccessScreen';
+// import ProductInfoScreen from './screens/marketplace/ProductInfoScreen';
+// import ShoppingScreen from './screens/marketplace/ShoppingScreen';
+// import FoodScreen from './screens/marketplace/FoodScreen';
+// import NetLoadScreen from './screens/load/NetLoadScreen';
+// import FoodMerchantInfoScreen from './screens/FoodMerchantInfoScreen';
+// import CartFoodScreen from './screens/marketplace/CartFoodScreen';
+// import FoodInfoScreen from './screens/FoodInfoScreen';
+// import CheckoutFoodScreen from './screens/CheckoutFoodScreen';
+// import LoadProcessScreen from './screens/load/LoadProcessScreen';
+// import LoadCheckoutScreen from './screens/load/LoadCheckoutScreen';
+// import LoadPayedScreen from './screens/load/LoadPayedScreen';
+// import PaymentSuccessFoodScreen from './screens/PaymentSuccessFoodScreen';
+// import MyAddressScreen from './screens/MyAddressScreen';
+// import AddAddressScreen from './screens/AddAddressScreen';
+// import MyAddressCheckout from './screens/MyAddressCheckout';
+// import AddAddressCheckout from './screens/AddAddressCheckout';
+// import OrdersScreen from './screens/OrdersScreen';
+// import PaymentOptionLoad from './screens/PaymentOptionLoad';
+// import VerifyEmailScreen from './screens/VerifyEmailScreen';
+// import ForgotPassEmail from './screens/ForgotPassEmail';
 import BookScreen from './screens/BookScreen';
-import BookSuccess from './screens/BookSuccess';
-import XenditInvoice from './screens/xenditGateway/Invoice';
-import OrderInfo from './screens/OrderInfo';
-import OrdersFoodScreen from './screens/OrdersFoodScreen';
-import OrderFoodInfo from './screens/OrderFoodInfo';
+// import BookSuccess from './screens/BookSuccess';
+// import XenditInvoice from './screens/xenditGateway/Invoice';
+// import OrderInfo from './screens/OrderInfo';
+// import OrdersFoodScreen from './screens/OrdersFoodScreen';
+// import OrderFoodInfo from './screens/OrderFoodInfo';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -163,8 +164,8 @@ const App = () => {
             }}
           />
           <Tab.Screen
-            name="NetLoadScreen"
-            component={NetLoadScreen}
+            name="Load"
+            component={Load}
             options={{
               tabBarIcon: ({ focused }) => {
                 return (

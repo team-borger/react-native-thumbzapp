@@ -3,14 +3,14 @@ import { View, Text, StyleSheet, FlatList, Platform, ToastAndroid, Alert, Toucha
 import { Appbar, RadioButton } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
-import { Navigation } from '../types';
+import { Navigation } from '../../types';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import NumericInput from 'react-native-numeric-input'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
-import { networkInfoAPI } from '../services/load';
+import { networkInfoAPI } from '../../services/load';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import environment from '../../environment';
+import environment from '../../../environment';
 
 type Props = {
   navigation: Navigation;

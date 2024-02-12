@@ -2,13 +2,13 @@ import React, { memo, useState, useEffect } from 'react';
 import { FlatList, View, Text, StyleSheet, TouchableHighlight, Image, KeyboardAvoidingView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar, Card, Title, Paragraph, Avatar, Button, Banner } from 'react-native-paper';
-import { Navigation } from '../types';
-import NavbarBot from '../components/NavbarBot';
+import { Navigation } from '../../types';
+import NavbarBot from '../../components/NavbarBot';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import netprovider from '../strings/network-providers'
-import { findNetworkAPI } from '../services/load';
-import environment from '../../environment';
+import netprovider from '../../strings/network-providers'
+import { findNetworkAPI } from '../../services/load';
+import environment from '../../../environment';
 import { useFocusEffect } from '@react-navigation/native';
 import { MaskedTextInput, unMask } from "react-native-mask-text";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -17,7 +17,7 @@ type Props = {
   navigation: Navigation;
 };
 
-const Shop = ({ navigation }: Props) => {
+const NetLoad = ({ navigation }: Props) => {
   const [phone_number, setPhoneNumber] = useState(0)
   const [isOk, setIsOk] = useState(false)
   const [bannerOn, setBannerOn] = useState(false)
@@ -220,4 +220,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default memo(Shop);
+export default memo(NetLoad);

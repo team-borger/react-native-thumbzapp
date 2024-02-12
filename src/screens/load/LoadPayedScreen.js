@@ -2,16 +2,16 @@ import React, { memo, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar, Button, ToggleButton } from 'react-native-paper';
-import { Navigation } from '../types';
+import { Navigation } from '../../types';
 import { useFocusEffect } from '@react-navigation/native';
-import NavbarBot from '../components/NavbarBot';
-import AppbarButton from '../components/AppbarButton';
+import NavbarBot from '../../components/NavbarBot';
+import AppbarButton from '../../components/AppbarButton';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { IMAGE } from '../constants/Image';
+import { IMAGE } from '../../constants/Image';
 import NumericInput from 'react-native-numeric-input'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { cartFoodAllAPI } from '../services/food';
-import environment from '../../environment';
+import { cartFoodAllAPI } from '../../services/food';
+import environment from '../../../environment';
 import moment from 'moment';
 
 type Props = {
