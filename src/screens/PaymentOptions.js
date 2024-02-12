@@ -16,7 +16,7 @@ type Props = {
   navigation: Navigation;
 };
 
-const ChatScreen = ({ navigation }: Props) => {
+const PaymentOptions = ({ navigation }: Props) => {
   const [items, setItems] = useState([])
   const [showAlert, setState] = useState(false)
   const [choosenItem, setItem] = useState({})
@@ -243,7 +243,7 @@ const ChatScreen = ({ navigation }: Props) => {
   );
 };
 
-export default ChatScreen;
+export default PaymentOptions;
 
 const styles = StyleSheet.create({
   container: {

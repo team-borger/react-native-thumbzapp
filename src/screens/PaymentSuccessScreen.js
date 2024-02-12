@@ -13,7 +13,7 @@ type Props = {
   navigation: Navigation;
 };
 
-const Checkout = ({ navigation }: Props) => {
+const PaymentSuccess = ({ navigation }: Props) => {
   const [subTotal, setTotal] = useState(0)
   const [payMethod, setPayment] = useState({})
 
@@ -146,4 +146,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default memo(Checkout);
+export default memo(PaymentSuccess);

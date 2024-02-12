@@ -3,13 +3,13 @@ import { FlatList, View, Text, StyleSheet, ScrollView, Image, Alert } from 'reac
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, List, Avatar, Searchbar, Appbar, Card } from 'react-native-paper';
 import { MaskedTextInput} from "react-native-mask-text";
-import { Navigation } from '../types';
+import { Navigation } from '../../types';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { IMAGE } from '../constants/Image';
-import TextInput from '../components/TextInput';
+import { IMAGE } from '../../constants/Image';
+import TextInput from '../../components/TextInput';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { addAddressAPI, updateAddressAPI, setAddressDefaultAPI } from '../services/address';
+import { addAddressAPI, updateAddressAPI, setAddressDefaultAPI } from '../../services/address';
 
 type Props = {
   navigation: Navigation;

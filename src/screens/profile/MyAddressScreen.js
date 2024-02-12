@@ -2,11 +2,11 @@ import React, { memo, useState } from 'react';
 import { FlatList, View, Text, StyleSheet, ScrollView, Image, TouchableHighlight } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, List, Avatar, Searchbar, Appbar, Card } from 'react-native-paper';
-import { Navigation } from '../types';
+import { Navigation } from '../../types';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { IMAGE } from '../constants/Image';
+import { IMAGE } from '../../constants/Image';
 import { useFocusEffect } from '@react-navigation/native';
-import { allAddressAPI } from '../services/address';
+import { allAddressAPI } from '../../services/address';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
@@ -14,7 +14,7 @@ type Props = {
   navigation: Navigation;
 };
 
-const ChatScreen = ({ navigation }: Props) => {
+const MyAddressScreen = ({ navigation }: Props) => {
   const [items, setItems] = useState([])
   const [showAlert, setState] = useState(false)
   const [choosenItem, setItem] = useState({})
@@ -129,7 +129,7 @@ const ChatScreen = ({ navigation }: Props) => {
   );
 };
 
-export default ChatScreen;
+export default MyAddressScreen;
 
 const styles = StyleSheet.create({
   container: {

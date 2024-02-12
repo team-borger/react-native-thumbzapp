@@ -2,19 +2,19 @@ import React, { memo, useState, useEffect } from 'react';
 import { FlatList, View, Text, StyleSheet, ScrollView, TouchableHighlight, Alert, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, List, Avatar, Searchbar, Appbar, Badge } from 'react-native-paper';
-import { Navigation } from '../types';
-import NavbarBot from '../components/NavbarBot';
+import { Navigation } from '../../types';
+import NavbarBot from '../../components/NavbarBot';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AuthService, CallService } from '../services';
-import { IMAGE } from '../constants/Image';
-import { userOrdersAPI } from '../services/products';
+import { AuthService, CallService } from '../../services';
+import { IMAGE } from '../../constants/Image';
+import { userOrdersAPI } from '../../services/products';
 
 type Props = {
   navigation: Navigation;
 };
 
-const Dashboard = ({ navigation }: Props) => {
+const ProfileScreen = ({ navigation }: Props) => {
   const [loginUser, setLoginUser] = useState({});
   const [toPay, setToPay] = useState(0);
   const [toShip, setToShip] = useState(0);
@@ -280,4 +280,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default memo(Dashboard);
+export default memo(ProfileScreen);

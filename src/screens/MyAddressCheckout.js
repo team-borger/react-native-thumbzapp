@@ -14,7 +14,7 @@ type Props = {
   navigation: Navigation;
 };
 
-const ChatScreen = ({ navigation }: Props) => {
+const MyAddressCheckout = ({ navigation }: Props) => {
   const [items, setItems] = useState([])
   const [choosenItem, setItem] = useState({})
   const [listItemsRefresh, setListItemsRefresh] = useState(false)
@@ -150,7 +150,7 @@ const ChatScreen = ({ navigation }: Props) => {
   );
 };
 
-export default ChatScreen;
+export default MyAddressCheckout;
 
 const styles = StyleSheet.create({
   container: {

@@ -15,6 +15,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import Marketplace from './screens/marketplace';
 import Load from './screens/load';
 import Ticketing from './screens/ticketing';
+import Profile from './screens/profile';
 
 // import LoginScreen from './screens/LoginScreen';
 // import HomeScreen from './screens/marketplace/HomeScreen';
@@ -23,7 +24,7 @@ import Ticketing from './screens/ticketing';
 import Dashboard from './screens/Dashboard';
 // import ChatScreen from './screens/ChatScreen';
 // import CallScreen from './screens/CallScreen';
-import ProfileScreen from './screens/ProfileScreen';
+// import ProfileScreen from './screens/profile/ProfileScreen';
 // import AddCardScreen from './screens/AddCardScreen';
 // import AddCardListScreen from './screens/AddCardListScreen';
 // import PaymentMethodList from './screens/PaymentMethodList';
@@ -199,8 +200,8 @@ const App = () => {
             }}
           />
           <Tab.Screen
-            name="ProfileScreen"
-            component={ProfileScreen}
+            name="Profile"
+            component={Profile}
             options={{
               tabBarIcon: ({ focused }) => {
                 return (

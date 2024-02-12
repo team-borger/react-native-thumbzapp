@@ -10,7 +10,7 @@ type Props = {
   navigation: Navigation;
 };
 
-const LoadPayed = ({ navigation }: Props) => {
+const VerifyEmail = ({ navigation }: Props) => {
 
   const _goBack = () => {
     navigation.navigate('LoginScreen');
@@ -66,4 +66,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default memo(LoadPayed);
+export default memo(VerifyEmail);

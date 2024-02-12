@@ -15,7 +15,7 @@ type Props = {
   navigation: Navigation;
 };
 
-const Shop = ({ navigation }: Props) => {
+const LoadBackup = ({ navigation }: Props) => {
   const [telcos, setTelcos] = useState([])
 
   const _goToCart = () => {
@@ -161,4 +161,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default memo(Shop);
+export default memo(LoadBackup);
