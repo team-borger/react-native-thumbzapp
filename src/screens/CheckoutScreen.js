@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, FlatList, Image, TouchableHighlight, Platform, 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar, Button } from 'react-native-paper';
 import { Navigation } from '../types';
-import NavbarBot from '../components/NavbarBot';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { IMAGE } from '../constants/Image';
 import NumericInput from 'react-native-numeric-input'

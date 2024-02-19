@@ -3,7 +3,6 @@ import { FlatList, View, Text, StyleSheet, TouchableHighlight, ActivityIndicator
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar, Searchbar, Card, Title, Paragraph, Avatar, Badge } from 'react-native-paper';
 import { Navigation } from '../../types';
-import NavbarBot from '../../components/NavbarBot';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useFocusEffect } from '@react-navigation/native';
 import { productsListAPI, cartAllAPI } from '../../services/products';
@@ -208,7 +207,6 @@ const Shop = ({ navigation }: Props) => {
         </View>
       </View>
 
-      <NavbarBot navigation={navigation}></NavbarBot>
 
     </SafeAreaView>
   );

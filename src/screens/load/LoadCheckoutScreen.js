@@ -4,7 +4,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar, Button, ToggleButton } from 'react-native-paper';
 import { Navigation } from '../../types';
 import { useFocusEffect } from '@react-navigation/native';
-import NavbarBot from '../../components/NavbarBot';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { IMAGE } from '../../constants/Image';
 import NumericInput from 'react-native-numeric-input'

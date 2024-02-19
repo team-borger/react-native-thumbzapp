@@ -2,7 +2,6 @@ import React, { memo, useState } from 'react';
 import { FlatList, View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { List, Avatar, Searchbar, Appbar, Card } from 'react-native-paper';
 import { Navigation } from '../types';
-import NavbarBot from '../components/NavbarBot';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { conversationsAPI, updateViewedAPI } from '../services/messages';
@@ -119,7 +118,6 @@ const Dashboard = ({ navigation }: Props) => {
         />
       </View>
 
-      <NavbarBot navigation={navigation}></NavbarBot>
 
     </SafeAreaView>
   );

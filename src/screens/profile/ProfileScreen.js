@@ -3,7 +3,6 @@ import { FlatList, View, Text, StyleSheet, ScrollView, TouchableHighlight, Alert
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, List, Avatar, Searchbar, Appbar, Badge } from 'react-native-paper';
 import { Navigation } from '../../types';
-import NavbarBot from '../../components/NavbarBot';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthService, CallService } from '../../services';
@@ -211,7 +210,6 @@ const ProfileScreen = ({ navigation }: Props) => {
         </Button>
       </View>
 
-      <NavbarBot navigation={navigation}></NavbarBot>
 
     </SafeAreaView>
   );

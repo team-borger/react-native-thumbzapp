@@ -3,8 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar, Avatar } from 'react-native-paper';
 import { Navigation } from '../types';
-import NavbarBot from '../components/NavbarBot';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CallService } from '../services';
 

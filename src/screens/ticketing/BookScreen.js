@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableHighlight, ScrollView, Alert } from 'r
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, RadioButton, TextInput, Card } from 'react-native-paper';
 import { Navigation } from '../../types';
-import NavbarBot from '../../components/NavbarBot';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -393,7 +392,6 @@ const BookScreen = ({ navigation }: Props) => {
         </ScrollView>
       </View>
 
-      <NavbarBot navigation={navigation}></NavbarBot>
 
     </SafeAreaView>
   );

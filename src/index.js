@@ -63,7 +63,7 @@ import Dashboard from './screens/Dashboard';
 // import OrdersFoodScreen from './screens/OrdersFoodScreen';
 // import OrderFoodInfo from './screens/OrderFoodInfo';
 
-const Stack = createNativeStackNavigator();
+// const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const App = () => {
@@ -123,18 +123,24 @@ const App = () => {
           <Stack.Screen name="XenditInvoice" component={XenditInvoice} option={{title: 'XenditInvoice!!'}} />
         </Stack.Navigator> */}
         <Tab.Navigator
-          initialRouteName="Home"
+          initialRouteName="Marketplace"
           screenOptions={{
             headerShown: false,
-            activeTintColor: '#fff', // Change color when tab is active
-            inactiveTintColor: '#fff', // Change color when tab is inactive
           }}
+          options={{
+            tabBarShowLabel: 'false',
+          }}
+          // tabBarOptions={{
+          //   headerShown: false,
+          //   activeTintColor: 'blue', // Change this to your desired active label color
+          //   inactiveTintColor: 'gray', // Change this to your desired inactive label color
+          // }}
         >
           <Tab.Screen
             name="Marketplace"
-            color="#e91e63"
             component={Marketplace}
             options={{
+              tabBarShowLabel: false,
               tabBarIcon: ({ focused }) => {
                 return (
                   <View style={focused ? styles.activeTab : styles.inactiveTab}>
@@ -152,6 +158,7 @@ const App = () => {
             name="Dashboard"
             component={Dashboard}
             options={{
+              tabBarShowLabel: false,
               tabBarIcon: ({ focused }) => {
                 return (
                   <View style={focused ? styles.activeTab : styles.inactiveTab}>
@@ -169,6 +176,7 @@ const App = () => {
             name="Load"
             component={Load}
             options={{
+              tabBarShowLabel: false,
               tabBarIcon: ({ focused }) => {
                 return (
                   <View style={focused ? styles.activeTab : styles.inactiveTab}>
@@ -186,6 +194,7 @@ const App = () => {
             name="Ticketing"
             component={Ticketing}
             options={{
+              tabBarShowLabel: false,
               tabBarIcon: ({ focused }) => {
                 return (
                   <View style={focused ? styles.activeTab : styles.inactiveTab}>
@@ -203,6 +212,7 @@ const App = () => {
             name="Profile"
             component={Profile}
             options={{
+              tabBarShowLabel: false,
               tabBarIcon: ({ focused }) => {
                 return (
                   <View style={focused ? styles.activeTab : styles.inactiveTab}>
@@ -230,9 +240,9 @@ const styles = StyleSheet.create({
     color: '#880ED4',
     justifyContent: 'center',
     backgroundColor: '#880ED4',
-    width: Platform.OS == 'ios' ? 50 : 60,
-    height: Platform.OS == 'ios' ? 50 : 60,
-    top: Platform.OS == 'ios' ? -10 : -20,
+    width: Platform.OS == 'ios' ? 40 : 50,
+    height: Platform.OS == 'ios' ? 40 : 50,
+    top: Platform.OS == 'ios' ? -50 : -15,
     borderRadius: Platform.OS == 'ios' ? 25 : 30,
   },
   inactiveTab: { alignItems: 'center', justifyContent: 'center' },
