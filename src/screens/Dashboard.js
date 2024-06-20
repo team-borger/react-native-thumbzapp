@@ -3,7 +3,7 @@ import { FlatList, View, Text, StyleSheet, ScrollView, Alert } from 'react-nativ
 import { List, Avatar, Searchbar, Appbar, Card } from 'react-native-paper';
 import { Navigation } from '../types';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import { conversationsAPI, updateViewedAPI } from '../services/messages';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment'
@@ -14,17 +14,6 @@ type Props = {
 };
 
 const Dashboard = ({ navigation }: Props) => {
-  const _navigation = useNavigation();
-  useFocusEffect(
-    React.useCallback(() => {
-      const unsubscribe = _navigation.addListener('tabPress', (e) => {
-        _navigation.popToTop();
-      });
-
-      return unsubscribe;
-    }, [_navigation])
-  );
-
   const [items, setItems] = useState([])
 
   const _onChatClick = (item) => {

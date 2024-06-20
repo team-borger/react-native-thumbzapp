@@ -1,6 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer, useNavigation, useFocusEffect } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'react-native';
 
@@ -10,16 +10,6 @@ import BookSuccess from './BookSuccess';
 const Stack = createNativeStackNavigator();
 
 const Ticketing = () => {
-  const navigation = useNavigation();
-  useFocusEffect(
-    React.useCallback(() => {
-      const unsubscribe = navigation.addListener('tabPress', (e) => {
-        navigation.popToTop();
-      });
-
-      return unsubscribe;
-    }, [navigation])
-  );
   return (
     <SafeAreaProvider>
       <StatusBar hidden={false} backgroundColor="#64009D" translucent={true} />

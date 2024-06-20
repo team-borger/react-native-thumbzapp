@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { StatusBar, StyleSheet, View } from 'react-native';
+import { StatusBar, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { navigationRef } from './components/RootNavigation';
+// import { navigationRef } from './components/RootNavigation';
 
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -67,6 +67,21 @@ import Dashboard from './screens/Dashboard';
 const Tab = createBottomTabNavigator();
 
 const App = () => {
+  const navigationRef = React.useRef();
+
+  const handleTabPress = routeName => {
+    const initialRouteMap = {
+      Marketplace: 'HomeScreen',
+      Load: 'LoadCheckoutScreen',
+      Ticketing: 'BookScreen',
+      Profile: 'AddAddressScreen',
+      Dashboard: 'Dashboard',
+    };
+    navigationRef.current.navigate(routeName, {
+      screen: initialRouteMap[routeName],
+    });
+  };
+
   return (
     <SafeAreaProvider>
       <StatusBar hidden={false} backgroundColor="#64009D" translucent={true} />
@@ -124,12 +139,18 @@ const App = () => {
         </Stack.Navigator> */}
         <Tab.Navigator
           initialRouteName="Marketplace"
-          screenOptions={{
-            headerShown: false,
-          }}
           options={{
             tabBarShowLabel: 'false',
           }}
+          screenOptions={({ route }) => ({
+            headerShown: false, // Hide header for tab screens
+            tabBarButton: props => (
+              <TouchableOpacity
+                {...props}
+                onPress={() => handleTabPress(route.name)}
+              />
+            ),
+          })}
           // tabBarOptions={{
           //   headerShown: false,
           //   activeTintColor: 'blue', // Change this to your desired active label color
@@ -141,17 +162,12 @@ const App = () => {
             component={Marketplace}
             options={{
               tabBarShowLabel: false,
-              tabBarIcon: ({ focused }) => {
-                return (
-                  <View style={focused ? styles.activeTab : styles.inactiveTab}>
-                    <Entypo
-                      name="shop"
-                      size={24}
-                      color={focused ? '#fff' : '#111'}
-                    />
-                  </View>
-                );
-              },
+              tabBarButton: props => (
+                <TouchableOpacity
+                  {...props}
+                  onPress={() => handleTabPress(route.name)}
+                />
+              ),
             }}
           />
           <Tab.Screen
