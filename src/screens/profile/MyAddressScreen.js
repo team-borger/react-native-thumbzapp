@@ -77,7 +77,7 @@ const MyAddressScreen = ({ navigation }: Props) => {
 
       <View style={styles.contentContainer}>
         <View style={{paddingHorizontal: 10, paddingVertical: 5 }}>
-          <Text style={{color: '#777777'}}>Address</Text>
+          {/* <Text style={{color: '#777777'}}>Address</Text> */}
         </View>
         <View style={{flex: 1, paddingTop: 2}}>
           <FlatList
