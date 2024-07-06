@@ -22,6 +22,7 @@ import Profile from './screens/profile';
 // import RegisterScreen from './screens/RegisterScreen';
 // import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 import Dashboard from './screens/Dashboard';
+import { LoginScreen, RegisterScreen } from './screens';
 // import ChatScreen from './screens/ChatScreen';
 // import CallScreen from './screens/CallScreen';
 // import ProfileScreen from './screens/profile/ProfileScreen';
@@ -63,10 +64,29 @@ import Dashboard from './screens/Dashboard';
 // import OrdersFoodScreen from './screens/OrdersFoodScreen';
 // import OrderFoodInfo from './screens/OrderFoodInfo';
 
-// const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const App = () => {
+const OverallRoutes = () => {
+  return (
+    <SafeAreaProvider>
+      {/* <StatusBar hidden={false} backgroundColor="#64009D" translucent={true} /> */}
+      <NavigationContainer independent={true}>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name='LoginScreen' component={LoginScreen} />
+          <Stack.Screen name='RegisterScreen' component={RegisterScreen} />
+          <Stack.Screen name='AuthenticatedRoutes' component={AuthenticatedRoutes} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
+  );
+};
+
+const AuthenticatedRoutes = () => {
   const navigationRef = React.useRef();
 
   const handleTabPress = routeName => {
@@ -85,7 +105,7 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <StatusBar hidden={false} backgroundColor="#64009D" translucent={true} />
-      <NavigationContainer ref={navigationRef}>
+      <NavigationContainer ref={navigationRef} independent={true}>
         {/* <Stack.Navigator
           screenOptions={{
             headerShown: false
@@ -162,12 +182,17 @@ const App = () => {
             component={Marketplace}
             options={{
               tabBarShowLabel: false,
-              tabBarButton: props => (
-                <TouchableOpacity
-                  {...props}
-                  onPress={() => handleTabPress(route.name)}
-                />
-              ),
+              tabBarIcon: ({ focused }) => {
+                return (
+                  <View style={focused ? styles.activeTab : styles.inactiveTab}>
+                    <FontAwesome
+                      name="shopping-cart"
+                      size={24}
+                      color={focused ? '#fff' : '#111'}
+                    />
+                  </View>
+                );
+              },
             }}
           />
           <Tab.Screen
@@ -248,7 +273,8 @@ const App = () => {
   );
 };
 
-export default App;
+// export default AuthenticatedRoutes;
+export default OverallRoutes;
 
 const styles = StyleSheet.create({
   activeTab: {

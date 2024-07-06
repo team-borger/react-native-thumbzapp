@@ -35,7 +35,7 @@ const LoginScreen = ({ navigation }) => {
   const firstRendered = async () => {
     const token = await AsyncStorage.getItem('Token')
     if( token !== null ) {
-      navigation.replace('HomeScreen')
+      navigation.replace('AuthenticatedRoutes')
     }
   }
 
@@ -50,7 +50,7 @@ const LoginScreen = ({ navigation }) => {
   const loginSuccess = res => {
     const { token } = res.data;
     _storeUserData(res.data)
-    navigation.replace('HomeScreen')
+    navigation.replace('AuthenticatedRoutes')
   }
 
   const loginError = err => {
