@@ -22,7 +22,7 @@ import Profile from './screens/profile';
 // import RegisterScreen from './screens/RegisterScreen';
 // import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 import Dashboard from './screens/Dashboard';
-import { LoginScreen, RegisterScreen } from './screens';
+import { LoginScreen, RegisterScreen, ForgotPasswordScreen } from './screens';
 // import ChatScreen from './screens/ChatScreen';
 // import CallScreen from './screens/CallScreen';
 // import ProfileScreen from './screens/profile/ProfileScreen';
@@ -79,6 +79,7 @@ const OverallRoutes = () => {
         >
           <Stack.Screen name='LoginScreen' component={LoginScreen} />
           <Stack.Screen name='RegisterScreen' component={RegisterScreen} />
+          <Stack.Screen name='ForgotPasswordScreen' component={ForgotPasswordScreen} />
           <Stack.Screen name='AuthenticatedRoutes' component={AuthenticatedRoutes} />
         </Stack.Navigator>
       </NavigationContainer>
