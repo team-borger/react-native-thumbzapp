@@ -86,9 +86,9 @@ const LoginScreen = ({ navigation }) => {
         password : password.value
       };
       setLoading(true)
-      AuthService.login(body)
+      // AuthService.login(body)
         .then(() => {
-          CallService._setUpListeners()
+          // CallService._setUpListeners()
           loginAPI(body,loginSuccess,loginError);
         })
         .catch(error => {

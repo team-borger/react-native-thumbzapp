@@ -75,7 +75,7 @@ const Dashboard = ({ navigation }: Props) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      conversationsAPI(fetchSuccess, fetchError);
+      // conversationsAPI(fetchSuccess, fetchError);
     }, [navigation])
   );
 
