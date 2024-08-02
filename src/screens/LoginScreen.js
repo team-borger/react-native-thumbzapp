@@ -86,17 +86,19 @@ const LoginScreen = ({ navigation }) => {
         password : password.value
       };
       setLoading(true)
+
+      loginAPI(body,loginSuccess,loginError);
       // AuthService.login(body)
-        .then(() => {
-          // CallService._setUpListeners()
-          loginAPI(body,loginSuccess,loginError);
-        })
-        .catch(error => {
-          setError(true)
-          setErrorMessage(error.info.errors[0])
-          console.error(error.info.errors[0]);
-          setLoading(false)
-        })
+      //   .then(() => {
+      //     CallService._setUpListeners()
+      //     loginAPI(body,loginSuccess,loginError);
+      //   })
+      //   .catch(error => {
+      //     setError(true)
+      //     setErrorMessage(error.info.errors[0])
+      //     console.error(error.info.errors[0]);
+      //     setLoading(false)
+      //   })
     }
   };
 
