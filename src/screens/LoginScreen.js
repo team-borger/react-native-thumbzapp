@@ -1,4 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
+import axios from 'axios';
 import { TouchableOpacity, StyleSheet, Text, View, Alert } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import Background from '../components/Background';
@@ -87,7 +88,8 @@ const LoginScreen = ({ navigation }) => {
       };
       setLoading(true)
 
-      loginAPI(body,loginSuccess,loginError);
+      // loginAPI(body,loginSuccess,loginError);
+      postData();
       // AuthService.login(body)
       //   .then(() => {
       //     CallService._setUpListeners()
@@ -99,6 +101,22 @@ const LoginScreen = ({ navigation }) => {
       //     console.error(error.info.errors[0]);
       //     setLoading(false)
       //   })
+    }
+  };
+
+  const postData = async () => {
+    const url = 'https://thumbzupp.com:82/api/login';
+    
+    const payload = {
+      email: 'marcelo@tamsap.com',
+      password: 'password'
+    };
+  
+    try {
+      const response = await axios.post(url, payload);
+      console.log('__Response:', response.data);
+    } catch (error) {
+      console.error('__Error:', error);
     }
   };
 
