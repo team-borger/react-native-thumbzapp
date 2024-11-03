@@ -15,7 +15,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AuthService, CallService } from '../services';
 
-const LoginScreen = ({ navigation }) => {
+type Props = {
+  navigation: Navigation;
+};
+
+const LoginScreen = ({ navigation }: Props) => {
   const [email, setEmail] = useState({ value: '', error: '' });
   const [password, setPassword] = useState({ value: '', error: '' });
   const [passwordVisible, setPasswordVisible] = useState(true);
@@ -49,7 +53,7 @@ const LoginScreen = ({ navigation }) => {
   }
 
   const loginSuccess = res => {
-    const { token } = res.data;
+    // const { token } = res.data;
     _storeUserData(res.data)
     navigation.replace('AuthenticatedRoutes')
   }
@@ -88,35 +92,18 @@ const LoginScreen = ({ navigation }) => {
       };
       setLoading(true)
 
-      // loginAPI(body,loginSuccess,loginError);
-      postData();
-      // AuthService.login(body)
-      //   .then(() => {
-      //     CallService._setUpListeners()
-      //     loginAPI(body,loginSuccess,loginError);
-      //   })
-      //   .catch(error => {
-      //     setError(true)
-      //     setErrorMessage(error.info.errors[0])
-      //     console.error(error.info.errors[0]);
-      //     setLoading(false)
-      //   })
-    }
-  };
-
-  const postData = async () => {
-    const url = 'https://thumbzupp.com:82/api/login';
-    
-    const payload = {
-      email: 'marcelo@tamsap.com',
-      password: 'password'
-    };
-  
-    try {
-      const response = await axios.post(url, payload);
-      console.log('__Response:', response.data);
-    } catch (error) {
-      console.error('__Error:', error);
+      loginAPI(body,loginSuccess,loginError);
+      AuthService.login(body)
+        .then(() => {
+          CallService._setUpListeners()
+          loginAPI(body,loginSuccess,loginError);
+        })
+        .catch(error => {
+          setError(true)
+          setErrorMessage(error.info.errors[0])
+          console.error(error.info.errors[0]);
+          setLoading(false)
+        })
     }
   };
 
