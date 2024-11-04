@@ -12,11 +12,11 @@ export default function Main({ navigation }) {
   return (
     <ScrollView contentContainerStyle={{ paddingVertical: 10 }}>
       <Card>
-        <DashboardCard onPress={() => handleCardPress('Marketplace')} />
-        <DashboardCard onPress={() => handleCardPress('Load')} />
-        <DashboardCard onPress={() => handleCardPress('Ticketing')} />
-        <DashboardCard onPress={() => handleCardPress('Profile')} />
-        <DashboardCard onPress={() => handleCardPress('Dashboard')} />
+        <DashboardCard text={'Marketplace'} onPress={() => handleCardPress('Marketplace')} />
+        <DashboardCard text={'Load'} onPress={() => handleCardPress('Load')} />
+        <DashboardCard text={'Ticketing'} onPress={() => handleCardPress('Ticketing')} />
+        <DashboardCard text={'Profile'} onPress={() => handleCardPress('Profile')} />
+        <DashboardCard text={'Dashboard'} onPress={() => handleCardPress('Dashboard')} />
       </Card>
     </ScrollView>
   );
