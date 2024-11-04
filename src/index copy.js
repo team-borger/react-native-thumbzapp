@@ -93,7 +93,7 @@ const AuthenticatedRoutes = () => {
   const handleTabPress = routeName => {
     const initialRouteMap = {
       Marketplace: 'HomeScreen',
-      Load: 'LoadCheckoutScreen',
+      Load: 'NetLoadScreen',
       Ticketing: 'BookScreen',
       Profile: 'ProfileScreen',
       Dashboard: 'Dashboard',
