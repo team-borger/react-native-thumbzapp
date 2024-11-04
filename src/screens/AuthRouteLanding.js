@@ -5,7 +5,6 @@ import DashboardCard from '../components/DashboardCard';
 
 export default function Main({ navigation }) {
   const handleCardPress = (route) => {
-    console.log('DashboardCard was clicked!');
     navigation.navigate(route);
   };
 
@@ -16,7 +15,7 @@ export default function Main({ navigation }) {
         <DashboardCard text={'Load'} onPress={() => handleCardPress('Load')} />
         <DashboardCard text={'Ticketing'} onPress={() => handleCardPress('Ticketing')} />
         <DashboardCard text={'Profile'} onPress={() => handleCardPress('Profile')} />
-        <DashboardCard text={'Dashboard'} onPress={() => handleCardPress('Dashboard')} />
+        <DashboardCard text={'Messaging'} onPress={() => handleCardPress('Dashboard')} />
       </Card>
     </ScrollView>
   );
