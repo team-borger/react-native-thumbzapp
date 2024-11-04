@@ -253,7 +253,7 @@ const Cart = ({ navigation }: Props) => {
 
       <View style={{ flexDirection: 'row'}}>
         <View style={styles.total}>
-          <Text style={{marginLeft: 20}}>SubTotal:</Text>
+          <Text style={{marginLeft: 20}}>Sub Total:</Text>
           <Text style={{fontWeight: 'bold', marginLeft: 10, color: '#880ED4' }}>{'\u20B1'} {totalSelected()}</Text>
         </View>
         <View style={showButton === true ? {} : {display:'none'}}>

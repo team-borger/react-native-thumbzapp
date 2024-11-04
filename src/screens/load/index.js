@@ -21,10 +21,10 @@ const Load = () => {
           headerShown: false,
         }}
       >
+        <Stack.Screen name="NetLoadScreen" component={NetLoadScreen} />
+        <Stack.Screen name="LoadProcessScreen" component={LoadProcessScreen} />
         <Stack.Screen name="LoadCheckoutScreen" component={LoadCheckoutScreen} />
         <Stack.Screen name="LoadPayedScreen" component={LoadPayedScreen} />
-        <Stack.Screen name="LoadProcessScreen" component={LoadProcessScreen} />
-        <Stack.Screen name="NetLoadScreen" component={NetLoadScreen} />
       </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

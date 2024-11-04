@@ -20,9 +20,9 @@ const Profile = () => {
           headerShown: false,
         }}
       >
-        <Stack.Screen name="AddAddressScreen" component={AddAddressScreen} />
-        <Stack.Screen name="MyAddressScreen" component={MyAddressScreen} />
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+        <Stack.Screen name="MyAddressScreen" component={MyAddressScreen} />
+        <Stack.Screen name="AddAddressScreen" component={AddAddressScreen} />
       </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

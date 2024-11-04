@@ -95,7 +95,7 @@ const AuthenticatedRoutes = () => {
       Marketplace: 'HomeScreen',
       Load: 'LoadCheckoutScreen',
       Ticketing: 'BookScreen',
-      Profile: 'AddAddressScreen',
+      Profile: 'ProfileScreen',
       Dashboard: 'Dashboard',
     };
     navigationRef.current.navigate(routeName, {
