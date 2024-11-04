@@ -53,13 +53,15 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
+    // justifyContent: 'center',
+    // alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.4)',
   },
   text: {
-    fontSize: 32,
+    fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
+    paddingLeft: 20,
+    paddingTop: 10,
   },
 });
