@@ -23,6 +23,10 @@ const Shop = ({ navigation }: Props) => {
   const [countFood, setCountFood] = useState(0);
   const [loginuser, setUser] = useState({});
 
+  const _goBack = () => {
+    navigation.navigate('HomeScreen')
+  }
+
   const _goToCart = () => {
     navigation.navigate('CartScreen')
   }
@@ -110,8 +114,18 @@ const Shop = ({ navigation }: Props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 10, backgroundColor: '#880ED4' }}>
-        <Text style={styles.headerText}>ThumbzUpp</Text>
+      <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 5, paddingVertical: 15, backgroundColor: '#880ED4' }}>
+        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+          <TouchableHighlight onPress={_goBack} underlayColor="#eeeeee">
+            <MaterialCommunityIcons
+              name="arrow-left"
+              size={25}
+              color="white"
+              style={{marginRight: 15}}
+            />
+          </TouchableHighlight>
+          <Text style={styles.headerText}>ThumbzUpp</Text>
+        </View>
       </View>
 
       <View style={{padding: 10, backgroundColor: '#880ED4'}}>
@@ -301,8 +315,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   header: {
-    backgroundColor: 'transparent',
-    marginTop: 0
+    backgroundColor: 'transparent'
   }
 });
 

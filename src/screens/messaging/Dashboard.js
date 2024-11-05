@@ -1,6 +1,7 @@
 import React, { memo, useState } from 'react';
-import { FlatList, View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
+import { FlatList, View, Text, StyleSheet, ScrollView, Alert, TouchableHighlight } from 'react-native';
 import { List, Avatar, Searchbar, Appbar, Card } from 'react-native-paper';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Navigation } from '../../types';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
@@ -15,6 +16,10 @@ type Props = {
 
 const Dashboard = ({ navigation }: Props) => {
   const [items, setItems] = useState([])
+
+  const _goBack = () => {
+    navigation.popToTop();
+  }
 
   const _onChatClick = (item) => {
     AsyncStorage.setItem('active_chat', JSON.stringify(item))
@@ -45,16 +50,16 @@ const Dashboard = ({ navigation }: Props) => {
 
   const fetchError = err => {
     const { error, message } = err.response.data;
-    // if (error) {
-    //   Alert.alert('Something went wrong. Please try again.', error,
-    //     [{ text: 'OK' },], { cancelable: false }
-    //   );
-    // }
-    // if (message) {
-    //   Alert.alert('Something went wrong. Please try again.', message,
-    //     [{ text: 'OK' },], { cancelable: false }
-    //   );
-    // }
+    if (error) {
+      Alert.alert('Something went wrong. Please try again.', error,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+    if (message) {
+      Alert.alert('Something went wrong. Please try again.', message,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
   }
 
   const nameStyle = (payload) => {
@@ -75,18 +80,30 @@ const Dashboard = ({ navigation }: Props) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      // conversationsAPI(fetchSuccess, fetchError);
+      conversationsAPI(fetchSuccess, fetchError);
     }, [navigation])
   );
 
   return (
-    <SafeAreaView edges={['bottom', 'left', 'right']} style={styles.container}>
-
-      <Appbar.Header dark={false} style={styles.header}>
-        <Appbar.Content style={styles.marginText} title={<Text style={styles.setColorText}>Messages</Text>} />
-      </Appbar.Header>
+    <SafeAreaView style={styles.container}>
+      <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10, paddingVertical: 15, backgroundColor: '#880ED4' }}>
+        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+          <TouchableHighlight onPress={_goBack} underlayColor="#eeeeee">
+            <MaterialCommunityIcons
+              name="arrow-left"
+              size={25}
+              color="white"
+              style={{marginRight: 15}}
+            />
+          </TouchableHighlight>
+          <Text style={styles.headerText}>Messages</Text>
+        </View>
+      </View>
 
       <View style={styles.contentContainer}>
+      {/* <Appbar.Header dark={false} style={styles.header}>
+        <Appbar.Content style={styles.marginText} title={<Text style={styles.setColorText}>Messages</Text>} />
+      </Appbar.Header> */}
         <Card onPress={() => navigation.replace('SearchContactScreen')}>
           <Card.Content style={{display: 'flex', flexDirection: 'row'}}>
             <FontAwesome name='search' size={20} color='gray' style={{marginRight: 20}}/>
@@ -136,8 +153,9 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     paddingTop: 0,
-    padding: 20,
-    height: '100%'
+    padding: 15,
+    height: '100%',
+    marginTop: 10
   },
   marginText: {
     marginLeft: 10
@@ -149,16 +167,20 @@ const styles = StyleSheet.create({
   setColorText: {
     color: '#880ED4'
   },
-  header: {
-    backgroundColor: 'transparent',
-    marginTop: 0
-  },
   avatar: {
     marginTop: 6,
     marginBottom: 6
   },
   scrollView: {
     marginTop: 10
+  },
+  headerText : {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+  header: {
+    backgroundColor: 'transparent'
   }
 });
 

@@ -81,14 +81,13 @@ const NetLoad = ({ navigation }: Props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-
-      <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 10 }}>
+      <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 15, paddingVertical: 15, backgroundColor: '#880ED4' }}>
         <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
           <TouchableHighlight onPress={_goBack} underlayColor="#eeeeee">
             <MaterialCommunityIcons
               name="arrow-left"
               size={25}
-              color="#333"
+              color="white"
               style={{marginRight: 15}}
             />
           </TouchableHighlight>
@@ -191,7 +190,7 @@ const styles = StyleSheet.create({
   contentContainer: {
       flex: 1,
       padding: 5,
-      paddingHorizontal: 20
+      paddingHorizontal: 10
   },
   ground: {
     paddingTop: 0,
@@ -209,7 +208,7 @@ const styles = StyleSheet.create({
     color: '#880ED4'
   },
   headerText : {
-    color: '#880ED4',
+    color: 'white',
     fontSize: 20,
     fontWeight: 'bold'
   },

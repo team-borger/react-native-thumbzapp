@@ -2,6 +2,7 @@ import React, { memo, useState, useEffect } from 'react';
 import { FlatList, View, Text, StyleSheet, ScrollView, TouchableHighlight, Alert, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, List, Avatar, Searchbar, Appbar, Badge } from 'react-native-paper';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Navigation } from '../../types';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -23,6 +24,10 @@ const ProfileScreen = ({ navigation }: Props) => {
   useEffect(() => {
     getLoginUser()
   }, []);
+
+  const _goBack = () => {
+    navigation.popToTop();
+  }
 
   const _onLogoutPressed = async () => {
     try {
@@ -83,7 +88,19 @@ const ProfileScreen = ({ navigation }: Props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-
+      <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 17, paddingVertical: 15, backgroundColor: '#880ED4' }}>
+        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+          <TouchableHighlight onPress={_goBack} underlayColor="#eeeeee">
+            <MaterialCommunityIcons
+              name="arrow-left"
+              size={25}
+              color="white"
+              style={{marginRight: 15}}
+            />
+          </TouchableHighlight>
+          <Text style={styles.headerText}>Profile</Text>
+        </View>
+      </View>
       <View style={styles.contentContainer}>
         <View style={styles.whiteBg}>
           <Avatar.Icon size={40} icon="account" color="white" style={styles.avatar} />
@@ -276,6 +293,14 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginRight: 10
   },
+  headerText : {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+  header: {
+    backgroundColor: 'transparent'
+  }
 });
 
 export default memo(ProfileScreen);
