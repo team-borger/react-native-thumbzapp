@@ -55,7 +55,6 @@ const LoginScreen = ({ navigation , setIsLoggedIn}: Props) => {
     // const { token } = res.data;
     _storeUserData(res.data)
     setIsLoggedIn(true);
-    navigation.replace('AuthenticatedRoutes')
   }
 
   const loginError = err => {
