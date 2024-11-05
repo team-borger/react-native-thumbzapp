@@ -5,10 +5,10 @@ import { Bubble, GiftedChat, Send } from 'react-native-gifted-chat';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Appbar } from 'react-native-paper';
-import { Navigation } from '../types';
+import { Navigation } from '../../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { loadThreadsAPI, createMessageAPI } from '../services/messages';
-import { CallService } from '../services';
+import { loadThreadsAPI, createMessageAPI } from '../../services/messages';
+import { CallService } from '../../services';
 
 type Props = {
   navigation: Navigation;

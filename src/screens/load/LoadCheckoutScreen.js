@@ -80,14 +80,14 @@ const LoadCheckout = ({ navigation }: Props) => {
       <View style={styles.contentContainer}>
         <View style={styles.skeks}>
           <View style={{paddingVertical: 30, backgroundColor: '#880ED4', alignItems: 'center'}}>
-            <Text style={{color:'white', fontSize: 20, fontWeight: 'bold'}}>{loadInfo.load_type === 'Regular' ? `PHP ${loadInfo.amount}` : loadInfo.promo_name}</Text>
+            <Text style={{color:'white', fontSize: 20, fontWeight: 'bold'}}>{loadInfo.load_type === 'Regular' ? `PHP ${loadInfo.amount}.00` : loadInfo.promo_name}</Text>
           </View>
           <View style={{padding: 10, backgroundColor: '#f9efff'}}>
             <Text style={{color: '#880ED4', fontSize:12, fontWeight: 'bold'}}>YOU ARE ABOUT TO PAY</Text>
           </View>
           <View style={{flexDirection: 'row', justifyContent:'space-between', padding: 20, borderBottomColor: '#eeeeee', borderBottomWidth: 2}}>
             <Text>Total Amount</Text>
-            <Text style={{fontWeight: 'bold'}}>PHP {loadInfo.amount}</Text>
+            <Text style={{fontWeight: 'bold'}}>{ `PHP ${loadInfo.amount}.00` }</Text>
           </View>
 
           <View style={styles.skeks}>

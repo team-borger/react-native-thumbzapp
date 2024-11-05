@@ -2,11 +2,11 @@ import React, { memo, useState } from 'react';
 import { FlatList, View, Text, StyleSheet, ScrollView, Image, TouchableHighlight } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, List, Avatar, Searchbar, Appbar, Card, RadioButton } from 'react-native-paper';
-import { Navigation } from '../types';
+import { Navigation } from '../../types';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { IMAGE } from '../constants/Image';
+import { IMAGE } from '../../constants/Image';
 import { useFocusEffect } from '@react-navigation/native';
-import { allAddressAPI } from '../services/address';
+import { allAddressAPI } from '../../services/address';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
@@ -101,7 +101,7 @@ const MyAddressCheckout = ({ navigation }: Props) => {
 
       <View style={styles.contentContainer}>
         <View style={{paddingHorizontal: 10, paddingVertical: 5 }}>
-          <Text style={{color: '#777777'}}>Address</Text>
+          {/* <Text style={{color: '#777777'}}>Address</Text> */}
         </View>
         <View style={{flex: 1, paddingTop: 2}}>
           <FlatList

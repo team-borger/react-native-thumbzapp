@@ -3,15 +3,15 @@ import { View, Text, StyleSheet, FlatList, Platform, ToastAndroid, Alert, Toucha
 import { Appbar, RadioButton } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
-import { Navigation } from '../types';
+import { Navigation } from '../../types';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import NumericInput from 'react-native-numeric-input'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
-import { networkInfoAPI } from '../services/load';
+import { networkInfoAPI } from '../../services/load';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import environment from '../../environment';
-import { userOrdersAPI, cancelOrdersAPI } from '../services/products';
+import environment from '../../../environment';
+import { userOrdersAPI, cancelOrdersAPI } from '../../services/products';
 
 type Props = {
   navigation: Navigation;
@@ -30,7 +30,7 @@ const OrderInfo = ({ navigation }: Props) => {
 
   const getOrderInfo = async () => {
     try {
-      const skeks = await AsyncStorage.getItem('orderinfo')
+      const skeks = await AsyncStorage.getItem('orderfoodinfo')
       if (skeks !== null) {
         const skek = JSON.parse(skeks);
         setOrderInfo(skek)
@@ -42,8 +42,8 @@ const OrderInfo = ({ navigation }: Props) => {
   }
 
   const _goBack = () => {
-    AsyncStorage.setItem('orderinfo', JSON.stringify({}))
-    navigation.navigate('OrdersScreen')
+    AsyncStorage.setItem('orderfoodinfo', JSON.stringify({}))
+    navigation.navigate('OrdersFoodScreen')
   }
 
   const formatNumber = (inputNumber) => {
@@ -80,6 +80,7 @@ const OrderInfo = ({ navigation }: Props) => {
 
   const cancelSuccess = res => {
     setLoading(false)
+    console.log(res)
     navigation.navigate('ProfileScreen')
   }
 
@@ -139,9 +140,9 @@ const OrderInfo = ({ navigation }: Props) => {
               <View style={{flexDirection: 'row', alignItems:'center'}}>
                 <View style={{width: '70%'}}>
                   <View style={styles.alignCenterRow}>
-                    <Image source={{ uri: `${environment.APP_URL}/storage/uploads/products/${item.product.id}/${item.product.images[0].photo}` }} style={styles.image} />
+                    <Image source={{ uri: `${environment.APP_URL}/storage/uploads/foods/${item.food.id}/${item.food.images[0].photo}` }} style={styles.image} />
                     <View style={{flex: 1}}>
-                      <Text style={{fontWeight: 'bold'}}>{item.product.name}</Text>
+                      <Text style={{fontWeight: 'bold'}}>{item.food.name}</Text>
                       <View style={{display: 'flex', flexDirection: 'row'}}>
                         <Text style={{color: '#880ED4', fontSize: 12}}>{'\u20B1'} {formatNumber(item.price_at_time_of_purchase)}</Text>
                         <Text style={{color: 'gray', fontSize: 12}}> X {item.quantity}</Text>

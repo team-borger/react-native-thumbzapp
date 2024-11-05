@@ -1,10 +1,10 @@
 import React, { memo, useState } from 'react';
 import { FlatList, View, Text, StyleSheet, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import { List, Avatar, Searchbar, Appbar, Card } from 'react-native-paper';
-import { Navigation } from '../types';
+import { Navigation } from '../../types';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
-import { suggestedContactAPI, searchUsersAPI } from '../services/users';
+import { suggestedContactAPI, searchUsersAPI } from '../../services/users';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 

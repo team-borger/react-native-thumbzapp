@@ -2,7 +2,7 @@ import * as RootNavigation from '../components/RootNavigation';
 import { Platform, ToastAndroid, Alert } from 'react-native';
 import Toast from 'react-native-simple-toast';
 import ConnectyCube from 'react-native-connectycube';
-import CallScreen from "../screens/CallScreen";
+import CallScreen from "../screens/messaging/CallScreen";
 import InCallManager from 'react-native-incall-manager';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Sound from 'react-native-sound';

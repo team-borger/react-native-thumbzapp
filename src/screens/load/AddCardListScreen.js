@@ -3,22 +3,22 @@ import { FlatList, View, Text, StyleSheet, ScrollView, Image, Alert } from 'reac
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, List, Avatar, Searchbar, Appbar, Card } from 'react-native-paper';
 import { MaskedTextInput} from "react-native-mask-text";
-import { Navigation } from '../types';
+import { Navigation } from '../../types';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { IMAGE } from '../constants/Image';
-import TextInput from '../components/TextInput';
+import { IMAGE } from '../../constants/Image';
+import TextInput from '../../components/TextInput';
 import {
   accountNumberValidator,
   cardCvnValidator,
   expiryDateValidator
-} from '../core/utils';
-import { addCardsAPI } from '../services/payment';
+} from '../../core/utils';
+import { addCardsAPI } from '../../services/payment';
 
 type Props = {
   navigation: Navigation;
 };
 
-const AddPayment = ({ navigation }: Props) => {
+const AddCard = ({ navigation }: Props) => {
   const [account_number, setAccountNumber] = useState({ value: '', error: '' });
   const [card_cvn, setCardCvn] = useState({ value: '', error: '' });
   const [expiry_date, setExpiryDate] = useState({ value: '', error: '' });
@@ -48,10 +48,7 @@ const AddPayment = ({ navigation }: Props) => {
   }
 
   const _goBack = () => {
-
-    // Skeks Api send to Xendit
-
-    navigation.navigate('PaymentOptions');
+    navigation.navigate('PaymentMethodList');
   }
 
   const _saveCard = () => {
@@ -147,7 +144,7 @@ const AddPayment = ({ navigation }: Props) => {
   );
 };
 
-export default AddPayment;
+export default AddCard;
 
 const styles = StyleSheet.create({
   carddetails: {

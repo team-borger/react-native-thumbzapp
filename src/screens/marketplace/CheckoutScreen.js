@@ -2,16 +2,16 @@ import React, { memo, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableHighlight, Platform, ToastAndroid, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar, Button } from 'react-native-paper';
-import { Navigation } from '../types';
+import { Navigation } from '../../types';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { IMAGE } from '../constants/Image';
+import { IMAGE } from '../../constants/Image';
 import NumericInput from 'react-native-numeric-input'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
-import environment from '../../environment';
-import { userAddressAPI } from '../services/address';
-import { placeOrderAPI, checkoutAPI } from '../services/products';
+import environment from '../../../environment';
+import { userAddressAPI } from '../../services/address';
+import { placeOrderAPI, checkoutAPI } from '../../services/products';
 
 type Props = {
   navigation: Navigation;

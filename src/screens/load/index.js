@@ -8,6 +8,12 @@ import LoadCheckoutScreen from './LoadCheckoutScreen';
 import LoadPayedScreen from './LoadPayedScreen';
 import LoadProcessScreen from './LoadProcessScreen';
 import NetLoadScreen from './NetLoadScreen';
+import PaymentOptionLoad from './PaymentOptionLoad';
+import AddPaymentScreen from './AddPaymentScreen';
+import PaymentOptions from './PaymentOptions';
+import PaymentMethodList from './PaymentMethodList';
+import AddCardListScreen from './AddCardListScreen';
+import AddCardScreen from './AddCardScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,8 +29,14 @@ const Load = () => {
       >
         <Stack.Screen name="NetLoadScreen" component={NetLoadScreen} />
         <Stack.Screen name="LoadProcessScreen" component={LoadProcessScreen} />
-        <Stack.Screen name="LoadCheckoutScreen" component={LoadCheckoutScreen} />
         <Stack.Screen name="LoadPayedScreen" component={LoadPayedScreen} />
+        <Stack.Screen name="PaymentOptionLoad" component={PaymentOptionLoad} />
+        <Stack.Screen name="AddPaymentScreen" component={AddPaymentScreen} />
+        <Stack.Screen name="PaymentOptions" component={PaymentOptions} />
+        <Stack.Screen name="PaymentMethodList" component={PaymentMethodList} />
+        <Stack.Screen name="LoadCheckoutScreen" component={LoadCheckoutScreen} />
+        <Stack.Screen name="AddCardListScreen" component={AddCardListScreen} />
+        <Stack.Screen name="AddCardScreen" component={AddCardScreen} />
       </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

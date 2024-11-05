@@ -2,12 +2,12 @@ import React, { memo, useState } from 'react';
 import { FlatList, View, Text, StyleSheet, ScrollView, Image, Platform, ToastAndroid, Alert, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, List, Avatar, Searchbar, Appbar, Card, RadioButton } from 'react-native-paper';
-import { Navigation } from '../types';
+import { Navigation } from '../../types';
 import Toast from 'react-native-simple-toast';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { IMAGE } from '../constants/Image';
+import { IMAGE } from '../../constants/Image';
 import { useFocusEffect } from '@react-navigation/native';
-import { getCardListAPI, deleteCardAPI } from '../services/payment';
+import { getCardListAPI, deleteCardAPI } from '../../services/payment';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused} from '@react-navigation/native';
@@ -48,11 +48,12 @@ const PaymentOptions = ({ navigation }: Props) => {
   const _isConfirm = () => {
     if (items[0].id) {
       AsyncStorage.setItem('paymentMethod', JSON.stringify(choosenItem))
-      if (payType == 'food') {
-        navigation.navigate('CheckoutFoodScreen');
-      } else {
-        navigation.navigate('CheckoutScreen');
-      }
+      // if (payType == 'food') {
+      //   navigation.navigate('CheckoutFoodScreen');
+      // } else {
+      //   navigation.navigate('CheckoutScreen');
+      // }
+      navigation.navigate('LoadCheckoutScreen');
     } else {
       showToast(`Please add payment method`)
     }
@@ -92,11 +93,12 @@ const PaymentOptions = ({ navigation }: Props) => {
   );
 
   const _goBack = () => {
-    if (payType == 'food') {
-      navigation.navigate('CheckoutFoodScreen');
-    } else {
-      navigation.navigate('CheckoutScreen');
-    }
+    // if (payType == 'food') {
+    //   navigation.navigate('CheckoutFoodScreen');
+    // } else {
+    //   navigation.navigate('CheckoutScreen');
+    // }
+    navigation.navigate('LoadCheckoutScreen');
   }
 
   const setChoice = (payload) => {

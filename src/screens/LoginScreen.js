@@ -1,5 +1,4 @@
 import React, { memo, useState, useEffect } from 'react';
-import axios from 'axios';
 import { TouchableOpacity, StyleSheet, Text, View, Alert } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import Background from '../components/Background';
@@ -19,7 +18,7 @@ type Props = {
   navigation: Navigation;
 };
 
-const LoginScreen = ({ navigation }: Props) => {
+const LoginScreen = ({ navigation , setIsLoggedIn}: Props) => {
   const [email, setEmail] = useState({ value: '', error: '' });
   const [password, setPassword] = useState({ value: '', error: '' });
   const [passwordVisible, setPasswordVisible] = useState(true);
@@ -37,14 +36,14 @@ const LoginScreen = ({ navigation }: Props) => {
     }
   }, [error_]);
 
-  const firstRendered = async () => {
-    const token = await AsyncStorage.getItem('Token')
-    if( token !== null ) {
-      navigation.replace('AuthenticatedRoutes')
-    }
-  }
+  // const firstRendered = async () => {
+  //   const token = await AsyncStorage.getItem('Token')
+  //   if( token !== null ) {
+  //     navigation.replace('AuthenticatedRoutes')
+  //   }
+  // }
 
-  firstRendered()
+  // firstRendered()
 
 
   _storeUserData = async (payload) => {
@@ -55,6 +54,7 @@ const LoginScreen = ({ navigation }: Props) => {
   const loginSuccess = res => {
     // const { token } = res.data;
     _storeUserData(res.data)
+    setIsLoggedIn(true);
     navigation.replace('AuthenticatedRoutes')
   }
 
@@ -101,7 +101,6 @@ const LoginScreen = ({ navigation }: Props) => {
         .catch(error => {
           setError(true)
           setErrorMessage(error.info.errors[0])
-          console.error(error.info.errors[0]);
           setLoading(false)
         })
     }
@@ -221,4 +220,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default LoginScreen;
+export default memo(LoginScreen);

@@ -1,5 +1,5 @@
 import React, { memo,useState } from 'react';
-import { FlatList, View, Text, StyleSheet, TouchableHighlight, ActivityIndicator, Image } from 'react-native';
+import { FlatList, View, Text, StyleSheet, TouchableHighlight, ActivityIndicator, Image, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar, Searchbar, Card, Title, Paragraph, Avatar, Badge } from 'react-native-paper';
 import { Navigation } from '../../types';

@@ -4,7 +4,7 @@ import ConnectyCube from 'react-native-connectycube';
 import { Avatar } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RTCView } from 'react-native-connectycube';
-import { CallService } from '../services';
+import { CallService } from '../../services';
 
 const CallScreen = (response) => {
 

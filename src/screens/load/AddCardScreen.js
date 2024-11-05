@@ -3,16 +3,16 @@ import { FlatList, View, Text, StyleSheet, ScrollView, Image, Alert } from 'reac
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, List, Avatar, Searchbar, Appbar, Card } from 'react-native-paper';
 import { MaskedTextInput} from "react-native-mask-text";
-import { Navigation } from '../types';
+import { Navigation } from '../../types';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { IMAGE } from '../constants/Image';
-import TextInput from '../components/TextInput';
+import { IMAGE } from '../../constants/Image';
+import TextInput from '../../components/TextInput';
 import {
   accountNumberValidator,
   cardCvnValidator,
   expiryDateValidator
-} from '../core/utils';
-import { addCardsAPI } from '../services/payment';
+} from '../../core/utils';
+import { addCardsAPI } from '../../services/payment';
 
 type Props = {
   navigation: Navigation;

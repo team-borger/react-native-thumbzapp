@@ -38,7 +38,7 @@ const BookScreen = ({ navigation }: Props) => {
   const [loading, setLoading] = useState(false)
 
   const _goBack = () => {
-    navigation.navigate('HomeScreen')
+    navigation.popToTop();
   }
 
   const skeks = () => {

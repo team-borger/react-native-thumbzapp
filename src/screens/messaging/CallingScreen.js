@@ -2,35 +2,25 @@ import React, { memo, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar, Avatar } from 'react-native-paper';
-import { Navigation } from '../types';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { Navigation } from '../../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { CallService } from '../services';
-import * as RootNavigation from '../components/RootNavigation';
+import { CallService } from '../../services';
 
 type Props = {
   navigation: Navigation;
 };
 
-const Calling = (response) => {
-  const initiator = response.route.params.initiator
-
+const Calling = ({ navigation }: Props) => {
   const [loginUser, setLoginUser] = useState({});
   const [chatUser, setChatUser] = useState({});
 
   const _goBack = () => {
-    RootNavigation.navigate('ChatScreen');
+    navigation.navigate('ChatScreen');
   }
 
-  const _rejectCall = () => {
-    CallService.rejectCall();
-    RootNavigation.navigate('ChatScreen');
-  }
-
-  const _answerCall = () => {
-    // console.log('res',response)
-    CallService.acceptCall();
-    // navigation.navigate('CallScreen', {response: response});
+  const _dropCall = () => {
+    CallService.stopCall();
+    navigation.navigate('ChatScreen');
   }
 
   useEffect(() => {
@@ -62,15 +52,12 @@ const Calling = (response) => {
 
       <View style={styles.contentContainer}>
         <View style={{flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-          <Text style={{color: 'white', fontSize: 30, fontWeight: 'bold'}}>{ initiator }</Text>
-          <Text style={{color: 'white', fontSize: 18}}>is calling...</Text>
+          <Text style={{color: 'white', fontSize: 30, fontWeight: 'bold'}}>{chatUser.first_name + ' ' + chatUser.last_name}</Text>
+          <Text style={{color: 'white', fontSize: 18}}>Calling...</Text>
         </View>
-        <View style={{marginBottom: 100, display: 'flex', alignItems: 'center', flexDirection:"row", justifyContent: 'space-around'}}>
-          <TouchableOpacity onPress={_rejectCall}>
+        <View style={{marginBottom: 100, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+          <TouchableOpacity onPress={_dropCall}>
             <Avatar.Icon size={50} icon="phone-hangup" style={{backgroundColor:"#ff4a43"}}/>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={_answerCall}>
-            <Avatar.Icon size={50} icon="phone" style={{backgroundColor:"#30cc45"}} color="white"/>
           </TouchableOpacity>
         </View>
       </View>

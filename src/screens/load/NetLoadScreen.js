@@ -98,7 +98,7 @@ const NetLoad = ({ navigation }: Props) => {
 
       <View style={styles.contentContainer}>
         <View style={{margin: 10}}>
-          <Text style={{fontWeight: 'bold', fontSize: 16}}>Enter Phone Number</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 16}} keyboardType="numeric">Enter Phone Number</Text>
         </View>
         <View style={{marginHorizontal: 10, marginTop: 10, marginBottom: 5}}>
           <MaskedTextInput
