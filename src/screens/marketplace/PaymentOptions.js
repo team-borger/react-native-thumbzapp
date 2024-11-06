@@ -48,12 +48,11 @@ const PaymentOptions = ({ navigation }: Props) => {
   const _isConfirm = () => {
     if (items[0].id) {
       AsyncStorage.setItem('paymentMethod', JSON.stringify(choosenItem))
-      // if (payType == 'food') {
-      //   navigation.navigate('CheckoutFoodScreen');
-      // } else {
-      //   navigation.navigate('CheckoutScreen');
-      // }
-      navigation.navigate('LoadCheckoutScreen');
+      if (payType == 'food') {
+        navigation.navigate('CheckoutFoodScreen');
+      } else {
+        navigation.navigate('CheckoutScreen');
+      }
     } else {
       showToast(`Please add payment method`)
     }
@@ -93,12 +92,11 @@ const PaymentOptions = ({ navigation }: Props) => {
   );
 
   const _goBack = () => {
-    // if (payType == 'food') {
-    //   navigation.navigate('CheckoutFoodScreen');
-    // } else {
-    //   navigation.navigate('CheckoutScreen');
-    // }
-    navigation.navigate('LoadCheckoutScreen');
+    if (payType == 'food') {
+      navigation.navigate('CheckoutFoodScreen');
+    } else {
+      navigation.navigate('CheckoutScreen');
+    }
   }
 
   const setChoice = (payload) => {

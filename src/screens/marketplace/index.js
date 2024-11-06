@@ -18,6 +18,8 @@ import MyAddressCheckout from './MyAddressCheckout';
 import AddAddressCheckout from './AddAddressCheckout';
 import PaymentSuccessScreen from './PaymentSuccessScreen';
 import PaymentSuccessFoodScreen from './PaymentSuccessFoodScreen';
+import PaymentOptions from './PaymentOptions';
+import XenditInvoice from './Invoice';
 
 const Stack = createNativeStackNavigator();
 
@@ -45,6 +47,8 @@ const Marketplace = () => {
         <Stack.Screen name="AddAddressCheckout" component={AddAddressCheckout} />
         <Stack.Screen name="PaymentSuccessScreen" component={PaymentSuccessScreen} />
         <Stack.Screen name="PaymentSuccessFoodScreen" component={PaymentSuccessFoodScreen} />
+        <Stack.Screen name="PaymentOptions" component={PaymentOptions} />
+        <Stack.Screen name="XenditInvoice" component={XenditInvoice} />
       </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
