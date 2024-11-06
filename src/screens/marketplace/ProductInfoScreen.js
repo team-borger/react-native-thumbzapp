@@ -117,7 +117,7 @@ const ProductInfo = ({ navigation }: Props) => {
   }
 
   const addSuccess = res => {
-    cartAllAPI(fetchSuccess, fetchError)
+    cartAllAPI(loginuser.id,fetchSuccess, fetchError)
     setVisible(false);
     setState(true);
   }
@@ -166,7 +166,7 @@ const ProductInfo = ({ navigation }: Props) => {
         <View>
           <TouchableHighlight onPress={_goToCart} underlayColor="#eeeeee" style={{ marginRight: 5 }}>
             <MaterialCommunityIcons
-              name="shopping"
+              name="cart"
               size={25}
               color="#880ED4"
             />

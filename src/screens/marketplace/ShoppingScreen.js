@@ -139,7 +139,7 @@ const Shop = ({ navigation }: Props) => {
         <View>
           <TouchableHighlight onPress={_goToCart} underlayColor="#eeeeee" style={{ marginRight: 5 }}>
             <MaterialCommunityIcons
-              name="shopping"
+              name="cart"
               size={25}
               color="#880ED4"
             />

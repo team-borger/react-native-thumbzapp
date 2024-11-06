@@ -206,7 +206,7 @@ const CartFood = ({ navigation }: Props) => {
 
       <Appbar.Header dark={false} style={styles.header}>
         <Appbar.BackAction onPress={_goBack} />
-        <Appbar.Content style={styles.marginText} title={<Text style={styles.setColorText}>Cart</Text>}/>
+        <Appbar.Content style={styles.marginText} title={<Text style={styles.setColorText}>Basket</Text>}/>
         {/* <Appbar.Action icon="delete" color="#880ED4" onPress={ _deleteCartItem(item) } /> */}
       </Appbar.Header>
 

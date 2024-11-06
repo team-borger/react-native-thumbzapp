@@ -14,6 +14,7 @@ import BottomSheet from "react-native-easy-bottomsheet";
 import { addCartFoodAPI, cartFoodAllAPI } from '../../services/food';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import environment from '../../../environment';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 type Props = {
   navigation: Navigation;
@@ -26,6 +27,7 @@ const FoodInfo = ({ navigation }: Props) => {
   const [quantity, setQuantity] = useState(1);
   const [loginuser, setUser] = useState({});
   const [count, setCount] = useState(0);
+  const [showAlert, setState] = useState(false)
 
   const showToast = text => {
     const commonToast = Platform.OS === 'android' ? ToastAndroid : Toast;
@@ -39,6 +41,10 @@ const FoodInfo = ({ navigation }: Props) => {
       _geUserInfo()
     }, [navigation])
   );
+
+  const hideAlert = () => {
+    setState(false);
+  };
 
   const valueChanged = (x) => {
      setQuantity(x.value)
@@ -115,8 +121,9 @@ const FoodInfo = ({ navigation }: Props) => {
   }
 
   const addSuccess = res => {
-    cartFoodAllAPI(fetchSuccess, fetchError)
+    cartFoodAllAPI(loginuser.id,fetchSuccess, fetchError)
     setVisible(false);
+    setState(true);
   }
 
   const addError = err => {
@@ -159,7 +166,7 @@ const FoodInfo = ({ navigation }: Props) => {
         <View>
           <TouchableHighlight onPress={_goToCart} underlayColor="#eeeeee" style={{ marginRight: 5 }}>
             <MaterialCommunityIcons
-              name="food"
+              name="basket"
               size={25}
               color="#880ED4"
             />
@@ -214,20 +221,34 @@ const FoodInfo = ({ navigation }: Props) => {
             </View>
           </View>
           <View style={{marginTop: 50}}>
-            <Button style={styles.btn} icon="cart" mode="contained" onPress={addCart}>
-              Add to Cart
+            <Button style={styles.btn} icon="basket" mode="contained" onPress={addCart}>
+              Add to Basket
             </Button>
           </View>
         </View>
       </BottomSheet>
 
-      <Button icon="cart" style={styles.logoutBtn} mode="contained"
+      <Button icon="basket" style={styles.logoutBtn} mode="contained"
         onPress={() => {
           setVisible(true);
         }}
       >
-        Add to Cart
+        Add to Basket
       </Button>
+
+      <AwesomeAlert
+        show={showAlert}
+        showProgress={false}
+        title=""
+        message="Added to Basket Successfully!"
+        closeOnTouchOutside={true}
+        closeOnHardwareBackPress={true}
+        showCancelButton={false}
+        showConfirmButton={true}
+        confirmText="OK"
+        confirmButtonColor="#880ED4"
+        onConfirmPressed={hideAlert}
+      />
 
     </SafeAreaView>
   );
