@@ -8,7 +8,7 @@ import QuantitySelector from '../../components/QuantitySelector';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { IMAGE } from '../../constants/Image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CartFoodModule from '../../components/Cart/CartFoodModule';
+import CartModule from '../../components/Cart/CartModule';
 import { cartAllAPI } from '../../services/products';
 import environment from '../../../environment';
 import { useIsFocused} from '@react-navigation/native';
@@ -71,9 +71,9 @@ const Cart = ({ navigation }: Props) => {
     navigation.navigate('Dashboard');
   }
 
-  const _bulkDeleteTrigger = () => {
-    setBulkDeleteTrigger( bulkDeleteTrigger + 1 )
-  }
+  // const _bulkDeleteTrigger = () => {
+  //   setBulkDeleteTrigger( bulkDeleteTrigger + 1 )
+  // }
 
   const _onCheckoutPressed = () => {
     AsyncStorage.setItem('checkout', JSON.stringify(selected))
@@ -158,7 +158,7 @@ const Cart = ({ navigation }: Props) => {
   }
 
   const _deleteCartItem = (x) => {
-    deleteCartAPI(x.item.id, null, _requestFail)
+    deleteCartAPI(x.id, null, _requestFail)
     _getUserInfo()
   }
 
@@ -177,7 +177,7 @@ const Cart = ({ navigation }: Props) => {
   }
 
   const confirmDelete = (x) => {
-    Alert.alert('Remove confirmation', `"${x.item.product.name}" will be removed from your cart, proceed?`, [
+    Alert.alert('Remove confirmation', `"${x.product.name}" will be removed from your cart, proceed?`, [
       {
         text: 'Yes, remove from cart',
         onPress: () => {
@@ -207,7 +207,7 @@ const Cart = ({ navigation }: Props) => {
       <Appbar.Header dark={false} style={styles.header}>
         <Appbar.BackAction onPress={_goBack} />
         <Appbar.Content style={styles.marginText} title={<Text style={styles.setColorText}>Cart</Text>}/>
-        <Appbar.Action icon="delete" color="#880ED4" onPress={ _bulkDeleteTrigger } />
+        {/* <Appbar.Action icon="delete" color="#880ED4" onPress={ _bulkDeleteTrigger } /> */}
       </Appbar.Header>
 
       <View style={styles.contentContainer}>
@@ -238,6 +238,7 @@ const Cart = ({ navigation }: Props) => {
                         />
                       </View>
                     </View>
+                    <Appbar.Action icon="delete" color="#880ED4" onPress={() => confirmDelete(item)} />
                   </View>
                 </View>
               </TouchableOpacity>
@@ -247,7 +248,7 @@ const Cart = ({ navigation }: Props) => {
           />
         </View>
         {
-        // <CartFoodModule cartItems={ items } bulkDeleteTrigger={bulkDeleteTrigger}/>
+        // <CartModule cartItems={ items } bulkDeleteTrigger={bulkDeleteTrigger}/>
         }
       </View>
 

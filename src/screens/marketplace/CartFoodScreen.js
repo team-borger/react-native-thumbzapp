@@ -8,7 +8,7 @@ import QuantitySelector from '../../components/QuantitySelector';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { IMAGE } from '../../constants/Image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CartModule from '../../components/Cart/CartModule';
+import CartFoodModule from '../../components/Cart/CartFoodModule';
 import { cartFoodAllAPI } from '../../services/food';
 import environment from '../../../environment';
 import { useIsFocused} from '@react-navigation/native';
@@ -158,7 +158,7 @@ const CartFood = ({ navigation }: Props) => {
   }
 
   const _deleteCartItem = (x) => {
-    deleteFoodCartAPI(x.item.id, null, _requestFail)
+    deleteFoodCartAPI(x.id, null, _requestFail)
     _getUserInfo()
   }
 
@@ -177,7 +177,7 @@ const CartFood = ({ navigation }: Props) => {
   }
 
   const confirmDelete = (x) => {
-    Alert.alert('Remove confirmation', `"${x.item.food.name}" will be removed from your cart, proceed?`, [
+    Alert.alert('Remove confirmation', `"${x.food.name}" will be removed from your cart, proceed?`, [
       {
         text: 'Yes, remove from cart',
         onPress: () => {
@@ -207,7 +207,7 @@ const CartFood = ({ navigation }: Props) => {
       <Appbar.Header dark={false} style={styles.header}>
         <Appbar.BackAction onPress={_goBack} />
         <Appbar.Content style={styles.marginText} title={<Text style={styles.setColorText}>Cart</Text>}/>
-        <Appbar.Action icon="delete" color="#880ED4" onPress={ _bulkDeleteTrigger } />
+        {/* <Appbar.Action icon="delete" color="#880ED4" onPress={ _deleteCartItem(item) } /> */}
       </Appbar.Header>
 
       <View style={styles.contentContainer}>
@@ -237,6 +237,7 @@ const CartFood = ({ navigation }: Props) => {
                         />
                       </View>
                     </View>
+                      <Appbar.Action icon="delete" color="#880ED4" onPress={() => confirmDelete(item)} />
                   </View>
                 </View>
               </TouchableOpacity>
@@ -246,7 +247,7 @@ const CartFood = ({ navigation }: Props) => {
           />
         </View>
         {
-        // <CartModule cartItems={ items } bulkDeleteTrigger={bulkDeleteTrigger}/>
+        // <CartFoodModule cartItems={ items } bulkDeleteTrigger={bulkDeleteTrigger}/>
         }
       </View>
 

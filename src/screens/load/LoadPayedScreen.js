@@ -74,9 +74,9 @@ const LoadPayed = ({ navigation }: Props) => {
       <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
         <Text style={styles.headerText}>Payment</Text>
       </View>
-      <AppbarButton mode="contained" onPress={() => navigation.navigate('HomeScreen')}>
+      <Button mode="elevated" onPress={() => navigation.navigate('NetLoadScreen')} style={{color:'#880ED4', backgroundColor: '#FFF'}}>
         DONE
-      </AppbarButton>
+      </Button>
     </View>
 
       <View style={styles.contentContainer}>
