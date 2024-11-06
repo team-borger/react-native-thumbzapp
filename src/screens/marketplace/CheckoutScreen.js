@@ -148,7 +148,7 @@ const Checkout = ({ navigation }: Props) => {
             borderBottomWidth: 4,
           }}
         />
-        <TouchableHighlight onPress={() => navigation.navigate('MyAddressCheckout')}  underlayColor="white" style={{borderColor: '#880ED4',  borderWidth: 1, margin: 10, padding: 10, borderRadius: 10}}>
+        <TouchableHighlight onPress={() => navigation.navigate('MyAddressCheckout', { isFood: false })}  underlayColor="white" style={{borderColor: '#880ED4',  borderWidth: 1, margin: 10, padding: 10, borderRadius: 10}}>
           <View style={{ flexDirection: 'row'}}>
             <View style={{width: '80%'}}>
               <View style={{flexDirection: 'row'}}>

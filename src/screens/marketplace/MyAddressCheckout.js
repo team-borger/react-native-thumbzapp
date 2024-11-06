@@ -14,7 +14,8 @@ type Props = {
   navigation: Navigation;
 };
 
-const MyAddressCheckout = ({ navigation }: Props) => {
+const MyAddressCheckout = ({ navigation, route  }: Props) => {
+  const { isFood } = route.params;
   const [items, setItems] = useState([])
   const [choosenItem, setItem] = useState({})
   const [listItemsRefresh, setListItemsRefresh] = useState(false)
@@ -69,7 +70,11 @@ const MyAddressCheckout = ({ navigation }: Props) => {
   );
 
   const _goBack = () => {
-    navigation.navigate('CheckoutScreen');
+    if(isFood) {
+      navigation.navigate('CheckoutFoodScreen');
+    }else{
+      navigation.navigate('CheckoutScreen');
+    }
   }
 
   const setChoice = (payload) => {
