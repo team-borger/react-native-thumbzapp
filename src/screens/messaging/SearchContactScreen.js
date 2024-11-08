@@ -28,7 +28,7 @@ const SearchContact = ({ navigation }: Props) => {
   }
 
   const _goBack = () => {
-    navigation.navigate('Dashboard');
+    navigation.navigate('AuthRouteLanding');
   }
 
   const fetchSuggestSuccess = res => {

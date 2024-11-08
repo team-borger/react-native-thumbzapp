@@ -24,7 +24,7 @@ const Shop = ({ navigation }: Props) => {
   const [loginuser, setUser] = useState({});
 
   const _goBack = () => {
-    navigation.navigate('HomeScreen')
+    navigation.navigate('AuthRouteLanding');
   }
 
   const _goToCart = () => {

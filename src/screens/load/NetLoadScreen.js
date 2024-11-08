@@ -23,7 +23,7 @@ const NetLoad = ({ navigation }: Props) => {
   const [bannerMessage, setBannerMessage] = useState('')
 
   const _goBack = () => {
-    navigation.navigate('HomeScreen')
+    navigation.navigate('AuthRouteLanding');
   }
 
   const fetchSuccess = res => {

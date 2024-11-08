@@ -14,7 +14,7 @@ type Props = {
   navigation: Navigation;
 };
 
-const ProfileScreen = ({ navigation }: Props) => {
+const ProfileScreen = ({ navigation, logout }: Props) => {
   const [loginUser, setLoginUser] = useState({});
   const [toPay, setToPay] = useState(0);
   const [toShip, setToShip] = useState(0);
@@ -26,13 +26,14 @@ const ProfileScreen = ({ navigation }: Props) => {
   }, []);
 
   const _goBack = () => {
-    navigation.popToTop();
+    navigation.navigate('AuthRouteLanding');
   }
 
   const _onLogoutPressed = async () => {
     try {
       AuthService.logout()
       await AsyncStorage.clear();
+      logout(true);
       navigation.replace('LoginScreen')
     } catch {
       Alert.alert('Something went wrong. Please try again.',

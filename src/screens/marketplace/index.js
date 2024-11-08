@@ -27,7 +27,7 @@ const Marketplace = () => {
   return (
     <SafeAreaProvider>
       <StatusBar hidden={false} backgroundColor="#64009D" translucent={true} />
-      <NavigationContainer independent={true}>
+      {/* <NavigationContainer independent={true}> */}
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
@@ -50,7 +50,7 @@ const Marketplace = () => {
         <Stack.Screen name="PaymentOptions" component={PaymentOptions} />
         <Stack.Screen name="XenditInvoice" component={XenditInvoice} />
       </Stack.Navigator>
-      </NavigationContainer>
+      {/* </NavigationContainer> */}
     </SafeAreaProvider>
   );
 };

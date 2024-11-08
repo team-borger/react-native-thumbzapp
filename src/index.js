@@ -16,7 +16,7 @@ import { LoginScreen, RegisterScreen, ForgotPasswordScreen } from './screens';
 
 const Stack = createNativeStackNavigator();
 
-const AuthenticatedRoutes = () => {
+const AuthenticatedRoutes = ({ logout }) => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -27,29 +27,44 @@ const AuthenticatedRoutes = () => {
       <Stack.Screen name="Marketplace" component={Marketplace} />
       <Stack.Screen name="Load" component={Load} />
       <Stack.Screen name="Ticketing" component={Ticketing} />
-      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Profile">
+        {(props) => <Profile {...props} logout={logout} />}
+      </Stack.Screen>
       <Stack.Screen name="Dashboard" component={Dashboard} />
     </Stack.Navigator>
   );
 };
 
+const AuthRoutes = ({ setIsLoggedIn }) => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="LoginScreen">
+      {(props) => <LoginScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
+    </Stack.Screen>
+    <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+    <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} />
+  </Stack.Navigator>
+);
+
 const OverallRoutes = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Placeholder auth state
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const logout = () => setIsLoggedIn(false);
 
   return (
     <SafeAreaProvider>
       <NavigationContainer independent={true}>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           {isLoggedIn ? (
-            <Stack.Screen name="AuthenticatedRoutes" component={AuthenticatedRoutes} />
-          ) : (
             <>
-              <Stack.Screen name="LoginScreen">
-                {(props) => <LoginScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
-              </Stack.Screen>
-              <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-              <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} />
-            </>
+            <Stack.Screen name="AuthenticatedRoutes">
+              {(props) => <AuthenticatedRoutes {...props} logout={logout} />}
+            </Stack.Screen>
+            <Stack.Screen name="AuthRouteLanding" component={AuthRouteLanding} />
+          </>
+          ) : (
+            <Stack.Screen name="AuthRoutes">
+              {(props) => <AuthRoutes {...props} setIsLoggedIn={setIsLoggedIn} />}
+            </Stack.Screen>
           )}
         </Stack.Navigator>
       </NavigationContainer>

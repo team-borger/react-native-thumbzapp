@@ -20,7 +20,7 @@ const Load = () => {
   return (
     <SafeAreaProvider>
       <StatusBar hidden={false} backgroundColor="#64009D" translucent={true} />
-      <NavigationContainer independent={true}>
+      {/* <NavigationContainer independent={true}> */}
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
@@ -36,7 +36,7 @@ const Load = () => {
         <Stack.Screen name="AddCardListScreen" component={AddCardListScreen} />
         <Stack.Screen name="AddCardScreen" component={AddCardScreen} />
       </Stack.Navigator>
-      </NavigationContainer>
+      {/* </NavigationContainer> */}
     </SafeAreaProvider>
   );
 };

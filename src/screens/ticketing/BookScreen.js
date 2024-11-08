@@ -38,7 +38,7 @@ const BookScreen = ({ navigation }: Props) => {
   const [loading, setLoading] = useState(false)
 
   const _goBack = () => {
-    navigation.popToTop();
+    navigation.navigate('AuthRouteLanding');
   }
 
   const skeks = () => {

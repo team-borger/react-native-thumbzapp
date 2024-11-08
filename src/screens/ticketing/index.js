@@ -13,7 +13,7 @@ const Ticketing = () => {
   return (
     <SafeAreaProvider>
       <StatusBar hidden={false} backgroundColor="#64009D" translucent={true} />
-      <NavigationContainer independent={true}>
+      {/* <NavigationContainer independent={true}> */}
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
@@ -22,7 +22,7 @@ const Ticketing = () => {
         <Stack.Screen name="BookScreen" component={BookScreen} />
         <Stack.Screen name="BookSuccess" component={BookSuccess} />
       </Stack.Navigator>
-      </NavigationContainer>
+      {/* </NavigationContainer> */}
     </SafeAreaProvider>
   );
 };

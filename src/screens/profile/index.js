@@ -15,17 +15,19 @@ import LoginScreen from './../LoginScreen';
 
 const Stack = createNativeStackNavigator();
 
-const Profile = () => {
+const Profile = ({ logout }) => {
   return (
     <SafeAreaProvider>
       <StatusBar hidden={false} backgroundColor="#64009D" translucent={true} />
-      <NavigationContainer independent={true}>
+      {/* <NavigationContainer independent={true}> */}
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
         }}
       >
-        <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+        <Stack.Screen name="ProfileScreen">
+          {(props) => <ProfileScreen {...props} logout={logout} />}
+        </Stack.Screen>
         <Stack.Screen name="MyAddressScreen" component={MyAddressScreen} />
         <Stack.Screen name="AddAddressScreen" component={AddAddressScreen} />
         <Stack.Screen name="OrderFoodInfo" component={OrderFoodInfo} />
@@ -34,7 +36,7 @@ const Profile = () => {
         <Stack.Screen name="OrdersScreen" component={OrdersScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
       </Stack.Navigator>
-      </NavigationContainer>
+      {/* </NavigationContainer> */}
     </SafeAreaProvider>
   );
 };

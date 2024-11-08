@@ -17,7 +17,7 @@ const Marketplace = () => {
   return (
     <SafeAreaProvider>
       <StatusBar hidden={false} backgroundColor="#64009D" translucent={true} />
-      <NavigationContainer independent={true}>
+      {/* <NavigationContainer independent={true}> */}
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
@@ -30,7 +30,7 @@ const Marketplace = () => {
         <Stack.Screen name="CallScreen" component={CallScreen} />
         <Stack.Screen name="IncomingCallScreen" component={IncomingCallScreen} />
       </Stack.Navigator>
-      </NavigationContainer>
+      {/* </NavigationContainer> */}
     </SafeAreaProvider>
   );
 };
