@@ -13,14 +13,15 @@ import { Navigation } from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AuthService, CallService } from '../services';
+import environment from '../../environment';
 
 type Props = {
-  navigation: Navigation;
+  navigation: Navigation,
 };
 
-const LoginScreen = ({ navigation , setIsLoggedIn}: Props) => {
-  const [email, setEmail] = useState({ value: '', error: '' });
-  const [password, setPassword] = useState({ value: '', error: '' });
+const LoginScreen = ({ navigation, setIsLoggedIn }: Props) => {
+  const [email, setEmail] = useState({ value: environment.DEVELOPMENT.email, error: '' });
+  const [password, setPassword] = useState({ value: environment.DEVELOPMENT.password, error: '' });
   const [passwordVisible, setPasswordVisible] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error_, setError] = useState(false);
@@ -28,11 +29,10 @@ const LoginScreen = ({ navigation , setIsLoggedIn}: Props) => {
 
   useEffect(() => {
     if (error_ == true) {
-
       setTimeout(() => {
-        setError(false)
-      }, 3000)
-      setError(true)
+        setError(false);
+      }, 3000);
+      setError(true);
     }
   }, [error_]);
 
@@ -45,36 +45,35 @@ const LoginScreen = ({ navigation , setIsLoggedIn}: Props) => {
 
   // firstRendered()
 
-
-  _storeUserData = async (payload) => {
-    await AsyncStorage.setItem('Token', payload.user.token)
-    await AsyncStorage.setItem('user', JSON.stringify(payload.user))
-  }
+  _storeUserData = async payload => {
+    await AsyncStorage.setItem('Token', payload.user.token);
+    await AsyncStorage.setItem('user', JSON.stringify(payload.user));
+  };
 
   const loginSuccess = res => {
     // const { token } = res.data;
-    _storeUserData(res.data)
+    _storeUserData(res.data);
     setIsLoggedIn(true);
-  }
+  };
 
   const loginError = err => {
     const { error, message } = err.response.data;
-    setLoading(false)
+    setLoading(false);
     if (error) {
-      setError(true)
-      setErrorMessage(error)
-      Alert.alert('Login Error', error,
-        [{ text: 'OK' },], { cancelable: false }
-      );
+      setError(true);
+      setErrorMessage(error);
+      Alert.alert('Login Error', error, [{ text: 'OK' }], {
+        cancelable: false,
+      });
     }
     if (message) {
-      setError(true)
-      setErrorMessage(message)
-      Alert.alert('Login Error', message,
-        [{ text: 'OK' },], { cancelable: false }
-      );
+      setError(true);
+      setErrorMessage(message);
+      Alert.alert('Login Error', message, [{ text: 'OK' }], {
+        cancelable: false,
+      });
     }
-  }
+  };
 
   const _onLoginPressed = async () => {
     const emailError = emailValidator(email.value);
@@ -86,22 +85,22 @@ const LoginScreen = ({ navigation , setIsLoggedIn}: Props) => {
       return;
     } else {
       const body = {
-        email : email.value,
-        password : password.value
+        email: email.value,
+        password: password.value,
       };
-      setLoading(true)
+      setLoading(true);
 
-      loginAPI(body,loginSuccess,loginError);
+      loginAPI(body, loginSuccess, loginError);
       AuthService.login(body)
         .then(() => {
-          CallService._setUpListeners()
-          loginAPI(body,loginSuccess,loginError);
+          CallService._setUpListeners();
+          loginAPI(body, loginSuccess, loginError);
         })
         .catch(error => {
-          setError(true)
-          setErrorMessage(error.info.errors[0])
-          setLoading(false)
-        })
+          setError(true);
+          setErrorMessage(error.info.errors[0]);
+          setLoading(false);
+        });
     }
   };
 
@@ -113,15 +112,14 @@ const LoginScreen = ({ navigation , setIsLoggedIn}: Props) => {
         message={errorMessage}
         icon="https://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-error-icon.png"
       />
-    )
-  }
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      { error_ && showBanner() }
+      {error_ && showBanner()}
 
       <Background>
-
         <Logo />
 
         <CustomTextInput
@@ -146,14 +144,16 @@ const LoginScreen = ({ navigation , setIsLoggedIn}: Props) => {
           errorText={password.error}
           secureTextEntry={passwordVisible}
           right={
-            <TextInput.Icon icon={passwordVisible ? "eye" : "eye-off"}
-              onPress={() => setPasswordVisible(!passwordVisible)} />
-            }
+            <TextInput.Icon
+              icon={passwordVisible ? 'eye' : 'eye-off'}
+              onPress={() => setPasswordVisible(!passwordVisible)}
+            />
+          }
         />
 
         <View style={{ paddingLeft: 20, paddingRight: 20, width: '100%' }}>
           <Button mode="contained" onPress={_onLoginPressed}>
-          {loading ? 'Loading...' : 'Login'}
+            {loading ? 'Loading...' : 'Login'}
           </Button>
         </View>
 
@@ -165,14 +165,23 @@ const LoginScreen = ({ navigation , setIsLoggedIn}: Props) => {
           </TouchableOpacity>
         </View>
 
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20, }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginBottom: 20,
+          }}
+        >
           <View style={styles.hairline} />
           <Text style={styles.loginButtonBelowText1}>OR</Text>
           <View style={styles.hairline} />
         </View>
 
         <View style={{ paddingLeft: 20, paddingRight: 20, width: '100%' }}>
-          <Button mode="contained" onPress={() => navigation.navigate('RegisterScreen')}>
+          <Button
+            mode="contained"
+            onPress={() => navigation.navigate('RegisterScreen')}
+          >
             Create an account
           </Button>
         </View>
@@ -188,13 +197,13 @@ const styles = StyleSheet.create({
   hairline: {
     backgroundColor: 'white',
     height: 1,
-    width: 130
+    width: 130,
   },
   loginButtonBelowText1: {
     fontSize: 15,
     paddingHorizontal: 10,
     alignSelf: 'center',
-    color: 'white'
+    color: 'white',
   },
   forgotPassword: {
     width: '100%',
@@ -216,7 +225,7 @@ const styles = StyleSheet.create({
   link: {
     fontWeight: 'bold',
     color: theme.colors.primary,
-  }
+  },
 });
 
 export default memo(LoginScreen);

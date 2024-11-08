@@ -1,7 +1,7 @@
 import React, { memo, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableHighlight, Platform, ToastAndroid, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Appbar, Button } from 'react-native-paper';
+import { Appbar, Button, RadioButton } from 'react-native-paper';
 import { Navigation } from '../../types';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { IMAGE } from '../../constants/Image';
@@ -21,11 +21,12 @@ const Checkout = ({ navigation }: Props) => {
   const [subTotal, setTotal] = useState(0)
   const [items, setItems] = useState([])
   const [totalItem, setTotalItem] = useState([])
-  const [payMethod, setPayment] = useState({})
   const [loginuser, setUser] = useState({})
   const [loading, setLoading] = useState(false)
   const [userAddress, setAddress] = useState({})
   const [selectedAddress, setSelectedAddress] = useState({})
+  const [paymentMethod, setPaymentMethod] = React.useState('');
+
 
   const showToast = text => {
     const commonToast = Platform.OS === 'android' ? ToastAndroid : Toast;
@@ -111,16 +112,23 @@ const Checkout = ({ navigation }: Props) => {
   const _onPlaceOrder = () => {
     setLoading(true)
     const cart_id = items.map(obj => obj.id);
-    checkoutAPI({ food_orders: false, ids: cart_id, user_address_id: selectedAddress.id }, openWebViewer, getError)
+    checkoutAPI({ 
+      food_orders: false,
+      ids: cart_id,
+      payment_channel: paymentMethod,
+      user_address_id: selectedAddress.id 
+    }, openWebViewer, getError)
   }
 
   const openWebViewer = res => {
-    // console.log('callback', res.data.paymentLink.invoice_url)
-    const path = res.data.paymentLink.invoice_url
-    AsyncStorage.setItem('xenditInvoiceUrl', path)
-    console.log(path)
-    navigation.navigate('XenditInvoice');
-    setLoading(false)
+    if(paymentMethod == 'ONLINE') {
+      // console.log('callback', res.data.paymentLink.invoice_url)
+      const path = res.data.paymentLink.invoice_url
+      AsyncStorage.setItem('xenditInvoiceUrl', path)
+      console.log(path)
+      navigation.navigate('XenditInvoice');
+      setLoading(false)
+    } 
   }
 
   const _goPay = () => {
@@ -197,7 +205,25 @@ const Checkout = ({ navigation }: Props) => {
             </View>
           </View>
         </View>
+        <View >
+          <Text>Payment Method</Text>
+        </View>
+        <View style={{ height: 200 }}>
+          <RadioButton.Group onValueChange={newValue => setPaymentMethod(newValue)} value={paymentMethod}>
+            <View style={{flexDirection: 'column', display: 'flex', flex: 1, }}>
+              <View style={{flexBasis: '50%', display: 'flex', flexDirection: 'row', alignItems: 'center', padding: 5}}>
+                <RadioButton value="CASH" />
+                <Text>Cash On Delivery</Text>
+              </View>
+              <View style={{flexBasis: '50%', display: 'flex', flexDirection: 'row', alignItems: 'center', padding: 5}}>
+                <RadioButton value="ONLINE" />
+                <Text>Online Payment</Text>
+              </View>
+            </View>
+          </RadioButton.Group>
+        </View>
       </View>
+
 
       <View style={{ flexDirection: 'row'}}>
         <View style={styles.total}>
