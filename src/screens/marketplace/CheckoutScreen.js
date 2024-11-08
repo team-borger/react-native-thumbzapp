@@ -25,7 +25,7 @@ const Checkout = ({ navigation }: Props) => {
   const [loading, setLoading] = useState(false)
   const [userAddress, setAddress] = useState({})
   const [selectedAddress, setSelectedAddress] = useState({})
-  const [paymentMethod, setPaymentMethod] = React.useState('');
+  const [paymentMethod, setPaymentMethod] = React.useState('CASH');
 
 
   const showToast = text => {
@@ -115,7 +115,7 @@ const Checkout = ({ navigation }: Props) => {
     checkoutAPI({ 
       food_orders: false,
       ids: cart_id,
-      payment_channel: paymentMethod,
+      cod: true,
       user_address_id: selectedAddress.id 
     }, openWebViewer, getError)
   }
@@ -205,22 +205,23 @@ const Checkout = ({ navigation }: Props) => {
             </View>
           </View>
         </View>
-        <View >
-          <Text>Payment Method</Text>
-        </View>
-        <View style={{ height: 200 }}>
-          <RadioButton.Group onValueChange={newValue => setPaymentMethod(newValue)} value={paymentMethod}>
-            <View style={{flexDirection: 'column', display: 'flex', flex: 1, }}>
-              <View style={{flexBasis: '50%', display: 'flex', flexDirection: 'row', alignItems: 'center', padding: 5}}>
-                <RadioButton value="CASH" />
-                <Text>Cash On Delivery</Text>
+        <View style={{ paddingHorizontal: 20, marginTop: 20 }}>
+          <Text style={styles.titleText}>Payment Method</Text>
+
+          <View>
+            <RadioButton.Group onValueChange={newValue => setPaymentMethod(newValue)} value={paymentMethod}>
+              <View style={{marginLeft: 10}}>
+                <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between'}}>
+                  <Text>Cash On Delivery</Text>
+                  <RadioButton value="CASH" />
+                </View>
+                <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between'}}>
+                  <Text>Online Payment</Text>
+                  <RadioButton value="ONLINE" />
+                </View>
               </View>
-              <View style={{flexBasis: '50%', display: 'flex', flexDirection: 'row', alignItems: 'center', padding: 5}}>
-                <RadioButton value="ONLINE" />
-                <Text>Online Payment</Text>
-              </View>
-            </View>
-          </RadioButton.Group>
+            </RadioButton.Group>
+          </View>
         </View>
       </View>
 
@@ -293,7 +294,13 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: 'transparent',
     marginTop: 0
-  }
+  },
+  titleText: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      marginBottom: 10,
+      color: '#333',
+  },
 });
 
 export default memo(Checkout);
