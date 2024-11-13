@@ -115,7 +115,7 @@ const Checkout = ({ navigation }: Props) => {
     checkoutAPI({ 
       food_orders: false,
       ids: cart_id,
-      cod: true,
+      cod: (paymentMethod != 'ONLINE'),
       user_address_id: selectedAddress.id 
     }, openWebViewer, getError)
   }
