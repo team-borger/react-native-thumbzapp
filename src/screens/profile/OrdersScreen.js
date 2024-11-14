@@ -59,11 +59,11 @@ const Orders = ({ navigation }: Props) => {
 
   const fetchSuccess = res => {
     var items = res.data
-    const pay = items.filter((obj) => obj.status.status === 'Waiting for Payment')
-    const ship = items.filter((obj) => obj.status.status === 'Paid' || obj.status.status === 'Pending' || obj.status.status === 'Processing' || obj.status.status === 'Packed')
-    const receive = items.filter((obj) => obj.status.status === 'Shipped')
-    const complete = items.filter((obj) => obj.status.status === 'Delivered')
-    const cancel = items.filter((obj) => obj.status.status === 'cancelled')
+    const pay = items.filter((obj) => obj.status?.status === 'Waiting for Payment')
+    const ship = items.filter((obj) => obj.status?.status === 'Paid' || obj.status?.status === 'Pending' || obj.status?.status === 'Processing' || obj.status?.status === 'Packed')
+    const receive = items.filter((obj) => obj.status?.status === 'Shipped')
+    const complete = items.filter((obj) => obj.status?.status === 'Delivered')
+    const cancel = items.filter((obj) => obj.status?.status === 'cancelled')
     setToPay(pay)
     setToShip(ship)
     setToReceive(receive)

@@ -93,7 +93,7 @@ export const userFoodOrdersAPI = async (body, callback, err) => {
 
 export const cancelOrdersAPI = async (body, callback, err) => {
     checkConnection(
-        backendAPI.post(`/transaction/cancel`)
+        backendAPI.post(`/transaction/cancel`, body)
             .then(callback)
             .catch(err),
         err
