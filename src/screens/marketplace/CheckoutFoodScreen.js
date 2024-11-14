@@ -22,6 +22,7 @@ import Toast from 'react-native-simple-toast';
 import environment from '../../../environment';
 import { userAddressAPI } from '../../services/address';
 import { placeOrderAPI, checkoutAPI } from '../../services/products';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 type Props = {
   navigation: Navigation,
@@ -37,6 +38,12 @@ const CheckoutFood = ({ navigation }: Props) => {
   const [userAddress, setAddress] = useState({});
   const [selectedAddress, setSelectedAddress] = useState({});
   const [paymentMethod, setPaymentMethod] = React.useState('CASH');
+  const [showAlert, setState] = useState(false)
+
+  const hideAlert = () => {
+    setState(false);
+    navigation.navigate('HomeScreen')
+  };
 
   const showToast = text => {
     const commonToast = Platform.OS === 'android' ? ToastAndroid : Toast;
@@ -122,33 +129,46 @@ const CheckoutFood = ({ navigation }: Props) => {
   const _onPlaceOrder = () => {
     setLoading(true);
     const cart_id = items.map(obj => obj.id);
-    checkoutAPI(
-      {
-        food_orders: true,
+    if(paymentMethod == 'ONLINE') {
+      checkoutAPI({ 
+        food_orders: false,
         ids: cart_id,
-        cod: paymentMethod != 'ONLINE',
-        user_address_id: selectedAddress.id,
-      },
-      openWebViewer,
-      getError
-    );
-  };
-
-  const openWebViewer = res => {
-    // console.log('callback', res.data.paymentLink.invoice_url)
-    if (paymentMethod == 'ONLINE') {
-      const path = res.data.paymentLink.invoice_url;
-      AsyncStorage.setItem('xenditInvoiceUrl', path);
-      console.log(path);
-      navigation.navigate('XenditInvoice');
-      setLoading(false);
+        cod: false,
+        user_address_id: selectedAddress.id 
+      }, openWebViewer, getError)
+    } else{
+      checkoutAPI({ 
+        food_orders: false,
+        ids: cart_id,
+        cod: true,
+        user_address_id: selectedAddress.id 
+      }, addSuccess, getError)
+      placeOrderAPI({ids: cart_id}, placeSuccess, getError)
     }
   };
 
-  const _goPay = () => {
-    AsyncStorage.setItem('payType', JSON.stringify('shop'));
-    navigation.navigate('PaymentOptions');
-  };
+  const placeSuccess = res => {
+    console.log(res)
+  }
+
+  const addSuccess = res => {
+    setState(true);
+    setLoading(false)
+  }
+
+  const openWebViewer = res => {
+    // console.log('callback', res.data.paymentLink.invoice_url)
+    const path = res.data.paymentLink.invoice_url
+    AsyncStorage.setItem('xenditInvoiceUrl', path)
+    // console.log(path)
+    navigation.navigate('XenditInvoice');
+    setLoading(false)
+  }
+
+  // const _goPay = () => {
+  //   AsyncStorage.setItem('payType', JSON.stringify('shop'));
+  //   navigation.navigate('PaymentOptions');
+  // };
 
   const formatNumber = inputNumber => {
     let formetedNumber = Number(inputNumber)
@@ -325,7 +345,7 @@ const CheckoutFood = ({ navigation }: Props) => {
         </View>
         <Button
           loading={loading}
-          disabled={loading}
+          disabled={!selectedAddress}
           style={styles.btn}
           mode="contained"
           onPress={_onPlaceOrder}
@@ -333,6 +353,21 @@ const CheckoutFood = ({ navigation }: Props) => {
           Place Order
         </Button>
       </View>
+
+      <AwesomeAlert
+        show={showAlert}
+        showProgress={false}
+        title=""
+        message="Placed Order Successfully!"
+        closeOnTouchOutside={true}
+        closeOnHardwareBackPress={true}
+        showCancelButton={false}
+        showConfirmButton={true}
+        confirmText="OK"
+        confirmButtonColor="#880ED4"
+        onConfirmPressed={hideAlert}
+      />
+
     </SafeAreaView>
   );
 };

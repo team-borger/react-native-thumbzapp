@@ -75,12 +75,11 @@ const OrderInfo = ({ navigation }: Props) => {
 
   const cancelOrder = () => {
     setLoading(true)
-    cancelOrdersAPI(orderinfo, cancelSuccess, cancelError)
+    cancelOrdersAPI({ transaction_id: orderinfo.id }, cancelSuccess, cancelError)
   }
 
   const cancelSuccess = res => {
     setLoading(false)
-    console.log(res)
     navigation.navigate('ProfileScreen')
   }
 

@@ -55,14 +55,14 @@ export const cartAllAPI = async (body, callback, err) => {
     )
 }
 
-export const placeOrderAPI = async (body, callback, err) => {
-    checkConnection(
-        backendAPI.post(`/product_order/create`, body)
-            .then(callback)
-            .catch(err),
-        err
-    )
-}
+// export const placeOrderAPI = async (body, callback, err) => {
+//     checkConnection(
+//         backendAPI.post(`/product_order/create`, body)
+//             .then(callback)
+//             .catch(err),
+//         err
+//     )
+// }
 
 export const checkoutAPI = async (body, callback, err) => {
     checkConnection(
@@ -94,6 +94,16 @@ export const userFoodOrdersAPI = async (body, callback, err) => {
 export const cancelOrdersAPI = async (body, callback, err) => {
     checkConnection(
         backendAPI.post(`/transaction/cancel`, body)
+            .then(callback)
+            .catch(err),
+        err
+    )
+}
+
+
+export const placeOrderAPI = async (body, callback, err) => {
+    checkConnection(
+        backendAPI.post(`/transaction/place/cod`, body)
             .then(callback)
             .catch(err),
         err

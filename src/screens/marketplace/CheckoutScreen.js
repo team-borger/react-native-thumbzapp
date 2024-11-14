@@ -12,6 +12,7 @@ import Toast from 'react-native-simple-toast';
 import environment from '../../../environment';
 import { userAddressAPI } from '../../services/address';
 import { placeOrderAPI, checkoutAPI } from '../../services/products';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 type Props = {
   navigation: Navigation;
@@ -26,7 +27,12 @@ const Checkout = ({ navigation }: Props) => {
   const [userAddress, setAddress] = useState({})
   const [selectedAddress, setSelectedAddress] = useState({})
   const [paymentMethod, setPaymentMethod] = React.useState('CASH');
+  const [showAlert, setState] = useState(false)
 
+  const hideAlert = () => {
+    setState(false);
+    navigation.navigate('HomeScreen')
+  };
 
   const showToast = text => {
     const commonToast = Platform.OS === 'android' ? ToastAndroid : Toast;
@@ -112,29 +118,46 @@ const Checkout = ({ navigation }: Props) => {
   const _onPlaceOrder = () => {
     setLoading(true)
     const cart_id = items.map(obj => obj.id);
-    checkoutAPI({ 
-      food_orders: false,
-      ids: cart_id,
-      cod: (paymentMethod != 'ONLINE'),
-      user_address_id: selectedAddress.id 
-    }, openWebViewer, getError)
+    if(paymentMethod == 'ONLINE') {
+      checkoutAPI({ 
+        food_orders: false,
+        ids: cart_id,
+        cod: false,
+        user_address_id: selectedAddress.id 
+      }, openWebViewer, getError)
+    } else{
+      checkoutAPI({ 
+        food_orders: false,
+        ids: cart_id,
+        cod: true,
+        user_address_id: selectedAddress.id 
+      }, addSuccess, getError)
+      placeOrderAPI({ids: cart_id}, placeSuccess, getError)
+    }
+  }
+
+  const placeSuccess = res => {
+    console.log(res)
+  }
+
+  const addSuccess = res => {
+    setState(true);
+    setLoading(false)
   }
 
   const openWebViewer = res => {
-    if(paymentMethod == 'ONLINE') {
-      // console.log('callback', res.data.paymentLink.invoice_url)
-      const path = res.data.paymentLink.invoice_url
-      AsyncStorage.setItem('xenditInvoiceUrl', path)
-      console.log(path)
-      navigation.navigate('XenditInvoice');
-      setLoading(false)
-    } 
+    // console.log('callback', res.data.paymentLink.invoice_url)
+    const path = res.data.paymentLink.invoice_url
+    AsyncStorage.setItem('xenditInvoiceUrl', path)
+    // console.log(path)
+    navigation.navigate('XenditInvoice');
+    setLoading(false)
   }
 
-  const _goPay = () => {
-    AsyncStorage.setItem('payType', JSON.stringify('shop'))
-    navigation.navigate('PaymentOptions')
-  }
+  // const _goPay = () => {
+  //   AsyncStorage.setItem('payType', JSON.stringify('shop'))
+  //   navigation.navigate('PaymentOptions')
+  // }
 
   const formatNumber = (inputNumber) => {
     let formetedNumber=(Number(inputNumber)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
@@ -231,10 +254,24 @@ const Checkout = ({ navigation }: Props) => {
           <Text style={{marginLeft: 20}}>Total Payment:</Text>
           <Text style={{fontWeight: 'bold', marginLeft: 20, color: '#880ED4' }}>{'\u20B1'} {formatNumber(subTotal)}</Text>
         </View>
-        <Button loading={loading} disabled={loading} style={styles.btn} mode="contained" onPress={_onPlaceOrder}>
+        <Button loading={loading} disabled={!selectedAddress} style={styles.btn} mode="contained" onPress={_onPlaceOrder}>
           Place Order
         </Button>
       </View>
+
+      <AwesomeAlert
+        show={showAlert}
+        showProgress={false}
+        title=""
+        message="Placed Order Successfully!"
+        closeOnTouchOutside={true}
+        closeOnHardwareBackPress={true}
+        showCancelButton={false}
+        showConfirmButton={true}
+        confirmText="OK"
+        confirmButtonColor="#880ED4"
+        onConfirmPressed={hideAlert}
+      />
 
     </SafeAreaView>
   );
