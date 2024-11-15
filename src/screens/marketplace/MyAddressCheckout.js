@@ -145,7 +145,7 @@ const MyAddressCheckout = ({ navigation, route  }: Props) => {
             extraData={listItemsRefresh}
           />
         </View>
-        <Button icon="plus-circle" style={styles.logoutBtn} mode="contained" onPress={() => navigation.navigate('AddAddressCheckout')}>
+        <Button icon="plus-circle" style={styles.logoutBtn} mode="contained" onPress={() => navigation.navigate('AddAddressCheckout', { isFood: false })}>
           Add New Address
         </Button>
 

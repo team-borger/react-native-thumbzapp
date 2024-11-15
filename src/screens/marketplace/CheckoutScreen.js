@@ -179,7 +179,7 @@ const Checkout = ({ navigation }: Props) => {
             borderBottomWidth: 4,
           }}
         />
-        <TouchableHighlight onPress={() => navigation.navigate('MyAddressCheckout', { isFood: false })}  underlayColor="white" style={{borderColor: '#880ED4',  borderWidth: 1, margin: 10, padding: 10, borderRadius: 10}}>
+        <TouchableHighlight onPress={() => navigation.navigate('MyAddressCheckout', { isFood: false })}  underlayColor="white" style={selectedAddress.phone ? {borderColor: '#880ED4',  borderWidth: 1, margin: 10, padding: 10, borderRadius: 10} : {display: 'none'}}>
           <View style={{ flexDirection: 'row'}}>
             <View style={{width: '80%'}}>
               <View style={{flexDirection: 'row'}}>
@@ -187,6 +187,19 @@ const Checkout = ({ navigation }: Props) => {
                 <Text style={{marginLeft: 10, color: '#777777'}}>{selectedAddress.phone}</Text>
               </View>
               <Text style={{color: '#555555'}}>{selectedAddress.address}</Text>
+            </View>
+            <View style={{width: '20%', justifyContent: 'center', alignItems: 'flex-end'}}>
+              <FontAwesome name='chevron-right' size={15} color='gray' />
+            </View>
+          </View>
+        </TouchableHighlight>
+        <TouchableHighlight onPress={() => navigation.navigate('MyAddressCheckout', { isFood: false })}  underlayColor="white" style={selectedAddress.phone ? {display: 'none'} : {borderColor: '#880ED4',  borderWidth: 1, margin: 10, padding: 10, borderRadius: 10}}>
+          <View style={{ flexDirection: 'row'}}>
+            <View style={{width: '80%'}}>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={{fontWeight: 'bold'}}>Select Delivery Address</Text>
+              </View>
+              <Text style={{color: '#555555'}}>CLICK TO ADD</Text>
             </View>
             <View style={{width: '20%', justifyContent: 'center', alignItems: 'flex-end'}}>
               <FontAwesome name='chevron-right' size={15} color='gray' />

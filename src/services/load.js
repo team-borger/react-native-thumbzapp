@@ -28,3 +28,12 @@ export const networkInfoAPI = async (body, callback, err) => {
         err
     )
 }
+
+export const checkoutLoadAPI = async (body, callback, err) => {
+    checkConnection(
+        backendAPI.post(`/transaction/checkout-load`, body)
+            .then(callback)
+            .catch(err),
+        err
+    )
+}

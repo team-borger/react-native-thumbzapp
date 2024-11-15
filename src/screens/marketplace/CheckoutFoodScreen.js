@@ -131,14 +131,14 @@ const CheckoutFood = ({ navigation }: Props) => {
     const cart_id = items.map(obj => obj.id);
     if(paymentMethod == 'ONLINE') {
       checkoutAPI({ 
-        food_orders: false,
+        food_orders: true,
         ids: cart_id,
         cod: false,
         user_address_id: selectedAddress.id 
       }, openWebViewer, getError)
     } else{
       checkoutAPI({ 
-        food_orders: false,
+        food_orders: true,
         ids: cart_id,
         cod: true,
         user_address_id: selectedAddress.id 
@@ -199,7 +199,45 @@ const CheckoutFood = ({ navigation }: Props) => {
             navigation.navigate('MyAddressCheckout', { isFood: true })
           }
           underlayColor="white"
-          style={{
+          style={selectedAddress.phone ? {
+            borderColor: '#880ED4',
+            borderWidth: 1,
+            margin: 10,
+            padding: 10,
+            borderRadius: 10,
+          } : {display: 'none'}}
+        >
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ width: '80%' }}>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={{ fontWeight: 'bold' }}>
+                  {selectedAddress.name}
+                </Text>
+                <Text style={{ marginLeft: 10, color: '#777777' }}>
+                  {selectedAddress.phone}
+                </Text>
+              </View>
+              <Text style={{ color: '#555555' }}>
+                {selectedAddress.address}
+              </Text>
+            </View>
+            <View
+              style={{
+                width: '20%',
+                justifyContent: 'center',
+                alignItems: 'flex-end',
+              }}
+            >
+              <FontAwesome name="chevron-right" size={15} color="gray" />
+            </View>
+          </View>
+        </TouchableHighlight>
+        <TouchableHighlight
+          onPress={() =>
+            navigation.navigate('MyAddressCheckout', { isFood: true })
+          }
+          underlayColor="white"
+          style={selectedAddress.phone ? {display: 'none'} :{
             borderColor: '#880ED4',
             borderWidth: 1,
             margin: 10,

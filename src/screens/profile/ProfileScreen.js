@@ -164,7 +164,7 @@ const ProfileScreen = ({ navigation, logout }: Props) => {
                 <Image source={IMAGE.TO_PAY} style={styles.icon_image} />
                 <Text style={{fontSize: 10, marginTop: 10}}>To Pay</Text>
                 <View style={{ position: 'absolute', top: 0, right: -5 }}>
-                  <Badge style={toPay === 0 ? {display:'none'} : {} }>{toPay}</Badge>
+                  <Badge style={toPay === 0 ? {display:'none'} : {} }>{toPay}2</Badge>
                 </View>
               </View>
             </TouchableHighlight>
