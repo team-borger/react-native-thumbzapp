@@ -131,24 +131,24 @@ const CheckoutFood = ({ navigation }: Props) => {
     const cart_id = items.map(obj => obj.id);
     if(paymentMethod == 'ONLINE') {
       checkoutAPI({ 
-        food_orders: false,
+        food_orders: true,
         ids: cart_id,
         cod: false,
         user_address_id: selectedAddress.id 
       }, openWebViewer, getError)
     } else{
       checkoutAPI({ 
-        food_orders: false,
+        food_orders: true,
         ids: cart_id,
         cod: true,
         user_address_id: selectedAddress.id 
       }, addSuccess, getError)
-      placeOrderAPI({ids: cart_id}, placeSuccess, getError)
+      placeOrderAPI({ids: cart_id, food_orders: true}, placeSuccess, getError)
     }
   };
 
   const placeSuccess = res => {
-    console.log(res)
+    console.log(res.data)
   }
 
   const addSuccess = res => {

@@ -132,12 +132,12 @@ const Checkout = ({ navigation }: Props) => {
         cod: true,
         user_address_id: selectedAddress.id 
       }, addSuccess, getError)
-      placeOrderAPI({ids: cart_id}, placeSuccess, getError)
+      placeOrderAPI({ids: cart_id, food_orders: false}, placeSuccess, getError)
     }
   }
 
   const placeSuccess = res => {
-    console.log(res)
+    console.log(res.data)
   }
 
   const addSuccess = res => {
