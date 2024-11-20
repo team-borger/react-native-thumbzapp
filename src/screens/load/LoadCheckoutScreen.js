@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableHighlight, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar, Button, ToggleButton } from 'react-native-paper';
 import { Navigation } from '../../types';
@@ -28,20 +28,31 @@ const LoadCheckout = ({ navigation }: Props) => {
 
   const loadPay = () => {
     setLoading(true)
-    const cart_id = items.map(obj => obj.id);
     checkoutLoadAPI({ 
-      food_orders: false,
-      ids: cart_id,
-      cod: false,
-      user_address_id: selectedAddress.id 
+      amount: loadInfo.amount
     }, openWebViewer, getError)
-    // navigation.navigate('LoadPayedScreen');
   }
 
+  const getError = err => {
+    const { error, message } = err.response.data;
+    setLoading(false);
+    if (error) {
+      Alert.alert('Error: ', error, [{ text: 'OK' }], {
+        cancelable: false,
+      });
+    }
+    if (message) {
+      Alert.alert('Error: ', message, [{ text: 'OK' }], {
+        cancelable: false,
+      });
+    }
+  };
+
   const openWebViewer = res => {
+    console.log('callback', res.data.paymentLink.invoice_url)
     const path = res.data.paymentLink.invoice_url
-    AsyncStorage.setItem('xenditInvoiceUrl', path)
-    navigation.navigate('XenditInvoice');
+    AsyncStorage.setItem('xenditInvoiceLoadUrl', path)
+    navigation.navigate('XenditInvoiceLoad');
     setLoading(false)
   }
 
