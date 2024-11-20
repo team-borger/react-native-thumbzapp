@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableHighlight, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar, Button, ToggleButton } from 'react-native-paper';
 import { Navigation } from '../../types';
@@ -8,7 +8,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { IMAGE } from '../../constants/Image';
 import NumericInput from 'react-native-numeric-input'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { cartFoodAllAPI } from '../../services/food';
+import { checkoutLoadAPI, networkInfoAPI } from '../../services/load';
 import environment from '../../../environment';
 
 type Props = {
@@ -17,22 +17,85 @@ type Props = {
 
 const LoadCheckout = ({ navigation }: Props) => {
   const [loginuser, setUser] = useState({})
+  const [networkInfo, setNetworkInfo] = useState({})
   const [loadInfo, setLoadInfo] = useState({})
+  const [phoneNumber, setPhoneNumber] = useState('')
   const [loading, setLoading] = useState(false)
-  const [payMethod, setPayment] = useState({})
 
   const _goBack = () => {
     navigation.navigate('LoadProcessScreen');
   }
 
   const loadPay = () => {
-    navigation.navigate('LoadPayedScreen');
+    setLoading(true)
+    checkoutLoadAPI({ 
+      amount: loadInfo.amount
+    }, openWebViewer, getError)
+  }
+
+  const getError = err => {
+    const { error, message } = err.response.data;
+    setLoading(false);
+    if (error) {
+      Alert.alert('Error: ', error, [{ text: 'OK' }], {
+        cancelable: false,
+      });
+    }
+    if (message) {
+      Alert.alert('Error: ', message, [{ text: 'OK' }], {
+        cancelable: false,
+      });
+    }
+  };
+
+  const openWebViewer = res => {
+    console.log('callback', res.data.paymentLink.invoice_url)
+    const path = res.data.paymentLink.invoice_url
+    AsyncStorage.setItem('xenditInvoiceLoadUrl', path)
+    navigation.navigate('XenditInvoiceLoad');
+    setLoading(false)
+  }
+
+  const _getNetworkInfo = async () => {
+    try {
+      const value = await AsyncStorage.getItem('networkInfo')
+      if (value !== null) {
+        const ret = JSON.parse(value);
+        _getInfo(ret.provider)
+        setPhoneNumber(ret.numberinfo.phone_number)
+      }
+    } catch (error) {
+      console.log('error async storage')
+    }
+  }
+
+  const fetchSuccess = res => {
+    setNetworkInfo(res.data)
+  }
+
+  const fetchError = err => {
+    const { error, message } = err.response.data;
+    if (error) {
+      Alert.alert('Something went wrong. Please try again.', error,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+    if (message) {
+      Alert.alert('Something went wrong. Please try again.', message,
+        [{ text: 'OK' },], { cancelable: false }
+      );
+    }
+  }
+
+  const _getInfo = (payload) => {
+    networkInfoAPI(payload, fetchSuccess, fetchError)
   }
 
   useFocusEffect(
     React.useCallback(() => {
       _geUserInfo()
       _geLoadInfo()
+      _getNetworkInfo()
     }, [navigation])
   );
 
@@ -50,18 +113,13 @@ const LoadCheckout = ({ navigation }: Props) => {
 
   const _geLoadInfo = async () => {
     try {
-      const value = await AsyncStorage.getItem('loadCheckout')
-      const payment = await AsyncStorage.getItem('paymentMethodLoad')
+      const value = await AsyncStorage.getItem('loadCheckout');
       if (value !== null) {
         const ret = JSON.parse(value);
         setLoadInfo(ret)
       }
-      if (payment !== null) {
-        const pay = JSON.parse(payment);
-        setPayment(pay)
-      }
     } catch (error) {
-      console.log('error async storage')
+      console.log('error async storage: ', error)
     }
   }
 
@@ -79,38 +137,27 @@ const LoadCheckout = ({ navigation }: Props) => {
 
       <View style={styles.contentContainer}>
         <View style={styles.skeks}>
-          <View style={{paddingVertical: 30, backgroundColor: '#880ED4', alignItems: 'center'}}>
-            <Text style={{color:'white', fontSize: 20, fontWeight: 'bold'}}>{loadInfo.load_type === 'Regular' ? `PHP ${loadInfo.amount}.00` : loadInfo.promo_name}</Text>
-          </View>
           <View style={{padding: 10, backgroundColor: '#f9efff'}}>
             <Text style={{color: '#880ED4', fontSize:12, fontWeight: 'bold'}}>YOU ARE ABOUT TO PAY</Text>
+          </View>
+          <View style={{marginHorizontal: 20, marginVertical: 10, display: 'flex', flexDirection: 'row', justifyContent: 'space-around'}}>
+            <Image
+              style={{width: 50, aspectRatio: 1, resizeMode: 'contain'}}
+              source={{
+                uri: networkInfo.images ? networkInfo.images.length > 0 ? `${environment.APP_URL}/storage/uploads/networks/${networkInfo.id}/${networkInfo.images[0].photo}` : '' : '',
+              }}
+            />
+          </View>
+          <View style={{alignItems: 'center'}}>
+            <Text style={{color: '#880ED4', fontSize: 20, fontWeight: 'bold'}}>{loadInfo.load_type === 'Regular' ? `PHP ${loadInfo.amount}.00` : loadInfo.promo_name}</Text>
+            <Text style={{fontSize: 15, marginTop: 5}}>{phoneNumber}</Text>
           </View>
           <View style={{flexDirection: 'row', justifyContent:'space-between', padding: 20, borderBottomColor: '#eeeeee', borderBottomWidth: 2}}>
             <Text>Total Amount</Text>
             <Text style={{fontWeight: 'bold'}}>{ `PHP ${loadInfo.amount}.00` }</Text>
           </View>
 
-          <View style={styles.skeks}>
-            <TouchableHighlight onPress={_goPay} underlayColor="#eeeeee">
-              <View
-                style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: 20, alignItems: 'center'}}>
-                <View style={{display: 'flex', flexDirection:'row', alignItems: 'center'}}>
-                  <FontAwesome name='credit-card' size={15} color='black' />
-                  <View style={{marginLeft: 5}}>
-                    <Text>Payment Options</Text>
-                  </View>
-                </View>
-                <Text>{payMethod.method_type === 'E-Wallet' ? `E-Wallet - Gcash` : payMethod.method_type}</Text>
-                <FontAwesome name='angle-right' size={20} color='black' />
-              </View>
-            </TouchableHighlight>
-            <View style={{marginLeft: 50, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-              <Image source={payMethod.account_number ? IMAGE.ICON_MASTERCARD : ''} style={styles.image} />
-              <Text style={{color: '#880ED4'}}>{payMethod.account_number}</Text>
-            </View>
-          </View>
-
-          <View style={payMethod.method_type ? {} : {display: 'none'}}>
+          <View>
             <View style={{paddingHorizontal: '15%', paddingVertical: 20}}>
               <Text style={{textAlign: 'center', color: '#777777', fontSize: 13}}>Please review to ensure that the details are correct before you proceed.</Text>
             </View>

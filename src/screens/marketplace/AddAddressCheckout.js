@@ -23,7 +23,7 @@ const AddCard = ({ navigation }: Props) => {
     setLoading(false)
     const { data } = res.data;
     AsyncStorage.setItem('choosenAddress', JSON.stringify({}))
-    navigation.replace('MyAddressCheckout')
+    navigation.replace('MyAddressCheckout', { isFood: false })
   }
 
   const addError = err => {
@@ -43,7 +43,7 @@ const AddCard = ({ navigation }: Props) => {
 
   const _goBack = () => {
     AsyncStorage.setItem('choosenAddress', JSON.stringify({}))
-    navigation.navigate('MyAddressCheckout');
+    navigation.navigate('MyAddressCheckout', { isFood: false });
   }
 
   const _saveAddress = () => {

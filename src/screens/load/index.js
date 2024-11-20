@@ -13,6 +13,7 @@ import AddPaymentScreen from './AddPaymentScreen';
 import PaymentMethodList from './PaymentMethodList';
 import AddCardListScreen from './AddCardListScreen';
 import AddCardScreen from './AddCardScreen';
+import XenditInvoiceLoad from './InvoiceLoad';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +36,7 @@ const Load = () => {
         <Stack.Screen name="LoadCheckoutScreen" component={LoadCheckoutScreen} />
         <Stack.Screen name="AddCardListScreen" component={AddCardListScreen} />
         <Stack.Screen name="AddCardScreen" component={AddCardScreen} />
+        <Stack.Screen name="XenditInvoiceLoad" component={XenditInvoiceLoad} />
       </Stack.Navigator>
       {/* </NavigationContainer> */}
     </SafeAreaProvider>
