@@ -61,6 +61,22 @@ const BookScreen = ({ navigation }: Props) => {
 
   const saveSuccess = res => {
     setLoading(false)
+    setType('')
+    setDeparture('')
+    setReturn('')
+    setTrip('')
+    setClass('')
+    setFromText('')
+    setToText('')
+    setAdult('')
+    setStudent('')
+    setSenior('')
+    setYouth('')
+    setChildren('')
+    setToddlers('')
+    setInfant('')
+    setTourAccommodation('')
+    setMsg('')
     navigation.navigate('BookSuccess')
   }
 

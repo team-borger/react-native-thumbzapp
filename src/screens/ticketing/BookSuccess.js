@@ -13,7 +13,7 @@ type Props = {
 const BookSuccess = ({ navigation }: Props) => {
 
   const _goBack = () => {
-    navigation.navigate('HomeScreen');
+    navigation.navigate('BookScreen');
   }
 
   return (
@@ -29,7 +29,7 @@ const BookSuccess = ({ navigation }: Props) => {
             <Image source={IMAGE.EMAIL_VERIFY} style={styles.image} />
           </View>
           <View style={{paddingVertical: 20}}>
-            <Button mode="contained" style={styles.btn} onPress={() => navigation.navigate('HomeScreen')}>
+            <Button mode="contained" style={styles.btn} onPress={_goBack}>
               Back to Home
             </Button>
           </View>

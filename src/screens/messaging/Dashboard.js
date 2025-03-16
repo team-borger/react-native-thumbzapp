@@ -18,7 +18,7 @@ const Dashboard = ({ navigation }: Props) => {
   const [items, setItems] = useState([])
 
   const _goBack = () => {
-    navigation.popToTop();
+    navigation.navigate('AuthRouteLanding');
   }
 
   const _onChatClick = (item) => {
